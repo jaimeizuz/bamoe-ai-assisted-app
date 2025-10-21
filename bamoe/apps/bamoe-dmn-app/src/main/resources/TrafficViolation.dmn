@@ -151,13 +151,6 @@
     <dmn:extensionElements />
     <dmn:variable id="_A80F16DF-0DB4-43A2-B041-32900B1A3F3D" name="Driver" typeRef="tDriver" />
   </dmn:inputData>
-  <dmn:decisionService name="TrafficViolationDS" id="_1C34ACC2-AC00-4691-92B6-845E133DB3B3">
-    <dmn:variable name="TrafficViolationDS" id="_B7DFD36C-BD8F-4735-A1C8-AC8356D540E3" typeRef="string" />
-    <dmn:outputDecision href="#_8A408366-D8E9-4626-ABF3-5F69AA01F880" />
-    <dmn:encapsulatedDecision href="#_4055D956-1C47-479C-B3F4-BAEB61F1C929" />
-    <dmn:inputData href="#_1F9350D7-146D-46F1-85D8-15B5B68AF22A" />
-    <dmn:inputData href="#_1929CBD5-40E0-442D-B909-49CEDE0101DC" />
-  </dmn:decisionService>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_3FEB9053-0E6B-4880-A6AE-85FAB5072161" name="DRG" useAlternativeInputDataShape="false">
       <di:extension>
@@ -218,13 +211,6 @@
         </dmndi:DMNStyle>
         <dc:Bounds x="420" y="20" width="133" height="63" />
         <dmndi:DMNLabel id="_34506E5C-F548-4BB4-8199-5BA411DB01DE" />
-      </dmndi:DMNShape>
-      <dmndi:DMNShape id="_7BC6BAF8-1D2B-43B1-835D-0096C23E1D68" dmnElementRef="_1C34ACC2-AC00-4691-92B6-845E133DB3B3" isCollapsed="false" isListedInputData="false">
-        <dc:Bounds x="360" y="-20" width="320" height="320" />
-        <dmndi:DMNDecisionServiceDividerLine id="_FAEFDC83-005A-48EE-B18B-714BAAA5BF0C">
-          <di:waypoint x="360" y="140" />
-          <di:waypoint x="680" y="140" />
-        </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_800A3BBB-90A3-4D9D-BA5E-A311DED0134F" dmnElementRef="_800A3BBB-90A3-4D9D-BA5E-A311DED0134F">
         <di:waypoint x="690" y="405" />
