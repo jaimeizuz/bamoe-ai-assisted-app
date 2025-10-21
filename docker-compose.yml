@@ -50,7 +50,7 @@ services:
       LANGFLOW_UPDATE_STARTER_PROJECTS: true
       LANGFLOW_LAZY_LOAD_COMPONENTS: false
     volumes:
-      - ./langflow:/app/langflow
+      - ./langflow:/app/langflow:Z
     depends_on:
       postgres-server:
         condition: service_healthy
@@ -60,18 +60,18 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '3'
-          memory: 4096M
+          cpus: '6'
+          memory: 8096M
         reservations:
-          memory: 4096M
+          memory: 8096M
     ports:
       - 11430:11434
     volumes:
-      - ./ollama:/root/.ollama
+      - ./ollama:/root/.ollama:Z
     environment:
       OLLAMA_HOST: 0.0.0.0:11434
       OLLAMA_ORIGINS: '*'
-      OLLAMA_DEBUG: 1
+      OLLAMA_DEBUG: 2
     entrypoint: ["/bin/bash", "-c", "\
       ollama serve & \
       sleep 5 && \
@@ -116,7 +116,7 @@ services:
     ports:
       - 8888:8888
     environment:
-      MCP_SERVER_OPENAPI_URLS: "http://0.0.0.0:8881/q/openapi,http://0.0.0.0:8882/q/openapi"
+      MCP_SERVER_OPENAPI_URLS: "http://172.17.0.1:8881/q/openapi,http://172.17.0.1:8882/q/openapi"
       MCP_SERVER_PORT: 8888
       QUARKUS_LISTEN_ADDRESS: 0.0.0.0
       QUARKUS_HTTP_HOST: 0.0.0.0
