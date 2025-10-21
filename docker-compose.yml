@@ -65,7 +65,7 @@ services:
         reservations:
           memory: 4096M
     ports:
-      - 11434:11434
+      - 11430:11434
     volumes:
       - ./ollama:/root/.ollama
     environment:
