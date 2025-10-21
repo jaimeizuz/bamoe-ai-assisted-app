@@ -1,0 +1,14 @@
+name: Integration
+
+on:
+  push:
+    branches:
+      - development
+      - develop
+      - feature/*
+
+jobs:
+  call-reusable-workflow:
+    name: Integration
+    uses: santander-group-shared-assets/gln-workflows/.github/workflows/maven-ci-artifact-gfw.yml@v1
+    secrets: inherit

@@ -1,0 +1,5 @@
+.env
+.vscode
+/tempo/data/*
+/ollama/*
+/langflow/*

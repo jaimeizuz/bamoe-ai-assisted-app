@@ -1,0 +1,1 @@
+mvn clean "-Pdevelopment" "-P!bamoe-kafka-events" "-P!bamoe-data-audit" "-P!bamoe-data-index" "-P!bamoe-jobs" quarkus:dev

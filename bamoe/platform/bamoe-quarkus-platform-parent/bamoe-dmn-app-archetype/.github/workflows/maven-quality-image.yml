@@ -1,0 +1,14 @@
+name: Maven quality gate workflow
+on:
+  pull_request:
+    branches:
+      - development
+      - develop
+      - main
+      - master
+
+jobs:
+  call-reusable-workflow:
+    name: Maven quality gate workflow
+    uses: santander-group-shared-assets/gln-workflows/.github/workflows/maven-quality.yml@v1
+    secrets: inherit

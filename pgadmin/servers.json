@@ -1,0 +1,24 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "BAMOE BPMN DB",
+      "Group": "Servers",
+      "Host": "postgres-server",
+      "Port": 5432,
+      "MaintenanceDB": "kogito",
+      "Username": "kogito-user",
+      "SSLMode": "disable",
+      "PassFile": "/var/lib/pgadmin/pgpass"
+    },
+    "2": {
+      "Name": "Langflow DB",
+      "Group": "Servers",
+      "Host": "postgres-server",
+      "Port": 5432,
+      "MaintenanceDB": "langflow",
+      "Username": "langflow-user",
+      "SSLMode": "disable",
+      "PassFile": "/var/lib/pgadmin/pgpass"
+    }
+  }
+}

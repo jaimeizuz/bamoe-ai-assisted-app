@@ -1,0 +1,1 @@
+mvn clean "-Pdevelopment" "-P!bamoe-kafka-events" quarkus:dev

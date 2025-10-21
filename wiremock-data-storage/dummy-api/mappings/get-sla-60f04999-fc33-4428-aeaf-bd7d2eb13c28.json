@@ -1,0 +1,23 @@
+{
+  "id" : "60f04999-fc33-4428-aeaf-bd7d2eb13c28",
+  "name" : "GET Sla",
+  "request" : {
+    "url" : "/sla",
+    "method" : "GET",
+    "headers" : {
+      "Accept" : {
+        "contains" : "json"
+      }
+    }
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "{\n  \"sla\": \"PT20S\"\n}",
+    "headers" : { }
+  },
+  "uuid" : "60f04999-fc33-4428-aeaf-bd7d2eb13c28",
+  "persistent" : true,
+  "priority" : 5,
+  "insertionIndex" : 1,
+  "postServeActions" : [ ]
+}

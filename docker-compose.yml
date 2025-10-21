@@ -1,0 +1,530 @@
+services:
+  nginx:
+    hostname: nginx
+    image: nginx:${NGINX_VERSION}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 64M
+        reservations:
+          memory: 64M
+    profiles:
+      - nginx
+    volumes:
+    - ./nginx/templates:/etc/nginx/templates
+    ports:
+    - "8000:80"
+    environment:
+    - NGINX_HOST=localhost
+    - NGINX_PORT=80
+    depends_on:
+      bamoe-bpmn-app:
+        condition: service_started
+      bamoe-dmn-app:
+        condition: service_started
+  langflow:
+    hostname: langflow
+    #image: langflowai/langflow:${LANGFLOW_VERSION}
+    image: langflowai/langflow-nightly:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '3'
+          memory: 2500M
+        reservations:
+          memory: 2500M
+    ports:
+      - 7860:7860
+    #network_mode: host
+    environment:
+      LANGFLOW_HOST: 0.0.0.0
+      LANGFLOW_PORT: 7860
+      LANGFLOW_WORKERS: 3
+      LANGFLOW_DEACTIVATE_TRACING: false
+      LANGFLOW_DATABASE_URL: postgresql://langflow-user:langflow-pass@postgres-server:5432/langflow
+      LANGFLOW_CONFIG_DIR: /app/langflow
+      LANGFLOW_CORS_ORIGINS: '*'
+      LANGFLOW_LOG_LEVEL: DEBUG
+      LANGFLOW_CREATE_STARTER_PROJECTS: true
+      LANGFLOW_UPDATE_STARTER_PROJECTS: true
+      LANGFLOW_LAZY_LOAD_COMPONENTS: false
+    volumes:
+      - ./langflow:/app/langflow
+    depends_on:
+      postgres-server:
+        condition: service_healthy
+  ollama:
+    hostname: ollama
+    image: ollama/ollama:0.12.5
+    deploy:
+      resources:
+        limits:
+          cpus: '3'
+          memory: 4096M
+        reservations:
+          memory: 4096M
+    ports:
+      - 11434:11434
+    volumes:
+      - ./ollama:/root/.ollama
+    environment:
+      OLLAMA_HOST: 0.0.0.0:11434
+      OLLAMA_ORIGINS: '*'
+      OLLAMA_DEBUG: 1
+    entrypoint: ["/bin/bash", "-c", "\
+      ollama serve & \
+      sleep 5 && \
+      ollama pull ibm/granite4:tiny-h && \
+      ollama pull ibm/granite4:micro-h && \
+      wait"]
+  mcp-context-forge:
+    hostname: mcp-gateway
+    image: ghcr.io/ibm/mcp-context-forge:0.8.0
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 368M
+        reservations:
+          memory: 368M
+    ports:
+      - 4444:4444
+    environment:
+      MCPGATEWAY_UI_ENABLED: true
+      MCPGATEWAY_ADMIN_API_ENABLED: true
+      HOST: 0.0.0.0
+      JWT_SECRET_KEY: my-test-key
+      BASIC_AUTH_USER: admin
+      BASIC_AUTH_PASSWORD: changeme
+      AUTH_REQUIRED: true
+      PLATFORM_ADMIN_EMAIL: admin@example.com
+      PLATFORM_ADMIN_PASSWORD: changeme
+      PLATFORM_ADMIN_FULL_NAME: "Platform Administrator"
+      DATABASE_URL: sqlite:///./mcp.db
+      SECURE_COOKIES: false
+  bamoe-mcp-server:
+    hostname: bamoe-mcp-server
+    image: quay.io/bamoe/mcp-server:${BAMOE_VERSION}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+        reservations:
+          memory: 128M
+    ports:
+      - 8888:8888
+    environment:
+      MCP_SERVER_OPENAPI_URLS: "http://0.0.0.0:8881/q/openapi,http://0.0.0.0:8882/q/openapi"
+      MCP_SERVER_PORT: 8888
+      QUARKUS_LISTEN_ADDRESS: 0.0.0.0
+      QUARKUS_HTTP_HOST: 0.0.0.0
+    depends_on:
+      bamoe-bpmn-app:
+        condition: service_healthy
+      bamoe-dmn-app:
+        condition: service_healthy
+  bamoe-maven-repository:
+    hostname: bamoe-maven-repository
+    image: quay.io/bamoe/maven-repository:${BAMOE_VERSION}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+        reservations:
+          memory: 128M
+    profiles:
+      - bamoe-maven-repository
+    ports:
+      - '8800:8080'
+  bamoe-management-console:
+    hostname: bamoe-management-console
+    image: quay.io/bamoe/management-console:${BAMOE_VERSION}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+        reservations:
+          memory: 128M
+    ports:
+      - '8280:8080'
+    #depends_on:
+    #  keycloak:
+    #    condition: service_healthy
+    environment:
+      #RUNTIME_TOOLS_MANAGEMENT_CONSOLE_OIDC_CLIENT_CLIENT_ID: kie-management-console
+      RUNTIME_TOOLS_MANAGEMENT_CONSOLE_BASE_PATH: bamoe-process-management-console
+      RUNTIME_TOOLS_MANAGEMENT_CONSOLE_USE_APACHE_HTTPD_BASE_PATH_ALIAS: "true"
+      #RUNTIME_TOOLS_MANAGEMENT_CONSOLE_MANAGED_BUSINESS_SERVICES: '[{"name":"Kogito Secure App", "businessServiceUrl":"http://localhost:8081", "clientId":"kie-management-console"},{"name":"Kogito Unsecure App", "businessServiceUrl":"http://localhost:8082"}]'
+  postgres-server:
+    hostname: postgres-server
+    image: 'postgres:${POSTGRES_VERSION}'
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 368M
+        reservations:
+          memory: 368M
+    ports:
+      - '5432:5432'
+    volumes:
+      - './sql/postgres-server:/docker-entrypoint-initdb.d:Z'
+      - './sql/postgres-server/postgresql.conf:/etc/postgresql.conf'
+    command:
+      postgres -c config_file=/etc/postgresql.conf
+    healthcheck:
+      test:
+        - CMD
+        - pg_isready
+        - '-q'
+        - '-d'
+        - kogito
+        - '-U'
+        - kogito-user
+      timeout: 45s
+      interval: 10s
+      retries: 50
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+  pgadmin:
+    image: dpage/pgadmin4:${PGADMIN_VERSION}
+    hostname: pgadmin
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 368M
+        reservations:
+          memory: 368M
+    ports:
+      - 8055:80
+    volumes:
+      - ./pgadmin/servers.json:/pgadmin4/servers.json
+      - ./pgadmin/pgpass:/pgadmin4/pgpass
+    entrypoint: >
+      /bin/sh -c "
+      cp -f /pgadmin4/pgpass /var/lib/pgadmin/;
+      chmod 600 /var/lib/pgadmin/pgpass;
+      /entrypoint.sh
+      "
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@kogito.org
+      PGADMIN_DEFAULT_PASSWORD: pass
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+      GUNICORN_ACCESS_LOGFILE: "/dev/null"
+  keycloak:
+    hostname: keycloak
+    image: quay.io/keycloak/keycloak:${KEYCLOAL_VERSION}
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 368M
+        reservations:
+          memory: 368M
+    profiles:
+      - keycloak
+    ports:
+      - '8480:8080'
+    depends_on:
+      postgres-supporting-services:
+        condition: service_healthy
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import:z
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "exec 3<>/dev/tcp/127.0.0.1/9000; echo -e 'GET /health/ready HTTP/1.1\r\nHost: localhost:9000\r\nConnection: close\r\n\r\n' >&3;cat <&3 | grep -q '\"status\": \"UP\"' && exit 0 || exit 1",
+        ]
+      interval: 2s
+      timeout: 1s
+      retries: 50
+    environment:
+      KC_HEALTH_ENABLED: "true"
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres-server
+      DB_DATABASE: keycloak
+      DB_USER: kogito-user
+      DB_SCHEMA: public
+      DB_PASSWORD: kogito-pass
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command:
+      start-dev --import-realm --hostname-port=8480 --health-enabled=true
+  redpanda:
+    hostname: redpanda
+    image: redpandadata/redpanda:${REDPANDA_VERSION}
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1024M
+        reservations:
+          memory: 1024M
+    ports:
+      - 18081:18081
+      - 18082:18082
+      - 14001:8081
+      - 14002:8082
+      - 9092:9092
+      - 28082:28082
+      - 29092:2909
+      - 9093:9093
+      - 9644:9644
+    volumes:
+      - redpanda_data:/var/lib/redpanda/data
+      #- ./redpanda/bootstrap.yml:/etc/redpanda/.bootstrap.yaml
+    #environment:
+      #DATA_TRANSFORMS_ENABLED: "true"
+    command:
+    - redpanda
+    - start
+    - --smp
+    - '6'
+    - --reserve-memory
+    - 0M
+    - --overprovisioned
+    - --node-id
+    - '0'
+    - --kafka-addr
+    - PLAINTEXT://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
+    - --advertise-kafka-addr
+    - PLAINTEXT://redpanda:9093,OUTSIDE://localhost:9092
+    - --pandaproxy-addr
+    - PLAINTEXT://0.0.0.0:28082,OUTSIDE://0.0.0.0:8082
+    - --advertise-pandaproxy-addr
+    - PLAINTEXT://redpanda:28082,OUTSIDE://localhost:8082
+    - --schema-registry-addr internal://0.0.0.0:8081,external://0.0.0.0:18081
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8082/brokers" ]
+      interval: 1s
+      timeout: 1s
+      retries: 50
+  redpanda-console:
+    hostname: redpanda-console
+    image: redpandadata/console:${REDPANDA_CONSOLE_VERSION}
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          memory: 512M   
+    profiles:
+      - full
+      - messaging-redpanda
+    # mount the local directory that contains your license key to the container.
+    # give Redpanda Console read access to the license.
+    volumes:
+    # Remove ro?
+      - ./license:/etc/redpanda:ro
+    entrypoint: /bin/sh
+    command: -c 'echo "$$CONSOLE_CONFIG_FILE" > /tmp/config.yml && echo "$$CONSOLE_ROLEBINDINGS_CONFIG_FILE" > /tmp/role-bindings.yml && /app/console'
+    environment:
+      #REDPANDA_LICENSE_FILEPATH: /etc/redpanda/redpanda.license
+      CONFIG_FILEPATH: /tmp/config.yml
+      CONSOLE_CONFIG_FILE: |
+        kafka:
+          brokers: ["redpanda:9093"]
+        schemaRegistry:
+          enabled: true
+          urls: ["http://redpanda:8081"]
+        redpanda:
+          adminApi:
+            enabled: true
+            urls: ["http://redpanda:9644"]
+        kafkaConnect:
+          enabled: false
+          clusters:
+            - name: datagen
+              url: http://redpanda-connect:8083
+        authorization:
+          roleBindings:
+            - roleName: admin
+              users:
+                - loginType: basic
+                  name: "admin"
+    ports:
+      - 9001:8080
+    depends_on:
+      - redpanda
+  wiremock-studio:
+    hostname: wiremock
+    image: jizuzquiza/wiremock-studio:2.32.0-18
+    profiles:
+      - wiremock
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 372M
+        reservations:
+          memory: 372M
+    volumes:
+      - ./wiremock-data-storage:/home/wiremock:z
+    ports:
+    - 19000-19010:9000-9010
+  bamoe-bpmn-app:
+    hostname: bamoe-bpmn-app
+    image: dev.local/bamoe/bamoe-bpmn-app:1.0.0-SNAPSHOT
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 768M
+        reservations:
+          memory: 768M
+    ports:
+    - 8881:8080
+    environment:
+      JAVA_OPTS: >
+        -XX:ActiveProcessorCount=2
+        -XX:MaxRAMPercentage=80.0
+        -XX:+UseG1GC
+        -XX:MinHeapFreeRatio=10
+        -XX:MaxHeapFreeRatio=20
+        -XX:GCTimeRatio=4
+        -XX:AdaptiveSizePolicyWeight=90
+        -XX:+ExitOnOutOfMemoryError
+        -XX:+HeapDumpOnOutOfMemoryError
+        -XX:HeapDumpPath=/home/jboss
+        -Djava.util.logging.manager=org.jboss.logmanager.LogManager
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8558
+        -Dcom.sun.management.jmxremote
+        -Dcom.sun.management.jmxremote.port=12346
+        -Dcom.sun.management.jmxremote.rmi.port=12346
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Dcom.sun.management.jmxremote.host=0.0.0.0
+        -Djava.rmi.server.hostname=localhost
+      KOGITO_PERSISTENCE_PROTO_MARSHALLER: "false"
+      QUARKUS_HTTP_CORS_ORIGINS: '*'
+      QUARKUS_LISTEN_ADDRESS: 0.0.0.0
+      GC_CONTAINER_OPTIONS: "-XX:+UseG1GC"
+      # The number if IO threads used to perform IO. This will be automatically set to a reasonable value based on the number of CPU cores if it is not provided.
+      # If this is set to a higher value than the number of Vert.x event loops then it will be capped at the number of event loops.
+      # In general this should be controlled by setting quarkus.vertx.event-loops-pool-size, this setting should only be used if you want to limit the number
+      # of HTTP io threads to a smaller number than the total number of IO threads.
+      # QUARKUS_HTTP_IO_THREADS: 5
+      # The number of event loops. By default, it matches the number of CPUs detected on the system.
+      # QUARKUS_VERTX_EVENT_LOOPS_POOL_SIZE: 5
+      # The maximum number of threads. If this is not specified then it will be automatically sized to the greatest of 8 * the number of available processors and 200.
+      # For example if there are 4 processors the max threads will be 200. If there are 48 processors it will be 384.
+      QUARKUS_THREAD_POOL_MAX_THREADS: 300
+      # The core thread pool size. This number of threads will always be kept alive. Defaults to 1
+      QUARKUS_THREAD_POOL_CORE_THREADS: 1
+      # The amount of time a thread will stay alive with no work. Defaults to 30S
+      QUARKUS_THREAD_POOL_KEEP_ALIVE_TIME: 30S
+      # See https://quarkus.io/guides/datasource#jdbc-configuration
+      QUARKUS_DATASOURCE_JDBC_URL: 'jdbc:postgresql://postgres-server:5432/kogito'
+      QUARKUS_DATASOURCE_USERNAME: kogito-user
+      QUARKUS_DATASOURCE_PASSWORD: kogito-pass
+      QUARKUS_DATASOURCE_DB_KIND: postgresql
+      QUARKUS_DATASOURCE_JDBC_ENABLE_METRICS: "true"
+      QUARKUS_DATASOURCE_JDBC_METRICS_ENABLED: "true"
+      # XA transaction objects datasource
+      QUARKUS_DATASOURCE__XOS__JDBC_URL: 'jdbc:postgresql://postgres-server:5432/xa-object-store'
+      QUARKUS_DATASOURCE__XOS__USERNAME: kogito-user
+      QUARKUS_DATASOURCE__XOS__PASSWORD: kogito-pass
+      QUARKUS_DATASOURCE__XOS__DB_KIND: postgresql
+      QUARKUS.DATASOURCE__XOS__JDBC_TRANSACTIONS: disabled
+      # The initial size of the pool. Usually you will want to set the initial size to match at least the minimal size, 
+      # but this is not enforced so to allow for architectures which prefer a lazy initialization of the connections on boot, 
+      # while being able to sustain a minimal pool size after boot. DEFAULT: null
+      QUARKUS_DATASOURCE_JDBC_INITIAL_SIZE: 20
+      # The datasource pool minimum size. DEFAULT: 0
+      QUARKUS_DATASOURCE_JDBC_MIN_SIZE: 20
+      # The datasource pool maximum size. DEFAULT: 20
+      QUARKUS_DATASOURCE_JDBC_MAX_SIZE: 80
+      # The interval at which we validate idle connections in the background. Set to 0 to disable background validation. DEFAULT: 2M
+      # QUARKUS_DATASOURCE_JDBC_BACKGROUND_VALIDATION_INTERVAL: 2M
+      # Perform foreground validation on connections that have been idle for longer than the specified interval. DEFAULT: null
+      # QUARKUS_DATASOURCE_JDBC_FOREGROUND_VALIDATION_INTERVAL: 15S
+      # The timeout before cancelling the acquisition of a new connection. DEFAULT: 5S
+      # QUARKUS_DATASOURCE_JDBC_ACQUISITION_TIMEOUT: 5S
+      # The interval at which we check for connection leaks. DEFAULT: disabled
+      # QUARKUS_DATASOURCE_JDBC_LEAK_DETECTION_INTERVAL: 10M
+      # The interval at which we try to remove idle connections. DEFAULT: 5M
+      # QUARKUS_DATASOURCE_JDBC_IDLE_REMOVAL_INTERVAL: 5M
+      # The max lifetime of a connection. DEFAULT: disabled
+      # QUARKUS_DATASOURCE_JDBC_MAX_LIFETIME: 1M
+      # The transaction isolation level. DEFAULT: null
+      # QUARKUS_DATASOURCE_JDBC_TRANSACTION_ISOLATION_LEVEL: undefined, none, read-uncommitted, read-committed, repeatable-read, serializable
+      QUARKUS_TRANSACTION-MANAGER_ENABLE-RECOVERY: "true"
+      QUARKUS_TRANSACTION-MANAGER_OBJECT-STORE_DATASOURCE: "xos"
+      QUARKUS_TRANSACTION-MANAGER_OBJECT-STORE_TYPE: "jdbc"
+      QUARKUS_TRANSACTION-MANAGER_OBJECT-STORE_CREATE-TABLE: "true"
+      KOGITO_SERVICE_URL: 'http://localhost:8080'
+      KOGITO_DATAINDEX_HTTP_URL: 'http://localhost:8080'
+      KOGITO_JOBS_SERVICE_URL: 'http://localhost:8080'
+      # The current chunk size in minutes the scheduler handles, it is used to keep a limit number of jobs scheduled
+      # in the in-memory scheduler.
+      #KOGITO_JOBS-SERVICE_SCHEDULERCHUNKINMINUTES: 10
+      # The interval the job loading method runs to fetch the persisted jobs from the repository.
+      #KOGITO_JOBS-SERVICE_LOADJOBINTERVALINMINUTES: 10
+      # The interval based on the current time the job loading method uses to fetch jobs "FROM (now -
+      # {@link #loadJobFromCurrentTimeIntervalInMinutes}) TO {@link #schedulerChunkInMinutes}"
+      #KOGITO_JOBS-SERVICE_LOADJOBFROMCURRENTTIMEINTERVALINMINUTES: 0
+      # Number of retries configured for the periodic jobs loading procedure. Every time the procedure is started this
+      # value is considered.
+      KOGITO_JOBS-SERVICE_LOADJOBRETRIES: 3
+      # Error strategy to apply when the periodic jobs loading procedure has exceeded the jobLoadReties. NONE, FAIL_SERVICE
+      #KOGITO_JOBS-SERVICE_LOADJOBERRORSTRATEGY: FAIL_SERVICE
+      KOGITO_JOBS-SERVICE_FORCEEXECUTEEXPIREDJOBS: "true"
+      KOGITO_JOBS-SERVICE_FORCEEXECUTEEXPIREDJOBSONSERVICESTART: "true"
+      KOGITO_JOBS-SERVICE_NUMBEROFWORKERTHREADS: 10 
+      KOGITO_JOBS-SERVICE_MAXNUMBEROFRETRIES: 12
+      KOGITO_JOBS-SERVICE_RETRYMILLS: 3000
+      KOGITO_JOBS-SERVICE_SCHEDULERCHUNKINMINUTES: 5
+      MP_MESSAGING_OUTGOING_KOGITO-PROCESSINSTANCES-EVENTS_CONNECTOR: smallrye-kafka
+      MP_MESSAGING_OUTGOING_KOGITO-PROCESSINSTANCES-EVENTS_TOPIC: kogito-processinstances-events
+      MP_MESSAGING_OUTGOING_KOGITO-PROCESSINSTANCES-EVENTS_VALUE_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
+      MP_MESSAGING_OUTGOING_KOGITO-USERTASKINSTANCES-EVENTS_CONNECTOR: smallrye-kafka
+      MP_MESSAGING_OUTGOING_KOGITO-USERTASKINSTANCES-EVENTS_TOPIC: kogito-usertaskinstances-events
+      MP_MESSAGING_OUTGOING_KOGITO-USERTASKINSTANCES-EVENTS_VALUE_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
+      MP_MESSAGING_OUTGOING_KOGITO-PROCESSDEFINITIONS-EVENTS_CONNECTOR: smallrye-kafka
+      MP_MESSAGING_OUTGOING_KOGITO-PROCESSDEFINITIONS-EVENTS_TOPIC: kogito-processdefinitions-events
+      MP_MESSAGING_OUTGOING_KOGITO-PROCESSDEFINITIONS-EVENTS_VALUE_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
+      KOGITO_EVENTS_GROUPING: "false"
+      KIE_FLYWAY_ENABLED: "true"
+      QUARKUS_REST_CLIENT__DUMMY_REST_SERVICE__URL: http://localhost:19002
+    depends_on:
+      postgres-server:
+        condition: service_healthy
+      redpanda:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
+      interval: 5s
+      retries: 5
+  bamoe-dmn-app:
+    hostname: bamoe-dmn-app
+    image: dev.local/bamoe/bamoe-dmn-app:1.0.0-SNAPSHOT
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 256M
+        reservations:
+          memory: 256M
+    ports:
+      - 8882:8080
+    environment:
+      QUARKUS_HTTP_CORS_ORIGINS: /.*/
+      GC_CONTAINER_OPTIONS: "-XX:+UseG1GC"
+      QUARKUS_LISTEN_ADDRESS: 0.0.0.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
+      interval: 5s
+      retries: 5
+volumes:
+    redpanda_data: {}

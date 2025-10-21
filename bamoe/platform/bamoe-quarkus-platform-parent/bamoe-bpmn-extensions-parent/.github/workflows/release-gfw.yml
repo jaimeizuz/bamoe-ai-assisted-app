@@ -1,0 +1,13 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  call-reusable-workflow:
+    name: Release
+    uses: santander-group-shared-assets/gln-workflows/.github/workflows/maven-release-artifact-gfw.yml@v1
+    secrets: inherit

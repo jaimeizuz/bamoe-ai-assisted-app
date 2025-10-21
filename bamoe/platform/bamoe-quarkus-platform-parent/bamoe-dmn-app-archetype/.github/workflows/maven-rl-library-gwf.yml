@@ -1,0 +1,15 @@
+name: Maven release library
+on:
+  push:
+    branches:
+      - main
+      - master
+  release:
+    types:
+      - published
+
+jobs:
+  call-reusable-workflow:
+    name: Maven release library workflow
+    uses: santander-group-shared-assets/gln-workflows/.github/workflows/maven-rl-library.yml@v1
+    secrets: inherit

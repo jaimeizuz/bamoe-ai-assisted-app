@@ -1,0 +1,802 @@
+{
+	"info": {
+		"_postman_id": "c5411884-9f65-484f-af35-430070f8e7ec",
+		"name": "BAMOE DMN app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "loan-prequalification",
+			"item": [
+				{
+					"name": "Evaluate DMN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Credit Score\": {\r\n    \"FICO\": 650\r\n  },\r\n  \"Applicant Data\": {\r\n    \"Age\": 30,\r\n    \"Marital Status\": \"S\",\r\n    \"Employment Status\": \"Employed\",\r\n    \"Existing Customer\": true,\r\n    \"Monthly\": {\r\n      \"Income\": 3000,\r\n      \"Repayments\": 100,\r\n      \"Expenses\": 2,\r\n      \"Tax\": 0,\r\n      \"Insurance\": 0\r\n    }\r\n  },\r\n  \"Requested Product\": {\r\n    \"Type\": \"Special Loan\",\r\n    \"Rate\": 2,\r\n    \"Term\": 30,\r\n    \"Amount\": 3000\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/loan-prequalification",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"loan-prequalification"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/loan-prequalification",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"loan-prequalification"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "DMN output",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/loan-prequalification",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"loan-prequalification"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						}
+					]
+				},
+				{
+					"name": "Get DMN XML source",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/loan-prequalification",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"loan-prequalification"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/loan-prequalification",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"loan-prequalification"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "xml",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/xml"
+								}
+							],
+							"cookie": [],
+							"body": "<element>(string)</element>"
+						}
+					]
+				},
+				{
+					"name": "Evaluate DMN (Legacy)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Credit Score\": {\r\n    \"FICO\": 650\r\n  },\r\n  \"Applicant Data\": {\r\n    \"Age\": 30,\r\n    \"Marital Status\": \"S\",\r\n    \"Employment Status\": \"Employed\",\r\n    \"Existing Customer\": true,\r\n    \"Monthly\": {\r\n      \"Income\": 3000,\r\n      \"Repayments\": 100,\r\n      \"Expenses\": 2,\r\n      \"Tax\": 0,\r\n      \"Insurance\": 0\r\n    }\r\n  },\r\n  \"Requested Product\": {\r\n    \"Type\": \"Special Loan\",\r\n    \"Rate\": 2,\r\n    \"Term\": 30,\r\n    \"Amount\": 3000\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/loan-prequalification/dmnresult",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"loan-prequalification",
+								"dmnresult"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/loan-prequalification/dmnresult",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"loan-prequalification",
+										"dmnresult"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/loan-prequalification/dmnresult",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"loan-prequalification",
+										"dmnresult"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "traffic-violation",
+			"item": [
+				{
+					"name": "TrafficViolationDS",
+					"item": [
+						{
+							"name": "Evaluate Decision Service",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Violation\": {\r\n    \"Type\": \"speed\",\r\n    \"Speed Limit\": 30,\r\n    \"Actual Speed\": 80\r\n  },\r\n  \"Driver\": {\r\n    \"Points\": 4\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/traffic-violation/TrafficViolationDS",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"traffic-violation",
+										"TrafficViolationDS"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/traffic-violation/TrafficViolationDS",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"traffic-violation",
+												"TrafficViolationDS"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "DMN output",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/traffic-violation/TrafficViolationDS",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"traffic-violation",
+												"TrafficViolationDS"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{}"
+								}
+							]
+						},
+						{
+							"name": "Evaluate Decision Service (Legacy)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"Violation\": {\r\n    \"Type\": \"speed\",\r\n    \"Speed Limit\": 30,\r\n    \"Actual Speed\": 80\r\n  },\r\n  \"Driver\": {\r\n    \"Points\": 4\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/traffic-violation/TrafficViolationDS/dmnresult",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"traffic-violation",
+										"TrafficViolationDS",
+										"dmnresult"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/traffic-violation/TrafficViolationDS/dmnresult",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"traffic-violation",
+												"TrafficViolationDS",
+												"dmnresult"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/traffic-violation/TrafficViolationDS/dmnresult",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"traffic-violation",
+												"TrafficViolationDS",
+												"dmnresult"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Evaluate DMN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Violation\": {\r\n    \"Type\": \"speed\",\r\n    \"Speed Limit\": 30,\r\n    \"Actual Speed\": 80\r\n  },\r\n  \"Driver\": {\r\n    \"Points\": 4\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/traffic-violation",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"traffic-violation"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/traffic-violation",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"traffic-violation"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "DMN output",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/traffic-violation",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"traffic-violation"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						}
+					]
+				},
+				{
+					"name": "Get DMN XML source",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/traffic-violation",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"traffic-violation"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/traffic-violation",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"traffic-violation"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "xml",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/xml"
+								}
+							],
+							"cookie": [],
+							"body": "<element>(string)</element>"
+						}
+					]
+				},
+				{
+					"name": "Evaluate DMN (Legacy)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Violation\": {\r\n    \"Type\": \"speed\",\r\n    \"Speed Limit\": 30,\r\n    \"Actual Speed\": 80\r\n  },\r\n  \"Driver\": {\r\n    \"Points\": 4\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/traffic-violation/dmnresult",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"traffic-violation",
+								"dmnresult"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/traffic-violation/dmnresult",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"traffic-violation",
+										"dmnresult"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/traffic-violation/dmnresult",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"traffic-violation",
+										"dmnresult"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

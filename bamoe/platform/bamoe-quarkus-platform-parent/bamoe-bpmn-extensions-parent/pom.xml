@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.jaime.bamoe</groupId>
+		<artifactId>bamoe-quarkus-platform-parent</artifactId>
+		<version>${revision}</version>	
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>bamoe-bpmn-extensions-parent</artifactId>
+	<packaging>pom</packaging>
+
+	<name>bamoe-bpmn-extensions-parent</name>
+	<description>
+		Parent POM para uso en librerías destinadas a extender la funcionalidad de BAMOE BPMN en
+		Process PaaS,
+		como implementaciones personalizadas de Event Listeners, User Task Lifecycle, REST
+		endpoints...
+	</description>
+
+	<dependencies>
+		<!-- BAMOE public API -->
+		<dependency>
+			<groupId>org.kie.kogito</groupId>
+			<artifactId>kogito-api</artifactId>
+		</dependency>
+
+		<!-- BAMOE incubation API -->
+		<dependency>
+			<groupId>org.kie.kogito</groupId>
+			<artifactId>kogito-api-incubation-application</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.kie.kogito</groupId>
+			<artifactId>kogito-api-incubation-processes-services</artifactId>
+		</dependency>
+
+		<!-- BAMOE Process WorkItems -->
+		<dependency>
+			<groupId>org.kie.kogito</groupId>
+			<artifactId>process-workitems</artifactId>
+		</dependency>
+
+		<!-- jBPM Workflows API -->
+		<dependency>
+			<groupId>org.jbpm</groupId>
+			<artifactId>jbpm-quarkus</artifactId>
+		</dependency>
+		
+		<!-- BAMOE User Tasks API -->
+		<dependency>
+			<groupId>org.kie.kogito</groupId>
+			<artifactId>jbpm-usertask</artifactId>
+		</dependency>
+
+		<!-- Quarkus CDI -->
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-arc</artifactId>
+		</dependency>
+
+		<!-- Tests -->
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-junit5</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-junit5-mockito</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>			
+            <!-- Required to make quarkus read the beans from libraries -->
+            <plugin>
+                <groupId>io.smallrye</groupId>
+                <artifactId>jandex-maven-plugin</artifactId>
+            </plugin>
+		</plugins>
+	</build>
+</project>

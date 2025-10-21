@@ -1,0 +1,55 @@
+{
+  "id" : "25d98f1f-74be-4204-b52f-a6050fe78f75",
+  "name" : "asd stub 1",
+  "request" : {
+    "urlPath" : "/graphql",
+    "method" : "OPTIONS",
+    "headers" : {
+      "Access-Control-Request-Headers" : {
+        "contains" : "content-type"
+      },
+      "Accept-Language" : {
+        "contains" : "es-ES,es;q=0.9"
+      },
+      "Accept" : {
+        "contains" : "*/*"
+      },
+      "OPTIONS" : {
+        "contains" : "/graphql HTTP/1.1"
+      },
+      "Access-Control-Request-Method" : {
+        "contains" : "POST"
+      },
+      "Origin" : {
+        "contains" : "http://localhost:8280"
+      },
+      "Referer" : {
+        "contains" : "http://localhost:8280/"
+      },
+      "Sec-Fetch-Dest" : {
+        "contains" : "empty"
+      },
+      "Sec-Fetch-Mode" : {
+        "contains" : "cors"
+      },
+      "Sec-Fetch-Site" : {
+        "contains" : "same-site"
+      }
+    }
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "",
+    "headers" : {
+      "access-control-allow-credentials" : "false",
+      "access-control-allow-origin" : "http://localhost:8280",
+      "access-control-allow-methods" : "POST",
+      "access-control-allow-headers" : "content-type"
+    }
+  },
+  "uuid" : "25d98f1f-74be-4204-b52f-a6050fe78f75",
+  "persistent" : true,
+  "priority" : 5,
+  "insertionIndex" : 0,
+  "postServeActions" : [ ]
+}

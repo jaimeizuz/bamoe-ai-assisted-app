@@ -1,0 +1,14 @@
+name: Maven security workflow
+on:
+  pull_request:
+    branches:
+      - development
+      - develop
+      - main
+      - master
+
+jobs:
+  call-reusable-workflow:
+    name: Maven security workflow
+    uses: santander-group-shared-assets/gln-workflows/.github/workflows/maven-security-image.yml@v1
+    secrets: inherit

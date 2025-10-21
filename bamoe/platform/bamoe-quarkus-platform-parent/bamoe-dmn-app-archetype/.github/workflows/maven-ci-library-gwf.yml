@@ -1,0 +1,14 @@
+name: Maven integration library
+on:
+  push:
+    branches:
+      - development
+      - develop
+      - feature/*
+      - fix/*
+
+jobs:
+  call-reusable-workflow:
+    name: Maven integration library workflow
+    uses: santander-group-shared-assets/gln-workflows/.github/workflows/maven-ci-library.yml@v1
+    secrets: inherit

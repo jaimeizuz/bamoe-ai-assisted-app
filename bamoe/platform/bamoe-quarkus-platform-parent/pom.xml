@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.jaime.bamoe</groupId>
+	<artifactId>bamoe-quarkus-platform-parent</artifactId>
+	<version>${revision}</version>
+	<packaging>pom</packaging>
+
+	<name>bamoe-quarkus-platform-parent</name>
+	<description>BOM para centralizar la gestión de dependencias de Quarkus y BAMOE</description>
+
+	<modules>
+		<module>bamoe-bpmn-apps-dev-db</module>
+		<module>bamoe-bpmn-app-archetype</module>
+		<module>bamoe-bpmn-common-conf</module>
+		<module>bamoe-bpmn-extensions-parent</module>
+		<module>bamoe-bpmn-apps-parent</module>
+		<module>bamoe-dmn-app-archetype</module>
+		<module>bamoe-dmn-common-conf</module>
+		<module>bamoe-dmn-apps-parent</module>
+	</modules>
+
+	<properties>
+		<revision>9.3.0-SNAPSHOT</revision>
+
+		<!-- Java and Compiler Versions -->
+		<java.version>17</java.version>
+		<maven.compiler.release>${java.version}</maven.compiler.release>
+		<maven.compiler-plugin.version>3.14.0</maven.compiler-plugin.version>
+		<maven.resources-plugin.version>3.3.1</maven.resources-plugin.version>
+		<maven.install-plugin.version>3.1.4</maven.install-plugin.version>
+		<maven.deploy-plugin.version>3.1.4</maven.deploy-plugin.version>
+		<maven.archetype-plugin.version>3.4.0</maven.archetype-plugin.version>
+		<maven.archetype-packaging-extension.version>3.4.0</maven.archetype-packaging-extension.version>
+		<maven.surefire-plugin.version>3.5.3</maven.surefire-plugin.version>
+		<jacoco.maven-plugin.version>0.8.13</jacoco.maven-plugin.version>
+
+		<!-- Quarkus Platform Properties -->
+		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
+		<quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
+		<quarkus.platform.version>3.20.3</quarkus.platform.version>
+
+		<!-- BAMOE BOM Properties -->
+		<bamoe.bom.group-id>com.ibm.bamoe</bamoe.bom.group-id>
+		<bamoe.bom.artifact-id>bamoe-bom</bamoe.bom.artifact-id>
+		<bamoe.version>9.3.0-ibm-0007</bamoe.version>
+		<bamoe.techpreview.bom.artifact-id>bamoe-techpreview-bom</bamoe.techpreview.bom.artifact-id>
+
+		<!-- Mapstruct version -->
+		<org.mapstruct.version>1.6.3</org.mapstruct.version>
+
+		<!-- Devmode dependencies dependencies -->
+		<quarkus.wiremock.version>1.5.1</quarkus.wiremock.version>
+		<quarkus.embedded.postgresql.version>0.7.2</quarkus.embedded.postgresql.version>
+		<postgresql.version>17.6.0</postgresql.version>
+		<postgresql-jdbc.version>42.7.8</postgresql-jdbc.version>
+
+		<!-- OIDC proxy version -->
+		<quarkiverse.oidc.proxy.version>0.2.2</quarkiverse.oidc.proxy.version>
+
+		<!-- Logging Manager version -->
+		<quarkiverse.logging-manager.version>3.4.1</quarkiverse.logging-manager.version>
+
+		<!-- Apache Commons Lang version -->
+		<apache.commons.lang.version>3.18.0</apache.commons.lang.version>
+
+		<!-- Apache Commons Validator library version -->
+		<apache.commons.validator.version>1.10.0</apache.commons.validator.version>
+
+		<!-- Google Guava library version -->
+		<com.google.guava.version>33.4.8-jre</com.google.guava.version>
+
+		<!-- Lombok library version -->
+		<org.projectlombok.version>1.18.40</org.projectlombok.version>
+
+		<!-- Lombok library version -->
+		<org.projectlombok.mapstruct.binding.version>0.2.0</org.projectlombok.mapstruct.binding.version>
+
+		<!-- SLF4J library version -->
+		<org.slf4j.version>2.0.17</org.slf4j.version>
+
+		<!-- Encoding -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Import Quarkus BOM -->
+			<dependency>
+				<groupId>${quarkus.platform.group-id}</groupId>
+				<artifactId>${quarkus.platform.artifact-id}</artifactId>
+				<version>${quarkus.platform.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Import BAMOE BOM -->
+			<dependency>
+				<groupId>${bamoe.bom.group-id}</groupId>
+				<artifactId>${bamoe.bom.artifact-id}</artifactId>
+				<version>${bamoe.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Import Additional BAMOE BOM  -->
+			<dependency>
+				<groupId>${bamoe.bom.group-id}</groupId>
+				<artifactId>${bamoe.techpreview.bom.artifact-id}</artifactId>
+				<version>${bamoe.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Import PostgreSQL binaries BOM for Embedded PostgreSQL -->
+			<dependency>
+				<groupId>io.zonky.test.postgres</groupId>
+				<artifactId>embedded-postgres-binaries-bom</artifactId>
+				<version>${postgresql.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Embedded PostgreSQL library version -->
+			<dependency>
+				<groupId>io.quarkiverse.embedded.postgresql</groupId>
+				<artifactId>quarkus-embedded-postgresql</artifactId>
+				<version>${quarkus.embedded.postgresql.version}</version>
+			</dependency>
+
+			<!-- Wiremock library version -->
+			<dependency>
+				<groupId>io.quarkiverse.wiremock</groupId>
+				<artifactId>quarkus-wiremock</artifactId>
+				<version>${quarkus.wiremock.version}</version>
+			</dependency>
+
+			<!-- OIDC Proxy library version -->
+			<dependency>
+				<groupId>io.quarkiverse.oidc-proxy</groupId>
+				<artifactId>quarkus-oidc-proxy</artifactId>
+				<version>${quarkiverse.oidc.version}</version>
+			</dependency>
+
+			<!-- Logging Manager library version -->
+			<dependency>
+				<groupId>io.quarkiverse.loggingmanager</groupId>
+				<artifactId>quarkus-logging-manager</artifactId>
+				<version>${quarkiverse.logging-manager.version}</version>
+			</dependency>
+
+			<!-- Apache Commons Lang library version -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${apache.commons.lang.version}</version>
+			</dependency>
+
+			<!-- Apache Commons Validator library version -->
+			<dependency>
+				<groupId>commons-validator</groupId>
+				<artifactId>commons-validator</artifactId>
+				<version>${apache.commons.validator.version}</version>
+			</dependency>
+
+			<!-- Mapstruct library version -->
+			<dependency>
+				<groupId>org.mapstruct</groupId>
+				<artifactId>mapstruct</artifactId>
+				<version>${org.mapstruct.version}</version>
+			</dependency>
+
+			<!-- Guava library version -->
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${com.google.guava.version}</version>
+			</dependency>
+
+			<!-- Lombok library version -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${org.projectlombok.version}</version>
+			</dependency>
+
+			<!-- Maven Archetype Packaging extension -->
+			<dependency>
+				<groupId>org.apache.maven.archetype</groupId>
+				<artifactId>archetype-packaging</artifactId>
+				<version>${maven.archetype-packaging-extension.version}</version>
+			</dependency>
+
+			<!-- Sonatype CVE sonatype-2025-003858 -->
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql-jdbc.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<!-- SLF4J -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+				<version>1.7.2</version>
+				<configuration>
+					<updatePomFile>true</updatePomFile>
+					<flattenMode>resolveCiFriendliesOnly</flattenMode>
+				</configuration>
+				<executions>
+					<execution>
+						<id>flatten.resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>flatten</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>flatten.clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>io.quarkus</groupId>
+					<artifactId>quarkus-maven-plugin</artifactId>
+					<version>3.20.3</version>
+					<extensions>true</extensions>
+					<executions>
+						<execution>
+							<goals>
+								<goal>build</goal>
+								<goal>generate-code</goal>
+								<goal>generate-code-tests</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>io.smallrye</groupId>
+					<artifactId>jandex-maven-plugin</artifactId>
+					<version>3.3.0</version>
+					<executions>
+						<execution>
+							<id>make-index</id>
+							<goals>
+								<goal>jandex</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven.compiler-plugin.version}</version>
+					<configuration>
+						<parameters>true</parameters>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+						<annotationProcessorPaths>
+							<path>
+								<groupId>org.mapstruct</groupId>
+								<artifactId>mapstruct-processor</artifactId>
+								<version>${org.mapstruct.version}</version>
+							</path>
+							<path>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+								<version>${org.projectlombok.version}</version>
+							</path>
+							<dependency>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok-mapstruct-binding</artifactId>
+								<version>${org.projectlombok.mapstruct.binding.version}</version>
+							</dependency>
+						</annotationProcessorPaths>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>${maven.resources-plugin.version}</version>
+					<configuration>
+						<resources combine.children="append"></resources>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>${maven.install-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>${maven.deploy-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-archetype-plugin</artifactId>
+					<version>${maven.archetype-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven.surefire-plugin.version}</version>
+					<configuration>
+						<systemPropertyVariables>
+							<java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+							<maven.home>${maven.home}</maven.home>
+						</systemPropertyVariables>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>${maven.surefire-plugin.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+							<configuration>
+								<systemPropertyVariables>
+									<native.image.path>
+										${project.build.directory}/${project.build.finalName}-runner</native.image.path>
+									<java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+									<maven.home>${maven.home}</maven.home>
+								</systemPropertyVariables>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${jacoco.maven-plugin.version}</version>
+					<executions>
+						<execution>
+							<id>default-prepare-agent</id>
+							<goals>
+								<goal>prepare-agent</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>default-report</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>report</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

@@ -1,0 +1,3 @@
+postgres-server:5432:langflow:langflow-user:langflow-pass
+postgres-server:5432:kogito:kogito-user:kogito-pass
+postgres-server:5432:postgres:postgres:postgres

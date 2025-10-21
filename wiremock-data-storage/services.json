@@ -1,0 +1,13 @@
+{
+  "services" : [ {
+    "id" : "k9nzr",
+    "name" : "Dummy API",
+    "port" : 9002,
+    "rootDir" : "dummy-api"
+  }, {
+    "id" : "vpmmq",
+    "name" : "process-paas-users-groups",
+    "port" : 9003,
+    "rootDir" : "process-paas-users-groups"
+  } ]
+}
