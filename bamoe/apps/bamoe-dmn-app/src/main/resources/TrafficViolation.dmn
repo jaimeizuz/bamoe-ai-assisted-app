@@ -34,7 +34,7 @@
     <dmn:informationRequirement id="_800A3BBB-90A3-4D9D-BA5E-A311DED0134F">
       <dmn:requiredInput href="#_1929CBD5-40E0-442D-B909-49CEDE0101DC" />
     </dmn:informationRequirement>
-    <dmn:decisionTable id="_C8F7F579-E06C-4A2F-8485-65FAFAC3FE6A" hitPolicy="UNIQUE" preferredOrientation="Rule-as-Row">
+    <dmn:decisionTable id="_C8F7F579-E06C-4A2F-8485-65FAFAC3FE6A" hitPolicy="UNIQUE" preferredOrientation="Rule-as-Row" label="Fine" typeRef="tFine">
       <dmn:input id="_B53A6F0D-F72C-41EF-96B3-F31269AC0FED">
         <dmn:inputExpression id="_974C8D01-728F-4CE5-8C69-BE884125B859" typeRef="string">
           <dmn:text>Violation.Type</dmn:text>
@@ -50,7 +50,7 @@
       <dmn:annotation name="" />
       <dmn:rule id="_424A80AE-916F-4451-9B6B-71557F7EC65A">
         <dmn:inputEntry id="_EDA4F336-AA28-4F5F-ADFC-401E6DCC8D35">
-          <dmn:text>&quot;speed&quot;</dmn:text>
+          <dmn:text>&quot;speeding&quot;</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_246AAB08-A945-4599-9220-7C24B6716FDD">
           <dmn:text>[10..30)</dmn:text>
@@ -67,7 +67,7 @@
       </dmn:rule>
       <dmn:rule id="_B1ECE6A9-6B82-4A85-A7CA-5F96CDB0DCB6">
         <dmn:inputEntry id="_2390F686-65CF-40FF-BF9A-72DFBAEBACAC">
-          <dmn:text>&quot;speed&quot;</dmn:text>
+          <dmn:text>&quot;speeding&quot;</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_8CEBE4D5-DBEF-46EF-BD95-7B96148B6D8A">
           <dmn:text>&gt;= 30</dmn:text>
