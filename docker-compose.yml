@@ -68,8 +68,9 @@ services:
     #  - 11430:11434
     volumes:
       - ./ollama:/root/.ollama:Z
+    network_mode: host
     environment:
-      OLLAMA_HOST: 0.0.0.0:11434
+      OLLAMA_HOST: http://0.0.0.0:8883
       OLLAMA_ORIGINS: '*'
       OLLAMA_DEBUG: 2
     entrypoint: ["/bin/bash", "-c", "\
@@ -118,7 +119,7 @@ services:
     #ports:
     #  - 8888:8888
     environment:
-      MCP_SERVER_OPENAPI_URLS: "http://172.17.0.1:8881/q/openapi,http://172.17.0.1:8882/q/openapi"
+      MCP_SERVER_OPENAPI_URLS: "http://192.168.1.200:8881/q/openapi,http://192.168.1.200:8882/q/openapi"
       MCP_SERVER_PORT: 8888
       QUARKUS_LISTEN_ADDRESS: 0.0.0.0
       QUARKUS_HTTP_HOST: 0.0.0.0
@@ -429,14 +430,14 @@ services:
       # The amount of time a thread will stay alive with no work. Defaults to 30S
       QUARKUS_THREAD_POOL_KEEP_ALIVE_TIME: 30S
       # See https://quarkus.io/guides/datasource#jdbc-configuration
-      QUARKUS_DATASOURCE_JDBC_URL: 'jdbc:postgresql://postgres-server:5432/kogito'
+      QUARKUS_DATASOURCE_JDBC_URL: 'jdbc:postgresql://localhost:5432/kogito'
       QUARKUS_DATASOURCE_USERNAME: kogito-user
       QUARKUS_DATASOURCE_PASSWORD: kogito-pass
       QUARKUS_DATASOURCE_DB_KIND: postgresql
       QUARKUS_DATASOURCE_JDBC_ENABLE_METRICS: "true"
       QUARKUS_DATASOURCE_JDBC_METRICS_ENABLED: "true"
       # XA transaction objects datasource
-      QUARKUS_DATASOURCE__XOS__JDBC_URL: 'jdbc:postgresql://postgres-server:5432/xa-object-store'
+      QUARKUS_DATASOURCE__XOS__JDBC_URL: 'jdbc:postgresql://localhost:5432/xa-object-store'
       QUARKUS_DATASOURCE__XOS__USERNAME: kogito-user
       QUARKUS_DATASOURCE__XOS__PASSWORD: kogito-pass
       QUARKUS_DATASOURCE__XOS__DB_KIND: postgresql
@@ -507,7 +508,7 @@ services:
       redpanda:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
+      test: ["CMD", "curl", "-f", "http://localhost:8881/q/health/ready"]
       interval: 5s
       retries: 5
   bamoe-dmn-app:
@@ -529,7 +530,7 @@ services:
       GC_CONTAINER_OPTIONS: "-XX:+UseG1GC"
       QUARKUS_LISTEN_ADDRESS: 0.0.0.0
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
+      test: ["CMD", "curl", "-f", "http://localhost:8882/q/health/ready"]
       interval: 5s
       retries: 5
 volumes:
