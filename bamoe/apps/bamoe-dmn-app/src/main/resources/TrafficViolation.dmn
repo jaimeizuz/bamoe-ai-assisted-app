@@ -10,7 +10,7 @@
     <dmn:itemComponent id="_9F129EAA-4E71-4D99-B6D0-84EEC3AC43CC" name="Type" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
       <dmn:allowedValues kie:constraintType="enumeration" id="_626A8F9C-9DD1-44E0-9568-0F6F8F8BA228">
-        <dmn:text>&quot;speed&quot;, &quot;parking&quot;, &quot;driving under the influence&quot;</dmn:text>
+        <dmn:text>&quot;speeding&quot;, &quot;parking&quot;, &quot;driving under the influence&quot;</dmn:text>
       </dmn:allowedValues>
     </dmn:itemComponent>
     <dmn:itemComponent id="_DDD10D6E-BD38-4C79-9E2F-8155E3A4B438" name="Speed Limit" isCollection="false">
