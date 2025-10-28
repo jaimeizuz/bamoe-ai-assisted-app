@@ -71,6 +71,35 @@ services:
       - ./anythingllm/.env:/app/server/.env:Z
     environment:
       STORAGE_DIR: /app/server/storage
+  localai:
+    hostname: localai
+    image: localai/localai:master-aio-cpu
+    profiles:
+      - localai
+    deploy:
+      resources:
+        limits:
+          cpus: '6'
+          memory: 8096M
+        reservations:
+          memory: 8096M
+    ports:
+      - 11431:8080
+    volumes:
+      - ./localai/models:/models:Z
+    environment:
+      LOCALAI_EXTERNAL_BACKENDS: "llama-cpp"
+      PRELOAD_MODELS: '[{"url": "","name": "gpt4all-j"}]'
+      #MODELS: "huggingface://ibm-granite/granite-4.0-h-micro"
+      #MODELS: "https://huggingface.co/ibm-granite/granite-4.0-h-micro"
+      #MODELS: "qwen3-4b,llama-3.2-3b-instruct:q8_0,ibm-granite_granite-4.0-h-tiny,ibm-granite_granite-4.0-h-micro"
+      #MODELS: "huggingface://Qwen/Qwen3-4B,huggingface://ibm-granite/granite-4.0-h-tiny,huggingface://ibm-granite/granite-4.0-h-micro"
+#    entrypoint: ["/bin/bash", "-c", "\
+#      local-ai models install qwen3-4b && \
+#      local-ai models install llama-3.2-3b-instruct:q8_0 && \
+#      local-ai models install ibm-granite_granite-4.0-h-tiny && \
+#      local-ai models install ibm-granite_granite-4.0-h-micro && \
+#      wait"]
   ollama:
     hostname: ollama
     image: ollama/ollama:0.12.5
