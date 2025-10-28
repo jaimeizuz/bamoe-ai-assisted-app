@@ -54,6 +54,23 @@ services:
     depends_on:
       postgres-server:
         condition: service_healthy
+  anythingllm:
+    hostname: anythingllm
+    image: mintplexlabs/anythingllm:${ANYTHINGLLM_VERSION}
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1536M
+        reservations:
+          memory: 1536M
+    ports:
+      - 3001:3001
+    volumes:
+      - ./anythingllm/storage:/app/server/storage:Z
+      - ./anythingllm/.env:/app/server/.env:Z
+    environment:
+      STORAGE_DIR: /app/server/storage
   ollama:
     hostname: ollama
     image: ollama/ollama:0.12.5

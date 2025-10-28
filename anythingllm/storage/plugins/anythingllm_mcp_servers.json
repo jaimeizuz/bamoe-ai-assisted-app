@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "bamoe-traffic-tools": {
+      "type": "streamable",
+      "url": "http://172.17.0.1:8888/mcp",
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  }
+}
