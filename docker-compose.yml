@@ -75,8 +75,9 @@ services:
     entrypoint: ["/bin/bash", "-c", "\
       ollama serve & \
       sleep 5 && \
-      ollama pull ibm/granite4:tiny-h && \
       ollama pull ibm/granite4:micro-h && \
+      ollama pull ibm/granite4:tiny-h && \
+      ollama pull qwen3:4b && \
       wait"]
   mcp-context-forge:
     hostname: mcp-gateway

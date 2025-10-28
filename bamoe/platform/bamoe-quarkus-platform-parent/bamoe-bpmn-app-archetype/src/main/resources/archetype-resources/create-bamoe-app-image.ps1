@@ -1,0 +1,1 @@
+mvn "-Pcontainer" "-P!bamoe-kafka-events" "-P!bamoe-data-audit" "-P!bamoe-data-index" "-P!bamoe-jobs" clean package

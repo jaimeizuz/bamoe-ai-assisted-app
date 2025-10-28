@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:drools="http://www.jboss.org/drools" id="_A7KRwJV0ED6LftQ-y0U62A" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd http://www.omg.org/spec/DD/20100524/DC DC.xsd http://www.omg.org/spec/DD/20100524/DI DI.xsd " exporter="jBPM Process Modeler" exporterVersion="2.0" targetNamespace="http://www.omg.org/bpmn20">
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:drools="http://www.jboss.org/drools" id="_OaLekJYXED6c0MNcP1406w" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd http://www.omg.org/spec/DD/20100524/DC DC.xsd http://www.omg.org/spec/DD/20100524/DI DI.xsd " exporter="jBPM Process Modeler" exporterVersion="2.0" targetNamespace="http://www.omg.org/bpmn20">
   <bpmn2:itemDefinition id="_proceedingOwnerItem" structureRef="String"/>
   <bpmn2:itemDefinition id="_driverPointsItem" structureRef="Integer"/>
   <bpmn2:itemDefinition id="_suspensionManagedItem" structureRef="Boolean"/>
+  <bpmn2:itemDefinition id="_driverResultingPointsItem" structureRef="Integer"/>
+  <bpmn2:itemDefinition id="_violationFineItem" structureRef="Integer"/>
+  <bpmn2:itemDefinition id="_driverNameItem" structureRef="String"/>
+  <bpmn2:itemDefinition id="_violationPointsItem" structureRef="Integer"/>
   <bpmn2:itemDefinition id="__A8EF2481-FE0E-4A43-8C01-B9D3B80D68D8_SkippableInputXItem" structureRef="Object"/>
   <bpmn2:itemDefinition id="__A8EF2481-FE0E-4A43-8C01-B9D3B80D68D8_PriorityInputXItem" structureRef="Object"/>
   <bpmn2:itemDefinition id="__A8EF2481-FE0E-4A43-8C01-B9D3B80D68D8_CommentInputXItem" structureRef="Object"/>
@@ -16,8 +20,8 @@
   <bpmn2:itemDefinition id="__A8EF2481-FE0E-4A43-8C01-B9D3B80D68D8_NotStartedNotifyInputXItem" structureRef="Object"/>
   <bpmn2:itemDefinition id="__A8EF2481-FE0E-4A43-8C01-B9D3B80D68D8_NotCompletedNotifyInputXItem" structureRef="Object"/>
   <bpmn2:itemDefinition id="__A8EF2481-FE0E-4A43-8C01-B9D3B80D68D8_suspensionManagedOutputXItem" structureRef="Boolean"/>
-  <bpmn2:collaboration id="_29DC2D66-B966-4D3A-8390-955B38A656F6" name="Default Collaboration">
-    <bpmn2:participant id="_16A49E0A-3932-4F02-8103-5B40F9D4982A" name="Pool Participant" processRef="SuspensionProceedingProcess"/>
+  <bpmn2:collaboration id="_44B833B9-4916-401E-A782-EE4D06EA626D" name="Default Collaboration">
+    <bpmn2:participant id="_81B36C84-4245-465F-A58A-219FFB84A359" name="Pool Participant" processRef="SuspensionProceedingProcess"/>
   </bpmn2:collaboration>
   <bpmn2:process id="SuspensionProceedingProcess" drools:packageName="com.example" drools:version="1.0" drools:adHoc="false" name="SuspensionProceedingProcess" isExecutable="true" processType="Public">
     <bpmn2:property id="proceedingOwner" itemSubjectRef="_proceedingOwnerItem" name="proceedingOwner">
@@ -41,16 +45,36 @@
         </drools:metaData>
       </bpmn2:extensionElements>
     </bpmn2:property>
-    <bpmn2:sequenceFlow id="_818D01B1-C763-4FD2-B11C-2046ED7B5F2A" sourceRef="_C6403D95-ADF4-46CD-A984-83C1F2B574E1" targetRef="_183C0676-37DA-4D7C-9093-9CBE9A023E7F"/>
-    <bpmn2:sequenceFlow id="_45D37B1C-5B7B-4AA9-8C88-E90CED033462" sourceRef="_9299B65C-19DA-4443-B589-A51044A339BC" targetRef="_E405DBA0-61E3-4D2F-BC39-78A508B087D2"/>
-    <bpmn2:sequenceFlow id="_1047E388-8016-493B-8D89-902B7893F764" name="No" sourceRef="_AE0068D0-1639-4C2B-9296-5272BAEBBFBD" targetRef="_C6403D95-ADF4-46CD-A984-83C1F2B574E1">
+    <bpmn2:property id="driverResultingPoints" itemSubjectRef="_driverResultingPointsItem" name="driverResultingPoints">
       <bpmn2:extensionElements>
-        <drools:metaData name="elementname">
-          <drools:metaValue><![CDATA[No]]></drools:metaValue>
+        <drools:metaData name="customTags">
+          <drools:metaValue><![CDATA[input]]></drools:metaValue>
         </drools:metaData>
       </bpmn2:extensionElements>
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" language="http://www.java.com/java"><![CDATA[return !suspensionManaged;]]></bpmn2:conditionExpression>
-    </bpmn2:sequenceFlow>
+    </bpmn2:property>
+    <bpmn2:property id="violationFine" itemSubjectRef="_violationFineItem" name="violationFine">
+      <bpmn2:extensionElements>
+        <drools:metaData name="customTags">
+          <drools:metaValue><![CDATA[input]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+    </bpmn2:property>
+    <bpmn2:property id="driverName" itemSubjectRef="_driverNameItem" name="driverName">
+      <bpmn2:extensionElements>
+        <drools:metaData name="customTags">
+          <drools:metaValue><![CDATA[input]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+    </bpmn2:property>
+    <bpmn2:property id="violationPoints" itemSubjectRef="_violationPointsItem" name="violationPoints">
+      <bpmn2:extensionElements>
+        <drools:metaData name="customTags">
+          <drools:metaValue><![CDATA[input]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+    </bpmn2:property>
+    <bpmn2:sequenceFlow id="_818D01B1-C763-4FD2-B11C-2046ED7B5F2A" sourceRef="_C6403D95-ADF4-46CD-A984-83C1F2B574E1" targetRef="_183C0676-37DA-4D7C-9093-9CBE9A023E7F"/>
+    <bpmn2:sequenceFlow id="_45D37B1C-5B7B-4AA9-8C88-E90CED033462" sourceRef="_9299B65C-19DA-4443-B589-A51044A339BC" targetRef="_E405DBA0-61E3-4D2F-BC39-78A508B087D2"/>
     <bpmn2:sequenceFlow id="_00DA7DE2-F802-40BA-81C3-0B39F52EE97B" name="Yes" sourceRef="_AE0068D0-1639-4C2B-9296-5272BAEBBFBD" targetRef="_9299B65C-19DA-4443-B589-A51044A339BC">
       <bpmn2:extensionElements>
         <drools:metaData name="elementname">
@@ -58,6 +82,14 @@
         </drools:metaData>
       </bpmn2:extensionElements>
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" language="http://www.java.com/java"><![CDATA[return suspensionManaged;]]></bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="_1047E388-8016-493B-8D89-902B7893F764" name="No" sourceRef="_AE0068D0-1639-4C2B-9296-5272BAEBBFBD" targetRef="_C6403D95-ADF4-46CD-A984-83C1F2B574E1">
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[No]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" language="http://www.java.com/java"><![CDATA[return !suspensionManaged;]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="_181A453E-23FC-493B-B763-4BFFE00E3CAD" sourceRef="_A8EF2481-FE0E-4A43-8C01-B9D3B80D68D8" targetRef="_AE0068D0-1639-4C2B-9296-5272BAEBBFBD"/>
     <bpmn2:sequenceFlow id="_A426FDA4-3BDE-47AC-B014-A5C5267641D3" sourceRef="_F6FD419F-7D30-402D-8C10-A48A03FE5F88" targetRef="_A8EF2481-FE0E-4A43-8C01-B9D3B80D68D8">
@@ -111,18 +143,23 @@
         </drools:metaData>
       </bpmn2:extensionElements>
       <bpmn2:incoming>_181A453E-23FC-493B-B763-4BFFE00E3CAD</bpmn2:incoming>
-      <bpmn2:outgoing>_00DA7DE2-F802-40BA-81C3-0B39F52EE97B</bpmn2:outgoing>
       <bpmn2:outgoing>_1047E388-8016-493B-8D89-902B7893F764</bpmn2:outgoing>
+      <bpmn2:outgoing>_00DA7DE2-F802-40BA-81C3-0B39F52EE97B</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
-    <bpmn2:scriptTask id="_F6FD419F-7D30-402D-8C10-A48A03FE5F88" name="Log Process" scriptFormat="http://www.java.com/java">
+    <bpmn2:scriptTask id="_F6FD419F-7D30-402D-8C10-A48A03FE5F88" name="Log Suspension Data" scriptFormat="http://www.java.com/java">
       <bpmn2:extensionElements>
         <drools:metaData name="elementname">
-          <drools:metaValue><![CDATA[Log Process]]></drools:metaValue>
+          <drools:metaValue><![CDATA[Log Suspension Data]]></drools:metaValue>
         </drools:metaData>
       </bpmn2:extensionElements>
       <bpmn2:incoming>_E6641EBD-18B4-4EA0-B7A5-B0DC93A05E37</bpmn2:incoming>
       <bpmn2:outgoing>_A426FDA4-3BDE-47AC-B014-A5C5267641D3</bpmn2:outgoing>
-      <bpmn2:script>System.out.println("SuspensionProceedingProcess STARTED!!");</bpmn2:script>
+      <bpmn2:script>System.out.println("SuspensionProceedingProcess STARTED with data: ");
+System.out.println("                 DRIVER NAME: " + driverName);
+System.out.println("                 VIOLATION FINE: " + violationFine);
+System.out.println("                 VIOLATION POINTS: " + violationPoints);
+System.out.println("                 DRIVER POINTS: " + driverPoints);
+System.out.println("                 DRIVER RESULTING POINTS: " + driverResultingPoints);</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:userTask id="_A8EF2481-FE0E-4A43-8C01-B9D3B80D68D8" name="Validate Driver Suspension">
       <bpmn2:extensionElements>
@@ -162,8 +199,8 @@
         <bpmn2:sourceRef>_A8EF2481-FE0E-4A43-8C01-B9D3B80D68D8_suspensionManagedOutputX</bpmn2:sourceRef>
         <bpmn2:targetRef>suspensionManaged</bpmn2:targetRef>
       </bpmn2:dataOutputAssociation>
-      <bpmn2:potentialOwner id="_A7MuAJV0ED6LftQ-y0U62A">
-        <bpmn2:resourceAssignmentExpression id="_A7MuAZV0ED6LftQ-y0U62A">
+      <bpmn2:potentialOwner id="_OaN60JYXED6c0MNcP1406w">
+        <bpmn2:resourceAssignmentExpression id="_OaN60ZYXED6c0MNcP1406w">
           <bpmn2:formalExpression>#{proceedingOwner}</bpmn2:formalExpression>
         </bpmn2:resourceAssignmentExpression>
       </bpmn2:potentialOwner>
@@ -215,15 +252,15 @@
         <di:waypoint x="730" y="296"/>
         <di:waypoint x="810" y="296"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="edge_shape__AE0068D0-1639-4C2B-9296-5272BAEBBFBD_to_shape__9299B65C-19DA-4443-B589-A51044A339BC" bpmnElement="_00DA7DE2-F802-40BA-81C3-0B39F52EE97B">
-        <di:waypoint x="838" y="268"/>
-        <di:waypoint x="838" y="133"/>
-        <di:waypoint x="946" y="133"/>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="edge_shape__AE0068D0-1639-4C2B-9296-5272BAEBBFBD_to_shape__C6403D95-ADF4-46CD-A984-83C1F2B574E1" bpmnElement="_1047E388-8016-493B-8D89-902B7893F764">
         <di:waypoint x="838" y="324"/>
         <di:waypoint x="838" y="476"/>
         <di:waypoint x="946" y="476"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge_shape__AE0068D0-1639-4C2B-9296-5272BAEBBFBD_to_shape__9299B65C-19DA-4443-B589-A51044A339BC" bpmnElement="_00DA7DE2-F802-40BA-81C3-0B39F52EE97B">
+        <di:waypoint x="838" y="268"/>
+        <di:waypoint x="838" y="133"/>
+        <di:waypoint x="946" y="133"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="edge_shape__9299B65C-19DA-4443-B589-A51044A339BC_to_shape__E405DBA0-61E3-4D2F-BC39-78A508B087D2" bpmnElement="_45D37B1C-5B7B-4AA9-8C88-E90CED033462">
         <di:waypoint x="1023" y="133"/>
@@ -330,7 +367,7 @@
         </bpsim:Scenario>
       </bpsim:BPSimData>
     </bpmn2:extensionElements>
-    <bpmn2:source>_A7KRwJV0ED6LftQ-y0U62A</bpmn2:source>
-    <bpmn2:target>_A7KRwJV0ED6LftQ-y0U62A</bpmn2:target>
+    <bpmn2:source>_OaLekJYXED6c0MNcP1406w</bpmn2:source>
+    <bpmn2:target>_OaLekJYXED6c0MNcP1406w</bpmn2:target>
   </bpmn2:relationship>
 </bpmn2:definitions>
