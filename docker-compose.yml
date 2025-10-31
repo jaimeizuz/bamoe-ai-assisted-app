@@ -127,7 +127,7 @@ services:
       wait"]
   mcp-context-forge:
     hostname: mcp-gateway
-    image: ghcr.io/ibm/mcp-context-forge:0.8.0
+    image: ghcr.io/ibm/mcp-context-forge:${MCP_CONTEXT_FORGE_VERSION}
     deploy:
       resources:
         limits:
