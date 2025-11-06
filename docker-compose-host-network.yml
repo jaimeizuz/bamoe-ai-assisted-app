@@ -1,47 +1,49 @@
 services:
   nginx:
-    hostname: ${NGINX_SERVICE_HOST}
+    hostname: nginx
     image: nginx:${NGINX_VERSION}
     deploy:
       resources:
         limits:
-          cpus: ${NGINX_CPUS}
-          memory: ${NGINX_MEM}
+          cpus: '0.5'
+          memory: 64M
         reservations:
-          memory: ${NGINX_MEM}
+          memory: 64M
     profiles:
       - nginx
     volumes:
     - ./nginx/templates:/etc/nginx/templates
-    ports:
-      - ${NGINX_SERVICE_PORT}:${NGINX_INTERNAL_PORT}
+    #ports:
+    #  - 8000:8000
+    network_mode: host
     environment:
-    - NGINX_HOST=${NGINX_INTERNAL_HOST}
-    - NGINX_PORT=${NGINX_INTERNAL_PORT}
+    - NGINX_HOST=${NGINX_HOST}
+    - NGINX_PORT=${NGINX_PORT}
     depends_on:
       bamoe-bpmn-app:
         condition: service_started
       bamoe-dmn-app:
         condition: service_started
   langflow:
-    hostname: ${LANGFLOW_SERVICE_HOST}
+    hostname: langflow
     #image: langflowai/langflow:${LANGFLOW_VERSION}
     image: langflowai/langflow-nightly:${LANGFLOW_NIGHTLY_VERSION}
     deploy:
       resources:
         limits:
-          cpus: ${LANGFLOW_CPUS}
-          memory: ${LANGFLOW_MEM}
+          cpus: '3'
+          memory: 2500M
         reservations:
-          memory: ${LANGFLOW_MEM}
-    ports:
-      - ${LANGFLOW_SERVICE_PORT}:${LANGFLOW_INTERNAL_PORT}
+          memory: 2500M
+    #ports:
+    #  - 7860:7860
+    network_mode: host
     environment:
-      LANGFLOW_HOST: ${LANGFLOW_INTERNAL_HOST}
-      LANGFLOW_PORT: ${LANGFLOW_INTERNAL_PORT}
+      LANGFLOW_HOST: ${LANGFLOW_HOST}
+      LANGFLOW_PORT: ${LANGFLOW_PORT}
       LANGFLOW_WORKERS: 3
       LANGFLOW_DEACTIVATE_TRACING: false
-      LANGFLOW_DATABASE_URL: postgresql://langflow-user:langflow-pass@${POSTGRESQL_SERVICE_HOST}:${POSTGRESQL_SERVICE_PORT}/langflow
+      LANGFLOW_DATABASE_URL: postgresql://langflow-user:langflow-pass@${POSTGRESQL_HOST}:${POSTGRESQL_PORT}/langflow
       LANGFLOW_CONFIG_DIR: /app/langflow
       LANGFLOW_CORS_ORIGINS: '*'
       LANGFLOW_LOG_LEVEL: DEBUG
@@ -54,36 +56,37 @@ services:
       postgres-server:
         condition: service_healthy
   anythingllm:
-    hostname: ${ANYTHINGLLM_SERVICE_HOST}
+    hostname: anythingllm
     image: mintplexlabs/anythingllm:${ANYTHINGLLM_VERSION}
     deploy:
       resources:
         limits:
-          cpus: ${ANYTHINGLLM_CPUS}
-          memory: ${ANYTHINGLLM_MEM}
+          cpus: '2'
+          memory: 1536M
         reservations:
-          memory: ${ANYTHINGLLM_MEM}
+          memory: 1536M
     ports:
-      - ${ANYTHINGLLM_SERVICE_PORT}:${ANYTHINGLLM_INTERNAL_PORT}
+      - 3001:3001
     volumes:
       - ./anythingllm/storage:/app/server/storage:Z
       - ./anythingllm/.env:/app/server/.env:Z
     environment:
       STORAGE_DIR: /app/server/storage
   localai:
-    hostname: ${LOCALAI_SERVICE_HOST}
-    image: localai/localai:${LOCALAI_VERSION}
+    hostname: localai
+    image: localai/localai:master-aio-cpu
     profiles:
       - localai
     deploy:
       resources:
         limits:
-          cpus: ${LOCALAI_CPUS}
-          memory: ${LOCALAI_MEM}
+          cpus: '6'
+          memory: 8096M
         reservations:
-          memory: ${LOCALAI_MEM}
-    ports:
-      - ${LOCALAI_SERVICE_PORT}:${LOCALAI_INTERNAL_PORT}
+          memory: 8096M
+    #ports:
+    #  - 11431:8080
+    network_mode: host
     volumes:
       - ./localai/models:/models:Z
     environment:
@@ -100,21 +103,22 @@ services:
 #      local-ai models install ibm-granite_granite-4.0-h-micro && \
 #      wait"]
   ollama:
-    hostname: ${OLLAMA_SERVICE_HOST}
+    hostname: ollama
     image: ollama/ollama:${OLLAMA_VERSION}
     deploy:
       resources:
         limits:
-          cpus: ${OLLAMA_CPUS}
-          memory: ${OLLAMA_MEM}
+          cpus: '6'
+          memory: 8096M
         reservations:
-          memory: ${OLLAMA_MEM}
-    ports:
-      - ${OLLAMA_SERVICE_PORT}:${OLLAMA_INTERNAL_PORT}
+          memory: 8096M
+    #ports:
+    #  - 11430:11434
+    network_mode: host
     volumes:
       - ./ollama:/root/.ollama:Z
     environment:
-      OLLAMA_HOST: ${OLLAMA_INTERNAL_HOST}:${OLLAMA_INTERNAL_PORT}
+      OLLAMA_HOST: ${OLLAMA_HOST}:${OLLAMA_PORT}
       OLLAMA_ORIGINS: '*'
       OLLAMA_DEBUG: 2
     entrypoint: ["/bin/bash", "-c", "\
@@ -125,22 +129,22 @@ services:
       ollama pull qwen3:4b && \
       wait"]
   mcp-context-forge:
-    hostname: ${MCP_CONTEXT_FORGE_SERVICE_HOST}
+    hostname: mcp-gateway
     image: ghcr.io/ibm/mcp-context-forge:${MCP_CONTEXT_FORGE_VERSION}
     deploy:
       resources:
         limits:
-          cpus: ${MCP_CONTEXT_FORGE_CPUS}
-          memory: ${MCP_CONTEXT_FORGE_MEM}
+          cpus: '1'
+          memory: 368M
         reservations:
-          memory: ${MCP_CONTEXT_FORGE_MEM}
-    ports:
-      - ${MCP_CONTEXT_FORGE_SERVICE_PORT}:${MCP_CONTEXT_FORGE_INTERNAL_PORT}
+          memory: 368M
+    #ports:
+    #  - 4444:4444
+    network_mode: host
     environment:
       MCPGATEWAY_UI_ENABLED: true
       MCPGATEWAY_ADMIN_API_ENABLED: true
-      HOST: ${MCP_CONTEXT_FORGE_INTERNAL_HOST}
-      PORT: ${MCP_CONTEXT_FORGE_INTERNAL_PORT}
+      HOST: ${MCP_GATEWAY_HOST}
       JWT_SECRET_KEY: my-test-key
       BASIC_AUTH_USER: admin
       BASIC_AUTH_PASSWORD: changeme
@@ -151,52 +155,55 @@ services:
       DATABASE_URL: sqlite:///./mcp.db
       SECURE_COOKIES: false
   bamoe-mcp-server:
-    hostname: ${MCP_SERVER_SERVICE_HOST}
+    hostname: bamoe-mcp-server
     image: quay.io/bamoe/mcp-server:${BAMOE_VERSION}
     deploy:
       resources:
         limits:
-          cpus: ${MCP_SERVER_CPUS}
-          memory: ${MCP_SERVER_MEM}
+          cpus: '0.5'
+          memory: 128M
         reservations:
-          memory: ${MCP_SERVER_MEM}
-    ports:
-      - ${MCP_SERVER_SERVICE_PORT}:${MCP_SERVER_INTERNAL_PORT}
+          memory: 128M
+    #ports:
+    #  - 8888:8888
+    network_mode: host
     environment:
-      MCP_SERVER_OPENAPI_URLS: "http://${BPMN_APP_INTERNAL_HOST}:${BPMN_APP_INTERNAL_PORT}/q/openapi,http://${DMN_APP_INTERNAL_HOST}:${DMN_APP_INTERNAL_PORT}/q/openapi"
-      MCP_SERVER_PORT: ${MCP_SERVER_INTERNAL_PORT}
-      QUARKUS_HTTP_HOST: ${MCP_SERVER_INTERNAL_HOST}
+      MCP_SERVER_OPENAPI_URLS: "http://${BPMN_APP_HOST}:${BPMN_APP_PORT}/q/openapi,http://${DMN_APP_HOST}:${DMN_APP_PORT}/q/openapi"
+      MCP_SERVER_PORT: ${MCP_SERVER_PORT}
+      QUARKUS_HTTP_HOST: ${MCP_SERVER_HOST}
     depends_on:
       bamoe-bpmn-app:
         condition: service_healthy
       bamoe-dmn-app:
         condition: service_healthy
   bamoe-maven-repository:
-    hostname: ${BAMOE_MAVEN_REPOSITORY_SERVICE_HOST}
+    hostname: bamoe-maven-repository
     image: quay.io/bamoe/maven-repository:${BAMOE_VERSION}
     deploy:
       resources:
         limits:
-          cpus: ${BAMOE_MAVEN_REPOSITORY_CPUS}
-          memory: ${BAMOE_MAVEN_REPOSITORY_MEM}
+          cpus: '0.5'
+          memory: 128M
         reservations:
-          memory: ${BAMOE_MAVEN_REPOSITORY_MEM}
+          memory: 128M
     profiles:
       - bamoe-maven-repository
-    ports:
-      - ${BAMOE_MAVEN_REPOSITORY_INTERNAL_PORT}:${BAMOE_MAVEN_REPOSITORY_SERVICE_PORT}
+    #ports:
+    #  - '8800:8080'
+    network_mode: host
   bamoe-management-console:
-    hostname: ${BAMOE_MANAGEMENT_CONSOLE_SERVICE_HOST}
+    hostname: bamoe-management-console
     image: quay.io/bamoe/management-console:${BAMOE_VERSION}
     deploy:
       resources:
         limits:
-          cpus: ${BAMOE_MANAGEMENT_CONSOLE_CPUS}
-          memory: ${BAMOE_MANAGEMENT_CONSOLE_MEM}
+          cpus: '0.5'
+          memory: 128M
         reservations:
-          memory: ${BAMOE_MANAGEMENT_CONSOLE_MEM}
-    ports:
-      - ${BAMOE_MANAGEMENT_CONSOLE_SERVICE_PORT}:${BAMOE_MANAGEMENT_CONSOLE_INTERNAL_PORT}
+          memory: 128M
+    #ports:
+    #  - '8280:8080'
+    network_mode: host
     #depends_on:
     #  keycloak:
     #    condition: service_healthy
@@ -206,17 +213,18 @@ services:
       RUNTIME_TOOLS_MANAGEMENT_CONSOLE_USE_APACHE_HTTPD_BASE_PATH_ALIAS: "true"
       #RUNTIME_TOOLS_MANAGEMENT_CONSOLE_MANAGED_BUSINESS_SERVICES: '[{"name":"Kogito Secure App", "businessServiceUrl":"http://localhost:8081", "clientId":"kie-management-console"},{"name":"Kogito Unsecure App", "businessServiceUrl":"http://localhost:8082"}]'
   postgres-server:
-    hostname: ${POSTGRESQL_SERVICE_HOST}
-    image: 'postgres:${POSTGRESQL_VERSION}'
+    hostname: postgres-server
+    image: 'postgres:${POSTGRES_VERSION}'
     deploy:
       resources:
         limits:
-          cpus: ${POSTGRESQL_CPUS}
-          memory: ${POSTGRESQL_MEM}
+          cpus: '1'
+          memory: 368M
         reservations:
-          memory: ${POSTGRESQL_MEM}
-    ports:
-      - ${POSTGRESQL_SERVICE_PORT}:${POSTGRESQL_INTERNAL_PORT}
+          memory: 368M
+    #ports:
+    #  - '5432:5432'
+    network_mode: host
     volumes:
       - './sql/postgres-server:/docker-entrypoint-initdb.d:Z'
       - './sql/postgres-server/postgresql.conf:/etc/postgresql.conf'
@@ -239,16 +247,17 @@ services:
       POSTGRES_PASSWORD: postgres
   pgadmin:
     image: dpage/pgadmin4:${PGADMIN_VERSION}
-    hostname: ${PGADMIN_SERVICE_HOST}
+    hostname: pgadmin
     deploy:
       resources:
         limits:
-          cpus: ${PGADMIN_CPUS}
-          memory: ${PGADMIN_MEM}
+          cpus: '1'
+          memory: 368M
         reservations:
-          memory: ${PGADMIN_MEM}
-    ports:
-      - ${PGADMIN_SERVICE_PORT}:${PGADMIN_INTERNAL_PORT}
+          memory: 368M
+    #ports:
+    #  - 8055:80
+    network_mode: host
     volumes:
       - ./pgadmin/servers.json:/pgadmin4/servers.json
       - ./pgadmin/pgpass:/pgadmin4/pgpass
@@ -265,19 +274,20 @@ services:
       PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
       GUNICORN_ACCESS_LOGFILE: "/dev/null"
   keycloak:
-    hostname: ${KEYCLOAK_SERVICE_HOST}
-    image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
+    hostname: keycloak
+    image: quay.io/keycloak/keycloak:${KEYCLOAL_VERSION}
     deploy:
       resources:
         limits:
-          cpus: ${KEYCLOAK_CPUS}
-          memory: ${KEYCLOAK_MEM}
+          cpus: '1'
+          memory: 368M
         reservations:
-          memory: ${KEYCLOAK_MEM}
+          memory: 368M
     profiles:
       - keycloak
-    ports:
-      - ${KEYCLOAK_SERVICE_PORT}:${KEYCLOAK_INTERNAL_PORT}
+    #ports:
+    #  - '8480:8080'
+    network_mode: host
     depends_on:
       postgres-supporting-services:
         condition: service_healthy
@@ -295,7 +305,7 @@ services:
     environment:
       KC_HEALTH_ENABLED: "true"
       DB_VENDOR: POSTGRES
-      DB_ADDR: ${POSTGRESQL_SERVICE_HOST}
+      DB_ADDR: postgres-server
       DB_DATABASE: keycloak
       DB_USER: kogito-user
       DB_SCHEMA: public
@@ -305,27 +315,28 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     command:
-      start-dev --import-realm --hostname-port=${KEYCLOAK_SERVICE_PORT} --health-enabled=true
+      start-dev --import-realm --hostname-port=8480 --health-enabled=true
   redpanda:
-    hostname: ${REDPANDA_SERVICE_HOST}
+    hostname: redpanda
     image: redpandadata/redpanda:${REDPANDA_VERSION}
     deploy:
       resources:
         limits:
-          cpus: ${REDPANDA_CPUS}
-          memory: ${REDPANDA_MEM}
+          cpus: '1'
+          memory: 1024M
         reservations:
-          memory: ${REDPANDA_MEM}
-    ports:
-      - 18081:18081
-      - 18082:18082
-      - 14001:8081
-      - 14002:8082
-      - 9092:9092
-      - 28082:28082
-      - 29092:2909
-      - 9093:9093
-      - 9644:9644
+          memory: 1024M
+    #ports:
+    #  - 18081:18081
+    #  - 18082:18082
+    #  - 14001:8081
+    #  - 14002:8082
+    #  - 9092:9092
+    #  - 28082:28082
+    #  - 29092:2909
+    #  - 9093:9093
+    #  - 9644:9644
+    network_mode: host
     volumes:
       - redpanda_data:/var/lib/redpanda/data
       #- ./redpanda/bootstrap.yml:/etc/redpanda/.bootstrap.yaml
@@ -356,15 +367,15 @@ services:
       timeout: 1s
       retries: 50
   redpanda-console:
-    hostname: ${REDPANDA_CONSOLE_SERVICE_HOST}
+    hostname: redpanda-console
     image: redpandadata/console:${REDPANDA_CONSOLE_VERSION}
     deploy:
       resources:
         limits:
-          cpus: ${REDPANDA_CONSOLE_CPUS}
-          memory: ${REDPANDA_CONSOLE_MEM}
+          cpus: '1'
+          memory: 512M
         reservations:
-          memory: ${REDPANDA_CONSOLE_MEM}   
+          memory: 512M   
     profiles:
       - full
       - messaging-redpanda
@@ -399,38 +410,41 @@ services:
               users:
                 - loginType: basic
                   name: "admin"
-    ports:
-      - ${REDPANDA_CONSOLE_SERVICE_PORT}:${REDPANDA_CONSOLE_INTERNAL_PORT}
+    #ports:
+    #  - 9001:8080
+    network_mode: host
     depends_on:
       - redpanda
   wiremock-studio:
-    hostname: ${WIREMOCK_SERVICE_HOST}
-    image: jizuzquiza/wiremock-studio:${WIREMOCK_VERSION}
+    hostname: wiremock
+    image: jizuzquiza/wiremock-studio:2.32.0-18
     profiles:
       - wiremock
     deploy:
       resources:
         limits:
-          cpus: ${WIREMOCK_CPUS}
-          memory: ${WIREMOCK_MEM}
+          cpus: '0.5'
+          memory: 372M
         reservations:
-          memory: ${WIREMOCK_MEM}
+          memory: 372M
     volumes:
       - ./wiremock-data-storage:/home/wiremock:z
-    ports:
-    - ${WIREMOCK_SERVICE_PORT}:${WIREMOCK_INTERNAL_PORT}
+    #ports:
+    #- 19000-19010:9000-9010
+    network_mode: host
   bamoe-bpmn-app:
-    hostname: ${BPMN_APP_SERVICE_HOST}
-    image: dev.local/bamoe/bamoe-bpmn-app:${BPMN_APP_VERSION}
+    hostname: bamoe-bpmn-app
+    image: dev.local/bamoe/bamoe-bpmn-app:1.0.0-SNAPSHOT
     deploy:
       resources:
         limits:
-          cpus: ${BPMN_APP_CPUS}
-          memory: ${BPMN_APP_MEM}
+          cpus: '2'
+          memory: 768M
         reservations:
-          memory: ${BPMN_APP_MEM}
-    ports:
-    - ${BPMN_APP_SERVICE_PORT}:${BPMN_APP_INTERNAL_PORT}
+          memory: 768M
+    #ports:
+    #- 8881:8080
+    network_mode: host
     environment:
       JAVA_OPTS: >
         -XX:ActiveProcessorCount=2
@@ -454,8 +468,8 @@ services:
         -Djava.rmi.server.hostname=localhost
       KOGITO_PERSISTENCE_PROTO_MARSHALLER: "false"
       QUARKUS_HTTP_CORS_ORIGINS: '*'
-      QUARKUS_HTTP_HOST: ${BPMN_APP_INTERNAL_HOST}
-      QUARKUS_HTTP_PORT: ${BPMN_APP_INTERNAL_PORT}
+      QUARKUS_HTTP_HOST: ${BPMN_APP_HOST}
+      QUARKUS_HTTP_PORT: ${BPMN_APP_PORT}
       GC_CONTAINER_OPTIONS: "-XX:+UseG1GC"
       # The number if IO threads used to perform IO. This will be automatically set to a reasonable value based on the number of CPU cores if it is not provided.
       # If this is set to a higher value than the number of Vert.x event loops then it will be capped at the number of event loops.
@@ -472,14 +486,14 @@ services:
       # The amount of time a thread will stay alive with no work. Defaults to 30S
       QUARKUS_THREAD_POOL_KEEP_ALIVE_TIME: 30S
       # See https://quarkus.io/guides/datasource#jdbc-configuration
-      QUARKUS_DATASOURCE_JDBC_URL: 'jdbc:postgresql://${POSTGRESQL_SERVICE_HOST}:${POSTGRESQL_SERVICE_PORT}/kogito'
+      QUARKUS_DATASOURCE_JDBC_URL: 'jdbc:postgresql://${POSTGRESQL_HOST}:${POSTGRESQL_PORT}/kogito'
       QUARKUS_DATASOURCE_USERNAME: kogito-user
       QUARKUS_DATASOURCE_PASSWORD: kogito-pass
       QUARKUS_DATASOURCE_DB_KIND: postgresql
       QUARKUS_DATASOURCE_JDBC_ENABLE_METRICS: "true"
       QUARKUS_DATASOURCE_JDBC_METRICS_ENABLED: "true"
       # XA transaction objects datasource
-      QUARKUS_DATASOURCE__XOS__JDBC_URL: 'jdbc:postgresql://${POSTGRESQL_SERVICE_HOST}:${POSTGRESQL_SERVICE_PORT}/xa-object-store'
+      QUARKUS_DATASOURCE__XOS__JDBC_URL: 'jdbc:postgresql://${POSTGRESQL_HOST}:${POSTGRESQL_PORT}/xa-object-store'
       QUARKUS_DATASOURCE__XOS__USERNAME: kogito-user
       QUARKUS_DATASOURCE__XOS__PASSWORD: kogito-pass
       QUARKUS_DATASOURCE__XOS__DB_KIND: postgresql
@@ -510,9 +524,9 @@ services:
       QUARKUS_TRANSACTION-MANAGER_OBJECT-STORE_DATASOURCE: "xos"
       QUARKUS_TRANSACTION-MANAGER_OBJECT-STORE_TYPE: "jdbc"
       QUARKUS_TRANSACTION-MANAGER_OBJECT-STORE_CREATE-TABLE: "true"
-      KOGITO_SERVICE_URL: 'http://${BPMN_APP_SERVICE_HOST}:${BPMN_APP_SERVICE_PORT}'
-      KOGITO_DATAINDEX_HTTP_URL: 'http://${BPMN_APP_SERVICE_HOST}:${BPMN_APP_SERVICE_PORT}'
-      KOGITO_JOBS_SERVICE_URL: 'http://${BPMN_APP_SERVICE_HOST}:${BPMN_APP_SERVICE_PORT}'
+      KOGITO_SERVICE_URL: 'http://localhost:8080'
+      KOGITO_DATAINDEX_HTTP_URL: 'http://localhost:8080'
+      KOGITO_JOBS_SERVICE_URL: 'http://localhost:8080'
       # The current chunk size in minutes the scheduler handles, it is used to keep a limit number of jobs scheduled
       # in the in-memory scheduler.
       #KOGITO_JOBS-SERVICE_SCHEDULERCHUNKINMINUTES: 10
@@ -550,28 +564,29 @@ services:
       redpanda:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://${BPMN_APP_INTERNAL_HOST}:${BPMN_APP_INTERNAL_PORT}/q/health/ready"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
       interval: 5s
       retries: 5
   bamoe-dmn-app:
-    hostname: ${DMN_APP_SERVICE_HOST}
-    image: dev.local/bamoe/bamoe-dmn-app:${DMN_APP_VERSION}
+    hostname: bamoe-dmn-app
+    image: dev.local/bamoe/bamoe-dmn-app:1.0.0-SNAPSHOT
     deploy:
       resources:
         limits:
-          cpus: ${DMN_APP_CPUS}
-          memory: ${DMN_APP_MEM}
+          cpus: '1'
+          memory: 256M
         reservations:
-          memory: ${DMN_APP_MEM}
-    ports:
-      - ${DMN_APP_SERVICE_PORT}:${DMN_APP_INTERNAL_PORT}
+          memory: 256M
+    #ports:
+    #  - 8882:8080
+    network_mode: host
     environment:
       QUARKUS_HTTP_CORS_ORIGINS: /.*/
       GC_CONTAINER_OPTIONS: "-XX:+UseG1GC"
-      QUARKUS_HTTP_HOST: ${DMN_APP_INTERNAL_HOST}
-      QUARKUS_HTTP_PORT: ${DMN_APP_INTERNAL_PORT}
+      QUARKUS_HTTP_HOST: ${DMN_APP_HOST}
+      QUARKUS_HTTP_PORT: ${DMN_APP_PORT}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://${DMN_APP_INTERNAL_HOST}:${DMN_APP_INTERNAL_PORT}/q/health/ready"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
       interval: 5s
       retries: 5
 volumes:
