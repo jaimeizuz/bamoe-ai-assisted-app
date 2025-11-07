@@ -39,6 +39,7 @@ services:
     environment:
       LANGFLOW_HOST: ${LANGFLOW_INTERNAL_HOST}
       LANGFLOW_PORT: ${LANGFLOW_INTERNAL_PORT}
+      LANGFLOW_COMPONENTS_PATH: /home
       LANGFLOW_WORKERS: 3
       LANGFLOW_DEACTIVATE_TRACING: false
       LANGFLOW_DATABASE_URL: postgresql://langflow-user:langflow-pass@${POSTGRESQL_SERVICE_HOST}:${POSTGRESQL_SERVICE_PORT}/langflow
@@ -48,8 +49,11 @@ services:
       LANGFLOW_CREATE_STARTER_PROJECTS: true
       LANGFLOW_UPDATE_STARTER_PROJECTS: true
       LANGFLOW_LAZY_LOAD_COMPONENTS: false
+      LANGFLOW_VARIABLES_TO_GET_FROM_ENVIRONMENT: "OLLAMA_URL"
+      OLLAMA_URL: ${OLLAMA_SERVICE_HOST}:${OLLAMA_SERVICE_PORT}
     volumes:
       - ./langflow:/app/langflow:Z
+      - ./langflow/flows:/home:Z
     depends_on:
       postgres-server:
         condition: service_healthy
@@ -421,7 +425,7 @@ services:
     - ${WIREMOCK_SERVICE_PORT}:${WIREMOCK_INTERNAL_PORT}
   bamoe-bpmn-app:
     hostname: ${BPMN_APP_SERVICE_HOST}
-    image: dev.local/bamoe/bamoe-bpmn-app:${BPMN_APP_VERSION}
+    image: ${BPMN_APP_DOCKER_IMAGE_REGISTRY}/${BPMN_APP_DOCKER_IMAGE_GROUP}/bamoe-bpmn-app:${BPMN_APP_VERSION}
     deploy:
       resources:
         limits:
@@ -555,7 +559,7 @@ services:
       retries: 5
   bamoe-dmn-app:
     hostname: ${DMN_APP_SERVICE_HOST}
-    image: dev.local/bamoe/bamoe-dmn-app:${DMN_APP_VERSION}
+    image: ${DMN_APP_DOCKER_IMAGE_REGISTRY}/${DMN_APP_DOCKER_IMAGE_GROUP}/bamoe-dmn-app:${DMN_APP_VERSION}
     deploy:
       resources:
         limits:

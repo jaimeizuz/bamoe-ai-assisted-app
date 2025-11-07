@@ -2,3 +2,4 @@
 /tempo/data/*
 /ollama/*
 /langflow/*
+!/langflow/flows
