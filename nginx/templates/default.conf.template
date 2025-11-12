@@ -2,7 +2,32 @@
 server {
     listen ${NGINX_PORT};
 
-    location /kogito-bpmn-app-unsecured {
-        proxy_pass http://kogito-bpmn-app-unsecured:8082;
+    location /mcp-gateway {
+        proxy_pass http://172.17.0.1:4444;
     }
+    location /home {
+        proxy_pass http://172.17.0.1:5678;
+    }
+    location /workflows* {
+        proxy_pass http://172.17.0.1:5678;
+    }
+    location /workflow {
+        proxy_pass http://172.17.0.1:5678;
+    }
+    location /projects* {
+        proxy_pass http://172.17.0.1:5678;
+    }
+    location /assets/* {
+        proxy_pass http://172.17.0.1:5678;
+    }
+    location /undefinedrest {
+        proxy_pass http://172.17.0.1:5678;
+    }
+    location /static {
+        proxy_pass http://172.17.0.1:5678;
+    }
+    location /rest {
+        proxy_pass http://172.17.0.1:5678;
+    }
+
 }
