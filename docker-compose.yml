@@ -171,7 +171,7 @@ services:
       MCPGATEWAY_ADMIN_API_ENABLED: true
       HOST: ${MCP_CONTEXT_FORGE_INTERNAL_HOST}
       PORT: ${MCP_CONTEXT_FORGE_INTERNAL_PORT}
-      APP_ROOT_PATH: ${MCP_CONTEXT_FORGE_ROOT_PATH}
+      #APP_ROOT_PATH: ${MCP_CONTEXT_FORGE_ROOT_PATH}
       JWT_SECRET_KEY: my-test-key
       BASIC_AUTH_USER: admin
       BASIC_AUTH_PASSWORD: changeme
@@ -179,7 +179,7 @@ services:
       PLATFORM_ADMIN_EMAIL: admin@example.com
       PLATFORM_ADMIN_PASSWORD: changeme
       PLATFORM_ADMIN_FULL_NAME: "Platform Administrator"
-      DATABASE_URL: sqlite:///./mcp.db
+      DATABASE_URL: postgresql://mcpgw-user:mcpgw-pass@${POSTGRESQL_SERVICE_HOST}:${POSTGRESQL_SERVICE_PORT}/mcpgw
       SECURE_COOKIES: false
   bamoe-mcp-server:
     hostname: ${MCP_SERVER_SERVICE_HOST}

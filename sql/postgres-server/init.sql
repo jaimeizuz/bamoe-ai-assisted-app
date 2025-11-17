@@ -16,6 +16,15 @@ CREATE ROLE "langflow-user" WITH
     NOREPLICATION
     PASSWORD 'langflow-pass';
 
+CREATE ROLE "mcpgw-user" WITH
+    LOGIN
+    SUPERUSER
+    INHERIT
+    CREATEDB
+    CREATEROLE
+    NOREPLICATION
+    PASSWORD 'mcpgw-pass';
+
 CREATE DATABASE kogito
     WITH
     OWNER = "kogito-user"
@@ -28,6 +37,15 @@ CREATE DATABASE kogito
 CREATE DATABASE langflow
     WITH
     OWNER = "kogito-user"
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'en_US.utf8'
+    LC_CTYPE = 'en_US.utf8'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+
+CREATE DATABASE mcpgw
+    WITH
+    OWNER = "mcpgw-user"
     ENCODING = 'UTF8'
     LC_COLLATE = 'en_US.utf8'
     LC_CTYPE = 'en_US.utf8'
