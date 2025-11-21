@@ -22,7 +22,7 @@ services:
       n8n:
         condition: service_started
   langfuse-worker:
-    container_name: ${LANGFUSE_WORKER_SERVICE_HOST}
+    hostname: ${LANGFUSE_WORKER_SERVICE_HOST}
     image: docker.io/langfuse/langfuse-worker:${LANGFUSE_VERSION}
     restart: always
     depends_on: &langfuse-depends-on
@@ -84,7 +84,7 @@ services:
       EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS:-}
       SMTP_CONNECTION_URL: ${SMTP_CONNECTION_URL:-}
   langfuse-web:
-    container_name: ${LANGFUSE_WEB_SERVICE_HOST}
+    hostname: ${LANGFUSE_WEB_SERVICE_HOST}
     image: docker.io/langfuse/langfuse:${LANGFUSE_VERSION}
     restart: always
     depends_on: *langfuse-depends-on
