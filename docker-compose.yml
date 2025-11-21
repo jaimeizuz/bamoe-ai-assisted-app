@@ -22,7 +22,7 @@ services:
       n8n:
         condition: service_started
   langfuse-worker:
-    container_name: ${LANGFUSE_SERVICE}
+    container_name: ${LANGFUSE_SERVICE_HOST}
     image: docker.io/langfuse/langfuse-worker:${LANGFUSE_VERSION}
     restart: always
     depends_on: &langfuse-depends-on
@@ -38,7 +38,7 @@ services:
       - 127.0.0.1:${LANGFUSE_SERVICE_PORT}:${LANGFUSE_INTERNAL_PORT}
     environment: &langfuse-worker-env
       NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
-      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@postgres:5432/postgres} # CHANGEME
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@${POSTGRESQL_SERVICE_HOST}:5432/postgres} # CHANGEME
       SALT: ${SALT:-mysalt} # CHANGEME
       ENCRYPTION_KEY: ${ENCRYPTION_KEY:-0000000000000000000000000000000000000000000000000000000000000000} # CHANGEME: generate via `openssl rand -hex 32`
       TELEMETRY_ENABLED: ${TELEMETRY_ENABLED:-true}
@@ -93,6 +93,7 @@ services:
     environment:
       <<: *langfuse-worker-env
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-mysecret} # CHANGEME
+      HOSTNAME: 0.0.0.0
       LANGFUSE_INIT_ORG_ID: ${LANGFUSE_INIT_ORG_ID:-}
       LANGFUSE_INIT_ORG_NAME: ${LANGFUSE_INIT_ORG_NAME:-}
       LANGFUSE_INIT_PROJECT_ID: ${LANGFUSE_INIT_PROJECT_ID:-}
@@ -132,7 +133,7 @@ services:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-miniosecret} # CHANGEME
     ports:
-      - 9090:9000
+      - 9990:9000
       - 127.0.0.1:9091:9001
     volumes:
       - langfuse_minio_data:/data
