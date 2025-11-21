@@ -181,6 +181,17 @@ services:
       PLATFORM_ADMIN_FULL_NAME: "Platform Administrator"
       DATABASE_URL: postgresql://mcpgw-user:mcpgw-pass@${POSTGRESQL_SERVICE_HOST}:${POSTGRESQL_SERVICE_PORT}/mcpgw
       SECURE_COOKIES: false
+      # Enable internal observability
+      OBSERVABILITY_ENABLED: true
+      OBSERVABILITY_METRICS_ENABLED: true
+      OBSERVABILITY_EVENTS_ENABLED: true
+      # Automatically trace HTTP requests
+      OBSERVABILITY_TRACE_HTTP_REQUESTS: true
+      # Retention and limits
+      OBSERVABILITY_TRACE_RETENTION_DAYS: 7
+      OBSERVABILITY_MAX_TRACES: 100000
+      # Trace sampling (1.0 = 100%, 0.1 = 10%)
+      OBSERVABILITY_SAMPLE_RATE: 1.0
   bamoe-mcp-server:
     hostname: ${MCP_SERVER_SERVICE_HOST}
     image: quay.io/bamoe/mcp-server:${BAMOE_VERSION}
@@ -251,6 +262,7 @@ services:
     volumes:
       - './sql/postgres-server:/docker-entrypoint-initdb.d:Z'
       - './sql/postgres-server/postgresql.conf:/etc/postgresql.conf'
+      - postgres-data:/var/lib/postgresql/data
     command:
       postgres -c config_file=/etc/postgresql.conf
     healthcheck:
@@ -608,3 +620,4 @@ services:
 volumes:
     redpanda_data: {}
     n8n-data: {}
+    postgres-data: {}
