@@ -22,7 +22,7 @@ services:
       n8n:
         condition: service_started
   langfuse-worker:
-    container_name: ${LANGFUSE_SERVICE_HOST}
+    container_name: ${LANGFUSE_WORKER_SERVICE_HOST}
     image: docker.io/langfuse/langfuse-worker:${LANGFUSE_VERSION}
     restart: always
     depends_on: &langfuse-depends-on
@@ -35,7 +35,7 @@ services:
       clickhouse:
         condition: service_healthy
     ports:
-      - 127.0.0.1:${LANGFUSE_SERVICE_PORT}:${LANGFUSE_INTERNAL_PORT}
+      - 127.0.0.1:${LANGFUSE_WORKER_SERVICE_PORT}:${LANGFUSE_WORKER_INTERNAL_PORT}
     environment: &langfuse-worker-env
       NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
       DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@${POSTGRESQL_SERVICE_HOST}:${POSTGRESQL_INTERNAL_PORT}/postgres} # CHANGEME
@@ -93,7 +93,7 @@ services:
     environment:
       <<: *langfuse-worker-env
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-mysecret} # CHANGEME
-      HOSTNAME: ${LANGFLOW_WEB_INTERNAL_HOST}
+      HOSTNAME: ${LANGFUSE_WEB_INTERNAL_HOST}
       LANGFUSE_INIT_ORG_ID: ${LANGFUSE_INIT_ORG_ID:-}
       LANGFUSE_INIT_ORG_NAME: ${LANGFUSE_INIT_ORG_NAME:-}
       LANGFUSE_INIT_PROJECT_ID: ${LANGFUSE_INIT_PROJECT_ID:-}
