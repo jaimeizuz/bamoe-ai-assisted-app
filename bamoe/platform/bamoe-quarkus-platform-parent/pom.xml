@@ -40,7 +40,7 @@
 		<!-- Quarkus Platform Properties -->
 		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
 		<quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-		<quarkus.platform.version>3.20.3</quarkus.platform.version>
+		<quarkus.platform.version>3.20.4</quarkus.platform.version>
 
 		<!-- BAMOE BOM Properties -->
 		<bamoe.bom.group-id>com.ibm.bamoe</bamoe.bom.group-id>
@@ -62,6 +62,9 @@
 
 		<!-- Logging Manager version -->
 		<quarkiverse.logging-manager.version>3.4.1</quarkiverse.logging-manager.version>
+
+		<!-- MCP Server version -->
+		<quarkiverse.mcp-server.version>1.6.1</quarkiverse.mcp-server.version>
 
 		<!-- Apache Commons Lang version -->
 		<apache.commons.lang.version>3.18.0</apache.commons.lang.version>
@@ -150,6 +153,13 @@
 				<groupId>io.quarkiverse.loggingmanager</groupId>
 				<artifactId>quarkus-logging-manager</artifactId>
 				<version>${quarkiverse.logging-manager.version}</version>
+			</dependency>
+
+			<!-- Quarkiverse MCP Server -->
+			<dependency>
+				<groupId>io.quarkiverse.mcp</groupId>
+				<artifactId>quarkus-mcp-server-sse</artifactId>
+				<version>${quarkiverse.mcp-server.version}</version>
 			</dependency>
 
 			<!-- Apache Commons Lang library version -->
