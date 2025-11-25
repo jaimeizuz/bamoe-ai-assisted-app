@@ -152,7 +152,7 @@ services:
     command: >
       --requirepass ${REDIS_AUTH}
     ports:
-      - 127.0.0.1:${REDIS_PORT}:${REDIS_PORT}
+      - ${REDIS_PORT}:${REDIS_PORT}
     volumes:
       - redis:/data
     healthcheck:
