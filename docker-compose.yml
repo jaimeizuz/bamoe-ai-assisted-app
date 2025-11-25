@@ -145,18 +145,39 @@ services:
       retries: 5
       start_period: 1s
   redis:
-    image: docker.io/redis:7
+    hostname: ${REDIS_HOST}
+    image: docker.io/redis:${REDIS_VERSION}
     restart: always
     # CHANGEME: row below to secure redis password
     command: >
       --requirepass ${REDIS_AUTH}
     ports:
-      - 127.0.0.1:${REDIS_PORT}:${REDIS_PORT}
+      - ${REDIS_PORT}:${REDIS_PORT}
+    volumes:
+      - redis:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 3s
       timeout: 10s
       retries: 10
+  redis-insight:
+    hostname: ${REDIS_INSIGHT_SERVICE_HOST}
+    image: redis/redisinsight:${REDIS_INSIGHT_VERSION}
+    ports:
+      - ${REDIS_INSIGHT_SERVICE_PORT}:${REDIS_INSIGHT_INTERNAL_PORT}
+    volumes:
+      - redisinsight:/data
+    environment:
+      RI_APP_PORT: ${REDIS_INSIGHT_INTERNAL_PORT}
+      RI_APP_HOST: ${REDIS_INSIGHT_LISTEN_ADDRESS}
+      RI_REDIS_HOST: ${REDIS_HOST}
+      RI_REDIS_PORT: ${REDIS_PORT}
+      RI_REDIS_USERNAME: ${REDIS_USER}
+      RI_REDIS_PASSWORD: ${REDIS_AUTH}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${REDIS_INSIGHT_INTERNAL_PORT}/api/health"]
+      interval: 5s
+      retries: 5
   n8n:
     hostname: ${N8N_SERVICE_HOST}
     image: docker.n8n.io/n8nio/n8n:${N8N_VERSION}
@@ -770,6 +791,8 @@ volumes:
     redpanda_data: {}
     n8n-data: {}
     postgres-data: {}
+    redis: {}
+    redisinsight: {}
     langfuse_clickhouse_data: {}
     langfuse_clickhouse_logs: {}
     langfuse_minio_data: {}

@@ -1,5 +1,5 @@
 .vscode
 /tempo/data/*
 /ollama/*
-/langflow/*
-!/langflow/flows
+/langflow/secret_key
+/langflow/profile_pictures
