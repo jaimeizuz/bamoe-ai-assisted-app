@@ -6,25 +6,20 @@ import jakarta.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kie.dmn.feel.lang.types.impl.ComparablePeriod;
-import org.kie.kogito.Application;
-import org.kie.kogito.dmn.rest.DMNFEELComparablePeriodSerializer;
 import org.kie.kogito.incubation.application.AppRoot;
 import org.kie.kogito.incubation.common.DataContext;
 import org.kie.kogito.incubation.common.MapDataContext;
 import org.kie.kogito.incubation.decisions.DecisionIds;
 import org.kie.kogito.incubation.decisions.services.DecisionService;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import io.quarkiverse.mcp.server.McpLog;
+import io.quarkiverse.mcp.server.Prompt;
+import io.quarkiverse.mcp.server.PromptArg;
+import io.quarkiverse.mcp.server.PromptMessage;
+import io.quarkiverse.mcp.server.TextContent;
 import io.quarkiverse.mcp.server.Tool;
 import io.quarkiverse.mcp.server.ToolArg;
 import io.smallrye.common.annotation.RunOnVirtualThread;
-
 
 import io.quarkus.logging.Log;
 
@@ -37,7 +32,9 @@ public class LoansDecisionsMcpServer {
     @Inject
     DecisionService svc;
 
-    @Tool(name = "performLoanApplicationEligibilityChecks", description = "Evaluates the eligibility of an applicant requesting a loan")
+    @Tool(
+        name = "evaluate_loan_application_eligibility_checks",
+        description = "Evaluates the eligibility of an applicant requesting a loan")
     @RunOnVirtualThread
     public DataContext performLoanApplicationEligibilityChecks(
             @ToolArg(description = "Loan duration (in months)") Integer loanDuration,
@@ -61,6 +58,26 @@ public class LoansDecisionsMcpServer {
         inputs.put("ApplicantAge", applicantAge);
             
         return svc.evaluate(id, MapDataContext.of(inputs)).data();
+    }
+
+    @Prompt(
+        name = "analyze_loan_application_eligibility",
+        description = "Asks the Loans Agent to analyze a Loan Application Eligibility given applicant's data") 
+    PromptMessage analyzeLoanApplicantEligibility(
+            @PromptArg(description = "Loan duration (in months)") String loanDuration,
+            @PromptArg(description = "Loan amount (in Euros)") String loanAmount,
+            @PromptArg(description = "Applicant monthly incomes (in Euros)") String applicantMonthlyIncomes,
+            @PromptArg(description = "Applicant monthly expenses (in Euros)") String applicantMonthlyExpenses,
+            @PromptArg(description = "Applicant age") String applicantAge,
+            @PromptArg(description = "Applicant name") String applicantName) { 
+
+        return PromptMessage.withUserRole(
+            new TextContent("Evaluate the eligibility of " + applicantName + ", who requests a loan with the following data:"
+                +   " loanDuration=" + loanDuration
+                +   " loanAmount=" + loanAmount
+                +   " applicantMonthlyIncomes=" + applicantMonthlyIncomes
+                +   " applicantMonthlyExpenses=" + applicantMonthlyExpenses
+                +   " applicantAge=" + applicantAge));
     }
 
 }
