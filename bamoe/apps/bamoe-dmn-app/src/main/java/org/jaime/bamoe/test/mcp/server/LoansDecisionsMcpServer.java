@@ -21,6 +21,10 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.quarkiverse.mcp.server.McpLog;
+import io.quarkiverse.mcp.server.Prompt;
+import io.quarkiverse.mcp.server.PromptArg;
+import io.quarkiverse.mcp.server.PromptMessage;
+import io.quarkiverse.mcp.server.TextContent;
 import io.quarkiverse.mcp.server.Tool;
 import io.quarkiverse.mcp.server.ToolArg;
 import io.smallrye.common.annotation.RunOnVirtualThread;
@@ -61,6 +65,24 @@ public class LoansDecisionsMcpServer {
         inputs.put("ApplicantAge", applicantAge);
             
         return svc.evaluate(id, MapDataContext.of(inputs)).data();
+    }
+
+    @Prompt(description = "Asks the Loans Agent to evaluate a Loan Application Eligibility given some required data") 
+    PromptMessage foo(
+            @PromptArg(description = "Loan duration (in months)") String loanDuration,
+            @PromptArg(description = "Loan amount (in Euros)") String loanAmount,
+            @PromptArg(description = "Applicant monthly incomes (in Euros)") String applicantMonthlyIncomes,
+            @PromptArg(description = "Applicant monthly expenses (in Euros)") String applicantMonthlyExpenses,
+            @PromptArg(description = "Applicant age") String applicantAge,
+            @PromptArg(description = "Applicant name") String applicantName) { 
+
+        return PromptMessage.withUserRole(
+            new TextContent("Evaluate the eligibility of " + applicantName + ", who requests a loan with the following data:"
+                +   " loanDuration=" + loanDuration
+                +   " loanAmount=" + loanAmount
+                +   " applicantMonthlyIncomes=" + applicantMonthlyIncomes
+                +   " applicantMonthlyExpenses=" + applicantMonthlyExpenses
+                +   " applicantAge=" + applicantAge));
     }
 
 }
