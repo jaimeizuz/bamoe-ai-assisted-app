@@ -1,33 +1,54 @@
 
 server {
     listen ${NGINX_PORT};
+    #server_name 192.168.1.200;
 
-    location /mcp-gateway {
-        proxy_pass http://172.17.0.1:4444;
-    }
-    location /home {
-        proxy_pass http://172.17.0.1:5678;
-    }
-    location /workflows* {
-        proxy_pass http://172.17.0.1:5678;
-    }
-    location /workflow {
-        proxy_pass http://172.17.0.1:5678;
-    }
-    location /projects* {
-        proxy_pass http://172.17.0.1:5678;
-    }
-    location /assets/* {
-        proxy_pass http://172.17.0.1:5678;
-    }
-    location /undefinedrest {
-        proxy_pass http://172.17.0.1:5678;
-    }
-    location /static {
-        proxy_pass http://172.17.0.1:5678;
-    }
-    location /rest {
-        proxy_pass http://172.17.0.1:5678;
+    #location /langflow {
+    location / {
+        
+        proxy_pass http://langflow:7860/;
+        sub_filter "http://192.168.1.200:7860/" "http://192.168.1.200:7860/langflow/";
+        sub_filter_once off;
+        
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 
+    location /assets {
+
+        proxy_pass http://langflow:7860/;
+        #sub_filter "http://192.168.1.200:7860/" "http://192.168.1.200:7860/langflow/";
+        #sub_filter_once off;
+
+        #proxy_set_header Host $host;
+        #proxy_set_header X-Real-IP $remote_addr;
+        #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /favicon.ico {
+
+        proxy_pass http://langflow:7860/;
+        #sub_filter "http://192.168.1.200:7860/" "http://192.168.1.200:7860/langflow/";
+        #sub_filter_once off;
+
+        #proxy_set_header Host $host;
+        #proxy_set_header X-Real-IP $remote_addr;
+        #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /manifest.json {
+
+        proxy_pass http://langflow:7860/;
+        #sub_filter "http://192.168.1.200:7860/" "http://192.168.1.200:7860/langflow/";
+        #sub_filter_once off;
+
+        #proxy_set_header Host $host;
+        #proxy_set_header X-Real-IP $remote_addr;
+        #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #proxy_set_header X-Forwarded-Proto $scheme;
+    }
 }
