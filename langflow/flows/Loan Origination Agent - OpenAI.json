@@ -857,7 +857,7 @@
             ],
             "frozen": false,
             "icon": "bot",
-            "last_updated": "2025-11-25T14:03:47.676Z",
+            "last_updated": "2025-11-28T11:59:27.779Z",
             "legacy": false,
             "lf_version": "1.7.0.dev19",
             "metadata": {
@@ -1606,7 +1606,7 @@
             ],
             "frozen": false,
             "icon": "Mcp",
-            "last_updated": "2025-11-25T14:03:47.677Z",
+            "last_updated": "2025-11-28T11:59:27.781Z",
             "legacy": false,
             "lf_version": "1.7.0.dev19",
             "metadata": {
@@ -2881,7 +2881,7 @@
             "frozen": false,
             "icon": "Mcp",
             "key": "mcp_bamoe-loans-workflows-mcp",
-            "last_updated": "2025-11-25T14:03:47.680Z",
+            "last_updated": "2025-11-28T11:59:27.785Z",
             "legacy": false,
             "lf_version": "1.7.0.dev19",
             "mcpServerName": "bamoe-loans-workflows-mcp",

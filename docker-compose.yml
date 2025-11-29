@@ -237,7 +237,7 @@ services:
       LANGFLOW_COMPONENTS_PATH: /home
       LANGFLOW_WORKERS: 3
       LANGFLOW_DEACTIVATE_TRACING: "false"
-      LANGFLOW_DATABASE_URL: postgresql://langflow-user:langflow-pass@${POSTGRESQL_SERVICE_HOST}:${POSTGRESQL_SERVICE_PORT}/langflow
+      LANGFLOW_DATABASE_URL: postgresql://langflow-user:langflow-pass@${POSTGRESQL_AI_SERVICE_HOST}:${POSTGRESQL_AI_SERVICE_PORT}/langflow
       LANGFLOW_CONFIG_DIR: /app/langflow
       LANGFLOW_CORS_ORIGINS: '*'
       LANGFLOW_LOG_LEVEL: "${LANGFLOW_LOG_LEVEL}"
@@ -351,7 +351,7 @@ services:
       PLATFORM_ADMIN_EMAIL: admin@example.com
       PLATFORM_ADMIN_PASSWORD: changeme
       PLATFORM_ADMIN_FULL_NAME: "Platform Administrator"
-      DATABASE_URL: postgresql://mcpgw-user:mcpgw-pass@${POSTGRESQL_SERVICE_HOST}:${POSTGRESQL_SERVICE_PORT}/mcpgw
+      DATABASE_URL: postgresql://mcpgw-user:mcpgw-pass@${POSTGRESQL_AI_SERVICE_HOST}:${POSTGRESQL_AI_SERVICE_PORT}/mcpgw
       SECURE_COOKIES: false
       PLUGINS_ENABLED: true
       # Enable internal observability
@@ -447,6 +447,41 @@ services:
         - kogito
         - '-U'
         - kogito-user
+      timeout: 45s
+      interval: 10s
+      retries: 50
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+  postgres-ai-server:
+    hostname: ${POSTGRESQL_AI_SERVICE_HOST}
+    build:
+      context: pgvector
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: ${POSTGRESQL_AI_CPUS}
+          memory: ${POSTGRESQL_AI_MEM}
+        reservations:
+          memory: ${POSTGRESQL_AI_MEM}
+    ports:
+      - ${POSTGRESQL_AI_SERVICE_PORT}:${POSTGRESQL_AI_INTERNAL_PORT}
+    volumes:
+      - './sql/postgres-ai-server:/docker-entrypoint-initdb.d:Z'
+      - './sql/postgres-ai-server/postgresql.conf:/etc/postgresql.conf'
+      - postgres-ai-data:/var/lib/postgresql/data
+    command:
+      postgres -c config_file=/etc/postgresql.conf
+    healthcheck:
+      test:
+        - CMD
+        - pg_isready
+        - '-q'
+        - '-d'
+        - postgres
+        - '-U'
+        - postgres
       timeout: 45s
       interval: 10s
       retries: 50
@@ -794,6 +829,7 @@ volumes:
     redpanda_data: {}
     n8n-data: {}
     postgres-data: {}
+    postgres-ai-data: {}
     redis: {}
     redisinsight: {}
     langfuse_clickhouse_data: {}

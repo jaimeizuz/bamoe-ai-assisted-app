@@ -857,7 +857,7 @@
             ],
             "frozen": false,
             "icon": "bot",
-            "last_updated": "2025-11-25T14:03:33.381Z",
+            "last_updated": "2025-11-27T11:58:07.075Z",
             "legacy": false,
             "lf_version": "1.7.0.dev19",
             "metadata": {
@@ -1702,7 +1702,7 @@
             ],
             "frozen": false,
             "icon": "Mcp",
-            "last_updated": "2025-11-25T14:03:07.419Z",
+            "last_updated": "2025-11-27T11:58:07.078Z",
             "legacy": false,
             "lf_version": "1.7.0.dev19",
             "metadata": {
@@ -2202,7 +2202,7 @@
           "x": 609.3181153300883,
           "y": 1023.5337103206399
         },
-        "selected": true,
+        "selected": false,
         "type": "genericNode"
       },
       {
@@ -2977,7 +2977,7 @@
             "frozen": false,
             "icon": "Mcp",
             "key": "mcp_bamoe-loans-workflows-mcp",
-            "last_updated": "2025-11-25T14:03:07.420Z",
+            "last_updated": "2025-11-27T11:58:07.079Z",
             "legacy": false,
             "lf_version": "1.7.0.dev19",
             "mcpServerName": "bamoe-loans-workflows-mcp",
@@ -3582,9 +3582,9 @@
       }
     ],
     "viewport": {
-      "x": 537.652032648311,
-      "y": -26.231272761698676,
-      "zoom": 0.6189838575859689
+      "x": 572.6304080679956,
+      "y": -18.026282497693614,
+      "zoom": 0.5423017055859214
     }
   },
   "description": "Loans agent implemented with Langflow v1.7.0.dev19",
