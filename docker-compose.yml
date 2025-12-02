@@ -181,6 +181,8 @@ services:
   n8n:
     hostname: ${N8N_SERVICE_HOST}
     image: docker.n8n.io/n8nio/n8n:${N8N_VERSION}
+    profiles:
+      - n8n
     deploy:
       resources:
         limits:
@@ -275,6 +277,8 @@ services:
   anythingllm:
     hostname: ${ANYTHINGLLM_SERVICE_HOST}
     image: mintplexlabs/anythingllm:${ANYTHINGLLM_VERSION}
+    profiles:
+      - anythingllm
     deploy:
       resources:
         limits:
@@ -321,6 +325,8 @@ services:
   ollama:
     hostname: ${OLLAMA_SERVICE_HOST}
     image: ollama/ollama:${OLLAMA_VERSION}
+    profiles:
+      - ollama
     deploy:
       resources:
         limits:
