@@ -258,6 +258,20 @@ services:
     depends_on:
       postgres-ai-server:
         condition: service_healthy
+  docling-serve:
+    hostname: ${DOCLING_SERVE_HOST}
+    image: quay.io/docling-project/docling-serve:${DOCLING_SERVE_VERSION}
+    deploy:
+      resources:
+        limits:
+          cpus: ${DOCLING_SERVE_CPUS}
+          memory: ${DOCLING_SERVE_MEM}
+        reservations:
+          memory: ${DOCLING_SERVE_MEM}
+    ports:
+      - ${DOCLING_SERVE_PORT}:${DOCLING_SERVE_PORT}
+    environment:
+      DOCLING_SERVE_ENABLE_UI: 1
   anythingllm:
     hostname: ${ANYTHINGLLM_SERVICE_HOST}
     image: mintplexlabs/anythingllm:${ANYTHINGLLM_VERSION}
