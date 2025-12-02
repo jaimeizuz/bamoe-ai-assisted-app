@@ -38,7 +38,7 @@ services:
       - 127.0.0.1:${LANGFUSE_WORKER_SERVICE_PORT}:${LANGFUSE_WORKER_INTERNAL_PORT}
     environment: &langfuse-worker-env
       HOSTNAME: ${LANGFUSE_WORKER_INTERNAL_HOST}
-      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://${LANGFUSE_WEB_SERVICE_HOST}:${LANGFUSE_WEB_INTERNAL_PORT}}
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://${HOST_LOCAL_IP}:${LANGFUSE_WEB_SERVICE_PORT}}
       DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@${POSTGRESQL_SERVICE_HOST}:${POSTGRESQL_INTERNAL_PORT}/postgres} # CHANGEME
       SALT: ${SALT:-mysalt} # CHANGEME
       ENCRYPTION_KEY: ${ENCRYPTION_KEY:-0000000000000000000000000000000000000000000000000000000000000000} # CHANGEME: generate via `openssl rand -hex 32`
@@ -191,13 +191,13 @@ services:
     ports:
       - ${N8N_SERVICE_PORT}:${N8N_INTERNAL_PORT}
     environment:
-      #WEBHOOK_URL: http://192.168.1.200:5678
-      WEBHOOK_URL: ${N8N_INTERNET_URL}
+      WEBHOOK_URL: http://${HOST_LOCAL_IP}:${N8N_SERVICE_PORT}
+      #WEBHOOK_URL: ${N8N_INTERNET_URL}
       #N8N_HOST: ${N8N_INTERNAL_HOST}
       #N8N_PORT: ${N8N_INTERNAL_PORT}
       #N8N_LISTEN_ADDRESS: ${N8N_LISTEN_ADDRESS}
-      #N8N_EDITOR_BASE_URL: ${N8N_EDITOR_BASE_URL}
-      N8N_EDITOR_BASE_URL: ${N8N_INTERNET_URL}
+      N8N_EDITOR_BASE_URL: ${N8N_EDITOR_BASE_URL}
+      #N8N_EDITOR_BASE_URL: ${N8N_INTERNET_URL}
       #N8N_PATH: ${N8N_PATH}
       #N8N_PUBLIC_API_ENDPOINT: ${N8N_PUBLIC_API_ENDPOINT}
       #N8N_ENDPOINT_WEBHOOK: ${N8N_ENDPOINT_WEBHOOK}
@@ -237,10 +237,13 @@ services:
       LANGFLOW_COMPONENTS_PATH: /home
       LANGFLOW_WORKERS: 3
       LANGFLOW_DEACTIVATE_TRACING: "false"
-      LANGFLOW_DATABASE_URL: postgresql://langflow-user:langflow-pass@${POSTGRESQL_AI_SERVICE_HOST}:${POSTGRESQL_AI_SERVICE_PORT}/langflow
+      LANGFLOW_DATABASE_URL: postgresql://langflow-user:langflow-pass@${POSTGRESQL_AI_SERVICE_HOST}:${POSTGRESQL_AI_INTERNAL_PORT}/langflow
       LANGFLOW_CONFIG_DIR: /app/langflow
       LANGFLOW_CORS_ORIGINS: '*'
       LANGFLOW_LOG_LEVEL: "${LANGFLOW_LOG_LEVEL}"
+      LANGFLOW_ENABLE_LOG_RETRIEVAL: "true"
+      LANGFLOW_PRETTY_LOGS: "true"
+      LANGFLOW_LOG_RETRIEVER_BUFFER_SIZE: 10000
       LANGFLOW_CREATE_STARTER_PROJECTS: "true"
       LANGFLOW_UPDATE_STARTER_PROJECTS: "true"
       LANGFLOW_LAZY_LOAD_COMPONENTS: "false"
@@ -253,7 +256,7 @@ services:
       - ./langflow:/app/langflow:Z
       - ./langflow/flows:/home:Z
     depends_on:
-      postgres-server:
+      postgres-ai-server:
         condition: service_healthy
   anythingllm:
     hostname: ${ANYTHINGLLM_SERVICE_HOST}
@@ -351,7 +354,7 @@ services:
       PLATFORM_ADMIN_EMAIL: admin@example.com
       PLATFORM_ADMIN_PASSWORD: changeme
       PLATFORM_ADMIN_FULL_NAME: "Platform Administrator"
-      DATABASE_URL: postgresql://mcpgw-user:mcpgw-pass@${POSTGRESQL_AI_SERVICE_HOST}:${POSTGRESQL_AI_SERVICE_PORT}/mcpgw
+      DATABASE_URL: postgresql://mcpgw-user:mcpgw-pass@${POSTGRESQL_AI_SERVICE_HOST}:${POSTGRESQL_AI_INTERNAL_PORT}/mcpgw
       SECURE_COOKIES: false
       PLUGINS_ENABLED: true
       # Enable internal observability
@@ -365,6 +368,9 @@ services:
       OBSERVABILITY_MAX_TRACES: 100000
       # Trace sampling (1.0 = 100%, 0.1 = 10%)
       OBSERVABILITY_SAMPLE_RATE: 1.0
+    depends_on:
+      postgres-ai-server:
+        condition: service_healthy
   bamoe-mcp-server:
     hostname: ${MCP_SERVER_SERVICE_HOST}
     image: quay.io/bamoe/mcp-server:${BAMOE_VERSION}
@@ -501,8 +507,8 @@ services:
     ports:
       - ${PGADMIN_SERVICE_PORT}:${PGADMIN_INTERNAL_PORT}
     volumes:
-      - ./pgadmin/servers.json:/pgadmin4/servers.json
-      - ./pgadmin/pgpass:/pgadmin4/pgpass
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:Z
+      - ./pgadmin/pgpass:/pgadmin4/pgpass:Z
     entrypoint: >
       /bin/sh -c "
       cp -f /pgadmin4/pgpass /var/lib/pgadmin/;

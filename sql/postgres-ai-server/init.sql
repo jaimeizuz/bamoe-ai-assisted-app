@@ -18,7 +18,7 @@ CREATE ROLE "mcpgw-user" WITH
 
 CREATE DATABASE langflow
     WITH
-    OWNER = "kogito-user"
+    OWNER = "langflow-user"
     ENCODING = 'UTF8'
     LC_COLLATE = 'en_US.utf8'
     LC_CTYPE = 'en_US.utf8'
@@ -36,3 +36,5 @@ CREATE DATABASE mcpgw
 
 GRANT ALL PRIVILEGES ON DATABASE langflow TO "langflow-user";
 GRANT ALL PRIVILEGES ON DATABASE mcpgw TO "mcpgw-user";
+GRANT ALL PRIVILEGES ON DATABASE langflow TO "postgres";
+GRANT ALL PRIVILEGES ON DATABASE mcpgw TO "postgres";

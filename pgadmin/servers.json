@@ -2,7 +2,7 @@
   "Servers": {
     "1": {
       "Name": "BAMOE BPMN DB",
-      "Group": "Servers",
+      "Group": "BAMOE",
       "Host": "postgres-server",
       "Port": 5432,
       "MaintenanceDB": "kogito",
@@ -11,12 +11,12 @@
       "PassFile": "/var/lib/pgadmin/pgpass"
     },
     "2": {
-      "Name": "Langflow DB",
-      "Group": "Servers",
-      "Host": "postgres-server",
+      "Name": "AI DB (Langflow & MCP Context Forge)",
+      "Group": "AI",
+      "Host": "postgres-ai-server",
       "Port": 5432,
-      "MaintenanceDB": "langflow",
-      "Username": "langflow-user",
+      "MaintenanceDB": "postgres",
+      "Username": "postgres",
       "SSLMode": "disable",
       "PassFile": "/var/lib/pgadmin/pgpass"
     }

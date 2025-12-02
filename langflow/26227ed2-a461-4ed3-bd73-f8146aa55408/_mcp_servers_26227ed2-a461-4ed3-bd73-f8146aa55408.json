@@ -1,0 +1,1 @@
+{"mcpServers": {"lf-starter_project": {"command": "uvx", "args": ["mcp-proxy", "http://localhost:7860/api/v1/mcp/project/e36c1199-8a60-4bb3-b5b2-ac028a7b0ef8/sse"]}, "lf-rag_tests": {"command": "uvx", "args": ["mcp-proxy", "http://localhost:7860/api/v1/mcp/project/0bac2d87-cf4f-42a3-b0ba-3e15f0ab562b/sse"]}}}
