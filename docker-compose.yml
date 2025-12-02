@@ -269,7 +269,7 @@ services:
         reservations:
           memory: ${DOCLING_SERVE_MEM}
     ports:
-      - ${DOCLING_SERVE_PORT}:${DOCLING_SERVE_PORT}
+      - ${DOCLING_SERVE_SERVICE_PORT}:${DOCLING_SERVE_INTERNAL_PORT}
     environment:
       DOCLING_SERVE_ENABLE_UI: 1
   anythingllm:
