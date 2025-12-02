@@ -260,7 +260,7 @@ services:
         condition: service_healthy
   docling-serve:
     hostname: ${DOCLING_SERVE_HOST}
-    image: quay.io/docling-project/docling-serve:${DOCLING_SERVE_VERSION}
+    image: quay.io/docling-project/${DOCLING_SERVE_IMAGE}:${DOCLING_SERVE_VERSION}
     deploy:
       resources:
         limits:
