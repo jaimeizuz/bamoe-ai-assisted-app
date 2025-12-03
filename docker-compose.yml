@@ -9,8 +9,8 @@ services:
           memory: ${NGINX_MEM}
         reservations:
           memory: ${NGINX_MEM}
-    #profiles:
-    #  - nginx
+    profiles:
+      - nginx
     volumes:
     - ./nginx/templates:/etc/nginx/templates:Z
     ports:
