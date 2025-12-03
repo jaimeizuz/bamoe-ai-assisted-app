@@ -19,7 +19,7 @@ services:
     - NGINX_HOST=${NGINX_INTERNAL_HOST}
     - NGINX_PORT=${NGINX_INTERNAL_PORT}
     depends_on:
-      n8n:
+      langflow:
         condition: service_started
   langfuse-worker:
     hostname: ${LANGFUSE_WORKER_SERVICE_HOST}
