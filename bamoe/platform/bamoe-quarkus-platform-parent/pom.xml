@@ -23,7 +23,7 @@
 	</modules>
 
 	<properties>
-		<revision>9.3.0-SNAPSHOT</revision>
+		<revision>9.3.1-SNAPSHOT</revision>
 
 		<!-- Java and Compiler Versions -->
 		<java.version>17</java.version>
@@ -45,7 +45,7 @@
 		<!-- BAMOE BOM Properties -->
 		<bamoe.bom.group-id>com.ibm.bamoe</bamoe.bom.group-id>
 		<bamoe.bom.artifact-id>bamoe-bom</bamoe.bom.artifact-id>
-		<bamoe.version>9.3.0-ibm-0007</bamoe.version>
+		<bamoe.version>9.3.1-ibm-0006</bamoe.version>
 		<bamoe.techpreview.bom.artifact-id>bamoe-techpreview-bom</bamoe.techpreview.bom.artifact-id>
 
 		<!-- Mapstruct version -->
