@@ -394,6 +394,7 @@ services:
   bamoe-mcp-server:
     hostname: ${MCP_SERVER_SERVICE_HOST}
     image: quay.io/bamoe/mcp-server:${BAMOE_VERSION}
+    #image: quay.io/bamoe/mcp-server:9.3.0-ibm-0007
     deploy:
       resources:
         limits:
@@ -407,6 +408,7 @@ services:
       MCP_SERVER_OPENAPI_URLS: "http://${BPMN_APP_SERVICE_HOST}:${BPMN_APP_INTERNAL_PORT}/q/openapi,http://${DMN_APP_SERVICE_HOST}:${DMN_APP_INTERNAL_PORT}/q/openapi"
       MCP_SERVER_PORT: ${MCP_SERVER_INTERNAL_PORT}
       QUARKUS_HTTP_HOST: ${MCP_SERVER_INTERNAL_HOST}
+      QUARKUS_OIDC_ENABLED: false
     depends_on:
       bamoe-bpmn-app:
         condition: service_healthy
@@ -809,6 +811,7 @@ services:
       KOGITO_JOBS-SERVICE_MAXNUMBEROFRETRIES: 12
       KOGITO_JOBS-SERVICE_RETRYMILLS: 3000
       KOGITO_JOBS-SERVICE_SCHEDULERCHUNKINMINUTES: 5
+      KAFKA_BOOTSTRAP_SERVERS: redpanda:9093
       MP_MESSAGING_OUTGOING_KOGITO-PROCESSINSTANCES-EVENTS_CONNECTOR: smallrye-kafka
       MP_MESSAGING_OUTGOING_KOGITO-PROCESSINSTANCES-EVENTS_TOPIC: kogito-processinstances-events
       MP_MESSAGING_OUTGOING_KOGITO-PROCESSINSTANCES-EVENTS_VALUE_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
@@ -821,6 +824,8 @@ services:
       KOGITO_EVENTS_GROUPING: "false"
       KIE_FLYWAY_ENABLED: "true"
       QUARKUS_REST_CLIENT__DUMMY_REST_SERVICE__URL: http://localhost:19002
+      BAMOE_WORKFLOW_AI-AGENT-TASK_PROVIDER_LANGFLOW_BASE-URL: http://${LANGFLOW_SERVICE_HOST}:${LANGFLOW_INTERNAL_PORT}
+      BAMOE_WORKFLOW_AI-AGENT-TASK_PROVIDER_LANGFLOW_API-KEY: sk-_JVeR2Plypl4sL0nHPPQ0byECKhmG3bGgB1N6RnSS1o
     depends_on:
       postgres-server:
         condition: service_healthy
@@ -830,6 +835,16 @@ services:
       test: ["CMD", "curl", "-f", "http://${BPMN_APP_INTERNAL_HOST}:${BPMN_APP_INTERNAL_PORT}/q/health/ready"]
       interval: 5s
       retries: 5
+  bamoe-bpmn-mcp-server:
+    hostname: bamoe-bpmn-mcp-server
+    image: jizuzquiza/bamoe-bpmn-mcp-server:1.0.0-SNAPSHOT
+    ports:
+      - 8889:8080
+    environment:
+      QUARKUS_REST_CLIENT__BAMOE_LOANS__URL: http://${BPMN_APP_SERVICE_HOST}:${BPMN_APP_INTERNAL_PORT}
+    depends_on:
+      bamoe-bpmn-app:
+        condition: service_healthy
   bamoe-dmn-app:
     hostname: ${DMN_APP_SERVICE_HOST}
     image: ${DMN_APP_DOCKER_IMAGE_REGISTRY}/${DMN_APP_DOCKER_IMAGE_GROUP}/bamoe-dmn-app:${DMN_APP_VERSION}
