@@ -19,6 +19,7 @@
   <bpmn2:itemDefinition id="__16893379-E161-4322-976C-494E469475BD_NotCompletedNotifyInputXItem" structureRef="Object" />
   <bpmn2:itemDefinition id="__16893379-E161-4322-976C-494E469475BD_manualDecisionOutputXItem" structureRef="Boolean" />
   <bpmn2:itemDefinition id="_AB967426-6729-4814-A08B-6FD81D439342" structureRef="org.jaime.bamoe.test.LoanRequestDataDTO" />
+  <bpmn2:error id="_E88254BC-932E-4CEB-B8FF-2340E8519EF5" structureRef="Type" name="generic" errorCode="" />
   <bpmn2:collaboration id="_98646647-3717-48ED-853D-0984C96A6E9A" name="Default Collaboration">
     <bpmn2:participant id="_12E8ACD9-F193-4BD9-8BDB-F95A21C85299" name="Pool Participant" processRef="LoanOriginationProcess" />
   </bpmn2:collaboration>
@@ -373,7 +374,7 @@ kcontext.setVariable(&quot;loanProcessResult&quot;, &quot;To be reviewed&quot;);
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
     <bpmn2:boundaryEvent id="_2544E30F-117D-402C-AE97-8BA2959FAD80" attachedToRef="_C8CDEC2F-7864-4639-A1CB-5D27BAA7EBA4" name="AI Agent execution error">
-      <bpmn2:errorEventDefinition id="_421E43D7-7CAD-4E0C-A444-4C1F9ADB1755" />
+      <bpmn2:errorEventDefinition id="_421E43D7-7CAD-4E0C-A444-4C1F9ADB1755" errorRef="_E88254BC-932E-4CEB-B8FF-2340E8519EF5" drools:erefname="generic" />
     </bpmn2:boundaryEvent>
     <bpmn2:sequenceFlow id="_D52B226B-D513-44AE-AB5D-B3D8588A4468" sourceRef="_16893379-E161-4322-976C-494E469475BD" targetRef="_70E852B3-036B-461D-9A60-E392E5631E81">
       <bpmn2:extensionElements>
