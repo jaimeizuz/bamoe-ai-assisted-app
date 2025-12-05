@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jaime.bamoe.test.rest.client.LoanOriginationProcessRestClient;
+import org.jaime.bamoe.test.rest.client.dto.LoanRequestDataDTO;
 
 import io.quarkiverse.mcp.server.McpLog;
 import io.quarkiverse.mcp.server.Tool;
@@ -71,7 +72,8 @@ public class LoanOriginationProcessMcpServer {
          */
 
         return loanOriginationProcessRestClient.startLoanOriginationProcess(
-                loanDuration, loanAmount, applicantName, applicantMonthlyIncomes, applicantMonthlyExpenses,
-                applicantAge, applicantHasJob, applicantHasActiveDebts, applicantYearsInCurrentJob);
+                new LoanRequestDataDTO(loanAmount, loanDuration, applicantMonthlyIncomes,
+                    applicantMonthlyExpenses, applicantAge, applicantHasJob,
+                    applicantHasActiveDebts, applicantYearsInCurrentJob));
     }
 }

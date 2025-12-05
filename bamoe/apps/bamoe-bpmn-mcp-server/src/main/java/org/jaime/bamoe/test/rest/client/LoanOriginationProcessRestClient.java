@@ -1,6 +1,7 @@
 package org.jaime.bamoe.test.rest.client;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.jaime.bamoe.test.rest.client.dto.LoanRequestDataDTO;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.Consumes;
@@ -18,7 +19,5 @@ public interface LoanOriginationProcessRestClient {
     @POST
     @Produces({ "application/json" })
     @Consumes({ "application/json" })
-    Response startLoanOriginationProcess(Integer loanDuration, Integer loanAmount, String applicantName,
-            Integer applicantMonthlyIncomes, Integer applicantMonthlyExpenses, Integer applicantAge, Boolean applicantHasJob,
-            Boolean applicantHasActiveDebts, Integer applicantYearsInCurrentJob);
+    Response startLoanOriginationProcess(LoanRequestDataDTO loanRequestDataDTO);
 }
