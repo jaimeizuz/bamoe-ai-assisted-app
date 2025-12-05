@@ -2,16 +2,13 @@ package org.jaime.bamoe.test.mcp.server;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import jakarta.ws.rs.core.Response;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kie.kogito.incubation.application.AppRoot;
-import org.kie.kogito.incubation.common.DataContext;
-import org.kie.kogito.incubation.common.ExtendedDataContext;
-import org.kie.kogito.incubation.common.MapDataContext;
-import org.kie.kogito.incubation.processes.ProcessIds;
-import org.kie.kogito.incubation.processes.services.StatefulProcessService;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jaime.bamoe.test.rest.client.LoanOriginationProcessRestClient;
 
 import io.quarkiverse.mcp.server.McpLog;
 import io.quarkiverse.mcp.server.Tool;
@@ -23,17 +20,24 @@ import io.quarkus.logging.Log;
 @Singleton
 public class LoanOriginationProcessMcpServer {
 
+    /*
     @Inject
     AppRoot appRoot;
 
     @Inject
     StatefulProcessService processService;
+    */
+
+    @RestClient
+    @Inject
+    LoanOriginationProcessRestClient loanOriginationProcessRestClient;
 
     @Tool(
         name = "start_loan_origination_process",
         description = "Starts a Loan Origination Process")
     @RunOnVirtualThread
-    public DataContext startLoanOriginationProcess(
+    //public DataContext startLoanOriginationProcess(
+    public Response startLoanOriginationProcess(
             @ToolArg(description = "Loan duration (in months)") Integer loanDuration,
             @ToolArg(description = "Loan amount (in Euros)") Integer loanAmount,
             @ToolArg(description = "Applicant name") String applicantName,
@@ -49,6 +53,7 @@ public class LoanOriginationProcessMcpServer {
             + "Loan duration=%s, Loan amount=%s, Applicant monthly incomes=%s, Applicant monthly expenses=%s, Applicant age=%s",
                 loanDuration, loanAmount, applicantMonthlyIncomes, applicantMonthlyExpenses, applicantAge);
 
+        /*
         var id = appRoot.get(ProcessIds.class).get("LoanOriginationProcess");
 
         Map<String, Object> inputs = new HashMap<String, Object>();
@@ -63,7 +68,10 @@ public class LoanOriginationProcessMcpServer {
         inputs.put("applicantYearsInCurrentJob", applicantYearsInCurrentJob);
 
         ExtendedDataContext processResponse = processService.create(id, MapDataContext.of(inputs));
-            
-        return processResponse;
+         */
+
+        return loanOriginationProcessRestClient.startLoanOriginationProcess(
+                loanDuration, loanAmount, applicantName, applicantMonthlyIncomes, applicantMonthlyExpenses,
+                applicantAge, applicantHasJob, applicantHasActiveDebts, applicantYearsInCurrentJob);
     }
 }
