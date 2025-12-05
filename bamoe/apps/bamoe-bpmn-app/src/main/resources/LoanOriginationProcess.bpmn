@@ -185,7 +185,7 @@
       <bpmn2:incoming>_2E563FC4-088C-490E-9D26-B38651FAA45D</bpmn2:incoming>
       <bpmn2:outgoing>_3BA811F2-DD3F-4FEE-9749-CB959012F72A</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
-    <bpmn2:task id="_C8CDEC2F-7864-4639-A1CB-5D27BAA7EBA4" drools:taskName="AI Agent Task" name="AI Agent - Review Loan">
+    <bpmn2:task id="_C8CDEC2F-7864-4639-A1CB-5D27BAA7EBA4" drools:taskName="AI Agent Task" name="Review Loan AI Agent">
       <bpmn2:incoming>_3266B378-985B-4CCD-B54D-E5FEDD3F07E4</bpmn2:incoming>
       <bpmn2:outgoing>_98847B26-6451-4DFB-8AFC-6DFE229D06C9</bpmn2:outgoing>
       <bpmn2:ioSpecification id="_C33378A9-211B-424A-B9FC-F8EF391C645E">
@@ -300,12 +300,7 @@ System.out.println(&quot;   + applicantAge: &quot; + applicantAge);
 System.out.println(&quot;   + applicantHasJob: &quot; + applicantHasJob);
 System.out.println(&quot;   + applicantHasActiveDebts: &quot; + applicantHasActiveDebts);
 System.out.println(&quot;   + applicantYearsInCurrentJob: &quot; + applicantYearsInCurrentJob);
-
-org.jaime.bamoe.test.LoanRequestDataDTO loanRequest =
-	new org.jaime.bamoe.test.LoanRequestDataDTO(
-		loanAmount, loanDuration, applicantMonthlyIncomes, applicantMonthlyExpenses,
-		applicantAge, applicantHasJob, applicantHasActiveDebts, applicantYearsInCurrentJob);
-
+org.jaime.bamoe.test.LoanRequestDataDTO loanRequest = new org.jaime.bamoe.test.LoanRequestDataDTO(loanAmount, loanDuration, applicantMonthlyIncomes, applicantMonthlyExpenses,		applicantAge, applicantHasJob, applicantHasActiveDebts, applicantYearsInCurrentJob);
 kcontext.setVariable(&quot;loanRequestData&quot;, loanRequest);
 System.out.println(&quot;===============================&quot;);</bpmn2:script>
     </bpmn2:scriptTask>
