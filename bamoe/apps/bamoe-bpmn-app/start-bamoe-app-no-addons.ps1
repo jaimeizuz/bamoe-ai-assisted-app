@@ -1,1 +1,1 @@
-mvn clean "-Pdevelopment" "-P!bamoe-kafka-events" "-P!bamoe-data-audit" "-P!bamoe-data-index" "-P!bamoe-jobs" quarkus:dev
+mvn clean "-Pdevelopment" "-Ddisable-bamoe-security" "-Ddisable-bamoe-kafka-events" "-Ddisable-bamoe-data-audit" "-Ddisable-bamoe-data-index" "-Ddisable-bamoe-jobs" quarkus:dev

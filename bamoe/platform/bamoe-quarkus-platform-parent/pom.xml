@@ -145,7 +145,7 @@
 			<dependency>
 				<groupId>io.quarkiverse.oidc-proxy</groupId>
 				<artifactId>quarkus-oidc-proxy</artifactId>
-				<version>${quarkiverse.oidc.version}</version>
+				<version>${quarkiverse.oidc.proxy.version}</version>
 			</dependency>
 
 			<!-- Logging Manager library version -->

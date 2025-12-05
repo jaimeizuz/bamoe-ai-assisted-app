@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" expressionLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="LoansApprovals" id="LoanApplicationApproval" name="LoanApplicationApproval">
+  <decision name="ApplicantScore" id="_0B48E8C8-ECBD-4301-A0DA-6AF73FFFC4AC">
+    <variable name="ApplicantScore" id="_DA0BA939-61CB-4F3D-9A9E-8F8F20EE03D6" typeRef="number" />
+    <informationRequirement id="_994E6F0B-B59A-4D6C-B63B-4BAD47ED5176">
+      <requiredDecision href="#_3FAA4295-016D-4DFB-95C1-2DF4C4F358F1" />
+    </informationRequirement>
+    <informationRequirement id="_DC1B2449-8DF9-440A-93F7-B99693E2787B">
+      <requiredInput href="#_F0BEFD4E-C94E-4B1A-9210-676D93FF896C" />
+    </informationRequirement>
+    <informationRequirement id="_6E792F14-236F-4144-8275-EA8DC4376354">
+      <requiredDecision href="#_6E69573F-AB3F-4320-837B-E11997738385" />
+    </informationRequirement>
+    <informationRequirement id="_A38ECE33-3679-48EA-A338-C96B6EEAEAA4">
+      <requiredInput href="#_811183C3-0129-48E2-B10C-BF8F824BEF83" />
+    </informationRequirement>
+    <informationRequirement id="_538FFD83-1A16-4CBC-BDC0-18CA52D2DC22">
+      <requiredInput href="#_9A67E4AB-45AB-4078-A477-4089D6951510" />
+    </informationRequirement>
+    <informationRequirement id="_6E9E8232-51A2-4107-9E60-EF383F827FD6">
+      <requiredInput href="#_5CCD8B71-2FFF-45B7-BE15-0D77A9FF5293" />
+    </informationRequirement>
+    <context id="_C75A1504-E8A2-4E9A-89B6-3591D43C669E" typeRef="number" label="ApplicantScore">
+      <contextEntry id="_6565373E-53BA-4D90-8393-11B013E32EB3">
+        <variable id="_31CEB303-26C9-4F02-BCED-1688E964F5D0" name="ageScoring" typeRef="number" />
+        <decisionTable id="_0CD233A1-7D0F-414A-952A-39B09EDB0D4E" typeRef="number" hitPolicy="UNIQUE" label="ageScoring">
+          <input id="_78E87F96-6CFA-4E1D-A38A-5B5237A24654">
+            <inputExpression id="_733C3FBF-F8F7-466B-B2AD-B287B66141C7" typeRef="number">
+              <text>ApplicantAge</text>
+            </inputExpression>
+          </input>
+          <output id="_5B09F76A-0D97-453E-A0EC-99AE9AEA9598" />
+          <annotation name="Annotations" />
+          <rule id="_EADFCFC1-FFD5-475E-B218-414770D1E327">
+            <inputEntry id="_C98430C0-72B6-4ABB-81FE-6E6F7625B808">
+              <text>&lt;18</text>
+            </inputEntry>
+            <outputEntry id="_B4ED253D-6127-49FB-8AE9-F1D0A1FC72D4">
+              <text>0.0</text>
+            </outputEntry>
+            <annotationEntry>
+              <text></text>
+            </annotationEntry>
+          </rule>
+          <rule id="_0DECBC87-9D9A-4A18-ACCA-326538784605">
+            <inputEntry id="_A8817BA3-4273-4B76-B74B-38E17D118BCD">
+              <text>[18..24)</text>
+            </inputEntry>
+            <outputEntry id="_8D72C288-416F-43A2-8A84-50CBF95E7941">
+              <text>0.1</text>
+            </outputEntry>
+            <annotationEntry>
+              <text></text>
+            </annotationEntry>
+          </rule>
+          <rule id="_0AF06423-B918-46D4-AB39-C3715BFF5F95">
+            <inputEntry id="_602B37B4-96AD-4B76-9B9A-600BF875D433">
+              <text>[24..38)</text>
+            </inputEntry>
+            <outputEntry id="_DA697AB7-589D-4AAD-B191-1790CD5B2E2D">
+              <text>0.2</text>
+            </outputEntry>
+            <annotationEntry>
+              <text></text>
+            </annotationEntry>
+          </rule>
+          <rule id="_713288FC-2E2B-4FDD-97B4-9222A6687A20">
+            <inputEntry id="_BD4A3450-6D55-4517-8F4B-7C96CED86E7D">
+              <text>[38..50)</text>
+            </inputEntry>
+            <outputEntry id="_AEEA12B9-6ADD-4C56-A1EA-EEED4B8EFE04">
+              <text>0.3</text>
+            </outputEntry>
+            <annotationEntry>
+              <text></text>
+            </annotationEntry>
+          </rule>
+          <rule id="_DE06B028-51AD-482E-B72E-9EBF660F9635">
+            <inputEntry id="_C26065D6-3D0B-43B5-BD40-84A4DCDFC51C">
+              <text>&gt;=50</text>
+            </inputEntry>
+            <outputEntry id="_3A07E1F1-95CB-466A-90F2-70AD333D10A0">
+              <text>0.0</text>
+            </outputEntry>
+            <annotationEntry>
+              <text></text>
+            </annotationEntry>
+          </rule>
+        </decisionTable>
+      </contextEntry>
+      <contextEntry id="_8F1EC419-D996-49E2-AB8E-B9798B5D2D40">
+        <variable id="_9394E0B2-19AE-4BB7-8B3A-756518F78019" name="financialScoring" typeRef="number">
+          <description></description>
+        </variable>
+        <decisionTable id="_FA8174BC-D171-42A3-B635-7EFC0B626757" typeRef="number" hitPolicy="UNIQUE" label="financialScoring">
+          <input id="_95D41948-E12E-4770-9668-069F91AD21EC">
+            <inputExpression id="_72A41709-1A94-427B-8EA8-B411995E78F3" typeRef="number">
+              <text>(100/MonthlyAvailableAmount)*MonthlyPayment</text>
+            </inputExpression>
+          </input>
+          <output id="_D820F172-91B7-42CF-A957-7948196F335A" />
+          <annotation name="Annotations" />
+          <rule id="_D3BC98A7-37E0-410C-A24C-670A751F36D3">
+            <inputEntry id="_98DCF7A0-1A4D-4E0B-9F4F-6A189249D19D">
+              <text>&lt;10</text>
+            </inputEntry>
+            <outputEntry id="_01DF6C56-140A-41D8-AD69-EC6DBE4662A2">
+              <text>0.4</text>
+            </outputEntry>
+            <annotationEntry>
+              <text></text>
+            </annotationEntry>
+          </rule>
+          <rule id="_72CC4AB6-32F4-495D-BE87-7D445579F8F8">
+            <inputEntry id="_912C8050-8659-4C7A-ACB4-A5FC623F19C3">
+              <text>[10..20)</text>
+            </inputEntry>
+            <outputEntry id="_DEA95F58-96B4-4E26-A64B-D7C71D66EB6D">
+              <text>0.3</text>
+            </outputEntry>
+            <annotationEntry>
+              <text></text>
+            </annotationEntry>
+          </rule>
+          <rule id="_DD7E097B-917D-4B1A-9AD3-07A51D1677BC">
+            <inputEntry id="_37C31EF7-F7F5-467C-A530-C6144FD235D8">
+              <text>[20..30)</text>
+            </inputEntry>
+            <outputEntry id="_C71317F5-3E58-48DE-9014-F8FA3EC0B795">
+              <text>0.2</text>
+            </outputEntry>
+            <annotationEntry>
+              <text></text>
+            </annotationEntry>
+          </rule>
+          <rule id="_9F411B4E-97CF-4951-B708-38897DE6C084">
+            <inputEntry id="_7282B4D1-2D7F-4ED0-8CF7-A175B0FDA17F">
+              <text>[30..35]</text>
+            </inputEntry>
+            <outputEntry id="_03528876-6DCF-4C40-9225-A05D0E71455D">
+              <text>0.1</text>
+            </outputEntry>
+            <annotationEntry>
+              <text></text>
+            </annotationEntry>
+          </rule>
+          <rule id="_6859D0DA-8885-479B-A73F-C7D9359076B3">
+            <inputEntry id="_CAC61794-7348-43C0-BA3C-A3286BC3640F">
+              <text>&gt;35</text>
+            </inputEntry>
+            <outputEntry id="_19413798-84D9-4F99-B807-03922648F74C">
+              <text>0.0</text>
+            </outputEntry>
+            <annotationEntry>
+              <text></text>
+            </annotationEntry>
+          </rule>
+        </decisionTable>
+      </contextEntry>
+      <contextEntry id="_6B8DAE74-248B-4D3C-991F-4887722FB066">
+        <variable id="_541EE2DD-B7AE-4F06-A40F-B90CA1A74E1B" name="jobScoring" typeRef="number">
+          <description></description>
+        </variable>
+        <context id="_39931283-94A2-4D26-AB34-EF183970BD82" typeRef="number" label="jobScoring">
+          <contextEntry id="_46A89270-7103-4F24-BCEC-97B79DBAFADF">
+            <variable id="_0569DB8C-54C0-4C1D-A065-F923B42352B1" name="timeInCurrentJobScoring" typeRef="number" />
+            <decisionTable id="_9918121D-7549-45E8-AF16-667DE883B176" typeRef="number" hitPolicy="UNIQUE" label="timeInCurrentJobScoring">
+              <input id="_F6F53575-E0CA-487A-9A48-768DE093A1C4">
+                <inputExpression id="_A1D0BC57-62F2-443F-8C4A-293CF34F81E2" typeRef="number">
+                  <text>ApplicantYearsInCurrentJob</text>
+                </inputExpression>
+              </input>
+              <output id="_D12C4200-3FB1-4CEA-AA07-CA40F68DF7AB" />
+              <annotation name="Annotations" />
+              <rule id="_64ADCB0C-D715-4297-932C-0C4C2111DFF6">
+                <inputEntry id="_52AE37E6-EABD-4241-8AA5-F3EECE8663C7">
+                  <text>&lt;2</text>
+                </inputEntry>
+                <outputEntry id="_F87EDAEB-E3F9-4C58-A0D1-CC768B2BA4BD">
+                  <text>0.0</text>
+                </outputEntry>
+                <annotationEntry>
+                  <text></text>
+                </annotationEntry>
+              </rule>
+              <rule id="_E9730AF6-8D56-4EFF-91E5-A3B5D793A6A2">
+                <inputEntry id="_97AE8781-77EF-4E95-AFD6-96349646B9E0">
+                  <text>[2..5)</text>
+                </inputEntry>
+                <outputEntry id="_C3F28C53-D69C-4B73-BEC5-096D8077437C">
+                  <text>0.1</text>
+                </outputEntry>
+                <annotationEntry>
+                  <text></text>
+                </annotationEntry>
+              </rule>
+              <rule id="_E9AC63F7-6659-4EA6-B184-7B3F9FB3ADD0">
+                <inputEntry id="_A8417F67-F84C-4F01-820E-999444D6C652">
+                  <text>[5..10)</text>
+                </inputEntry>
+                <outputEntry id="_CC906676-C713-4428-A9FC-DCF082C99379">
+                  <text>0.2</text>
+                </outputEntry>
+                <annotationEntry>
+                  <text></text>
+                </annotationEntry>
+              </rule>
+              <rule id="_CEBC991A-B38A-47C5-A16E-78F042E9C467">
+                <inputEntry id="_5C9C69A7-445D-44BF-911E-62DB4E015C18">
+                  <text>&gt;=10</text>
+                </inputEntry>
+                <outputEntry id="_25C2BD98-4F24-40D5-9918-0A036F02784B">
+                  <text>0.3</text>
+                </outputEntry>
+                <annotationEntry>
+                  <text></text>
+                </annotationEntry>
+              </rule>
+            </decisionTable>
+          </contextEntry>
+          <contextEntry id="_822883EE-40CE-4AB7-B008-C0CDA4D38B33">
+            <literalExpression id="_FFDFE333-2CBB-4C2C-850C-9319A9BED3F7" typeRef="number" label="jobScoring">
+              <text>if not(ApplicantHasJob) then 0.0 else timeInCurrentJobScoring</text>
+            </literalExpression>
+          </contextEntry>
+        </context>
+      </contextEntry>
+      <contextEntry id="_7D5EB704-3A02-4814-8187-06D7DD86700D">
+        <variable id="_32B61358-F87D-40DE-B4C2-FE4BCCF84DBB" name="debtScoring" typeRef="number">
+          <description></description>
+        </variable>
+        <literalExpression id="_50917C0E-9A17-46F1-A8D5-F10E244840FC" typeRef="number" label="debtScoring">
+          <text>if ApplicantHasActiveDebts then 0.0 else 0.2</text>
+        </literalExpression>
+      </contextEntry>
+      <contextEntry id="_7D2D62C3-6E3C-453B-B8C6-14D7381F5000">
+        <literalExpression id="_DE5EE457-3CFA-44EE-9212-B5F70E22DD0D" typeRef="string" label="ApplicantScore">
+          <text>ageScoring + financialScoring + jobScoring + debtScoring</text>
+        </literalExpression>
+      </contextEntry>
+    </context>
+  </decision>
+  <decision name="MonthlyPayment" id="_3FAA4295-016D-4DFB-95C1-2DF4C4F358F1">
+    <variable id="_A1FBE92F-EB2F-4045-967A-0C662FD3F925" typeRef="number" name="MonthlyPayment" />
+    <informationRequirement id="_B8CD1BED-90B4-456D-8CC3-529071774849">
+      <requiredInput href="#_F0299FB1-D9BB-486F-B998-7A62CBF3BC47" />
+    </informationRequirement>
+    <informationRequirement id="_37C31B13-E783-4F65-82A4-8EA461E10DAC">
+      <requiredInput href="#_F16576D6-7C02-489C-83A6-E5BE57AF38ED" />
+    </informationRequirement>
+    <literalExpression id="_B3A41E21-A309-4F83-B320-D6D4F3D50EC4" typeRef="number" label="MonthlyPayment">
+      <text>LoanAmount/LoanDuration</text>
+    </literalExpression>
+  </decision>
+  <decision name="MonthlyAvailableAmount" id="_6E69573F-AB3F-4320-837B-E11997738385">
+    <variable id="_8A0423E5-E3B1-4CC7-A05D-1440FC0E45CB" typeRef="number" name="MonthlyAvailableAmount" />
+    <informationRequirement id="_C5BB89BE-ED22-416E-9E73-0F17A2D7109F">
+      <requiredInput href="#_9CE39924-5756-4234-9774-5D9E8012B841" />
+    </informationRequirement>
+    <informationRequirement id="_D8826DBC-C55C-4AC9-8F18-16EEA7829D90">
+      <requiredInput href="#_16DFBA50-BA4C-4A72-9784-4B5E4E77B23E" />
+    </informationRequirement>
+    <literalExpression id="_2D8C691E-8705-4D71-B48E-92D78BC1AC5C" typeRef="number" label="MonthlyAvailableAmount">
+      <text>ApplicantMonthlyIncomes - ApplicantMonthlyExpenses</text>
+    </literalExpression>
+  </decision>
+  <decision name="LoanApproval" id="_63CF37E0-D261-4AA0-B523-06835F9DF014">
+    <variable id="_9E31534B-CE13-46B9-96FA-29C6A3159B39" typeRef="boolean" name="LoanApproval" />
+    <informationRequirement id="_C8FC666C-3732-4DDB-99A4-5494AC30756F">
+      <requiredDecision href="#_0B48E8C8-ECBD-4301-A0DA-6AF73FFFC4AC" />
+    </informationRequirement>
+    <literalExpression id="_C87A35B3-B163-4EA3-AC80-887E0362C0B8" typeRef="boolean" label="LoanApproval">
+      <text>if ApplicantScore &lt; 1.0 then false else true</text>
+    </literalExpression>
+  </decision>
+  <inputData name="LoanAmount" id="_F0299FB1-D9BB-486F-B998-7A62CBF3BC47">
+    <variable name="LoanAmount" id="_A11A2318-D103-4804-B958-06E8A4314672" typeRef="number" />
+  </inputData>
+  <inputData name="ApplicantAge" id="_F0BEFD4E-C94E-4B1A-9210-676D93FF896C">
+    <variable name="ApplicantAge" id="_221F5E3A-7B75-4D8A-9D80-CF098AB5797D" typeRef="number" />
+  </inputData>
+  <inputData name="ApplicantMonthlyIncomes" id="_9CE39924-5756-4234-9774-5D9E8012B841">
+    <variable name="ApplicantMonthlyIncomes" id="_061CD04B-6EF8-4400-AF36-E121D95D3B1F" typeRef="number" />
+  </inputData>
+  <inputData name="ApplicantMonthlyExpenses" id="_16DFBA50-BA4C-4A72-9784-4B5E4E77B23E">
+    <variable name="ApplicantMonthlyExpenses" id="_38A2D317-D7D2-4004-A9BC-EC4B9A271C72" typeRef="number" />
+  </inputData>
+  <inputData name="LoanDuration" id="_F16576D6-7C02-489C-83A6-E5BE57AF38ED">
+    <variable name="LoanDuration" id="_DFB9DF0C-DE28-4609-999E-C9CFEFCDDDD2" typeRef="number" />
+  </inputData>
+  <inputData name="ApplicantYearsInCurrentJob" id="_811183C3-0129-48E2-B10C-BF8F824BEF83">
+    <variable name="ApplicantYearsInCurrentJob" id="_880B5EF9-E54D-4BE1-9AB2-F15AAEFB58A7" typeRef="number" />
+  </inputData>
+  <inputData name="ApplicantHasActiveDebts" id="_9A67E4AB-45AB-4078-A477-4089D6951510">
+    <variable name="ApplicantHasActiveDebts" id="_CB94E22B-FEBF-4BFA-974C-810E9E1636DB" typeRef="boolean" />
+  </inputData>
+  <inputData name="ApplicantHasJob" id="_5CCD8B71-2FFF-45B7-BE15-0D77A9FF5293">
+    <variable name="ApplicantHasJob" id="_1B405050-76DC-45D4-9DA1-59239723CE9E" typeRef="boolean" />
+  </inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_5CFCE14C-B43C-4D0B-A0AF-2FBA2CE0C7D9" name="Default DRD" useAlternativeInputDataShape="false">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_B3A41E21-A309-4F83-B320-D6D4F3D50EC4">
+            <kie:width>350</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_2D8C691E-8705-4D71-B48E-92D78BC1AC5C">
+            <kie:width>512</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_C75A1504-E8A2-4E9A-89B6-3591D43C669E">
+            <kie:width>120</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_0CD233A1-7D0F-414A-952A-39B09EDB0D4E">
+            <kie:width>60</kie:width>
+            <kie:width>219</kie:width>
+            <kie:width>190</kie:width>
+            <kie:width>500</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_FA8174BC-D171-42A3-B635-7EFC0B626757">
+            <kie:width>60</kie:width>
+            <kie:width>536</kie:width>
+            <kie:width>210</kie:width>
+            <kie:width>163</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_39931283-94A2-4D26-AB34-EF183970BD82">
+            <kie:width>120</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_50917C0E-9A17-46F1-A8D5-F10E244840FC">
+            <kie:width>949</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_9918121D-7549-45E8-AF16-667DE883B176">
+            <kie:width>60</kie:width>
+            <kie:width>254</kie:width>
+            <kie:width>223</kie:width>
+            <kie:width>310</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_FFDFE333-2CBB-4C2C-850C-9319A9BED3F7">
+            <kie:width>190</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_DE5EE457-3CFA-44EE-9212-B5F70E22DD0D">
+            <kie:width>190</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_C87A35B3-B163-4EA3-AC80-887E0362C0B8">
+            <kie:width>679</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_FBB95332-464C-4788-A647-8B6910164DD9" dmnElementRef="_F0299FB1-D9BB-486F-B998-7A62CBF3BC47" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="1200" y="660" width="160" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_03B6DE0B-F5B4-46E0-A1B2-F1B4E7A3DBC6" dmnElementRef="_F0BEFD4E-C94E-4B1A-9210-676D93FF896C" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="2080" y="480" width="160" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_3595E692-8644-4539-8952-D1FFBF303E4E" dmnElementRef="_0B48E8C8-ECBD-4301-A0DA-6AF73FFFC4AC" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="1422" y="292" width="280" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_10F93743-456E-4B2F-A022-130079BD2289" dmnElementRef="_9CE39924-5756-4234-9774-5D9E8012B841" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="920" y="660" width="260" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_B344B665-C6C1-4B9F-874D-0E6AF150BF03" dmnElementRef="_16DFBA50-BA4C-4A72-9784-4B5E4E77B23E" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="700" y="660" width="220" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_4A765661-BF04-4E82-9D51-D04E19E12C6F" dmnElementRef="_F16576D6-7C02-489C-83A6-E5BE57AF38ED" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="1400" y="660" width="160" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_FE1D944B-DD3E-4799-B8E0-065149A37C2C" dmnElementRef="_3FAA4295-016D-4DFB-95C1-2DF4C4F358F1" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="1200" y="480" width="160" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_1C14012C-F843-410F-89AC-DD4DE70EA1A5" dmnElementRef="_6E69573F-AB3F-4320-837B-E11997738385" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="960" y="480" width="220" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_062069F2-73CF-461F-A897-D971AC0E2F54" dmnElementRef="_63CF37E0-D261-4AA0-B523-06835F9DF014" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="1482" y="112" width="160" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_07B8DB4F-7EDA-48E3-A428-3D3B6DDE5DC9" dmnElementRef="_811183C3-0129-48E2-B10C-BF8F824BEF83" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="1620" y="480" width="260" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_E4F2387E-BC43-413D-9CB1-536E30E97BE2" dmnElementRef="_9A67E4AB-45AB-4078-A477-4089D6951510" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="1380" y="480" width="220" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_5619D475-5B54-4BAD-B236-D9C19448F9DD" dmnElementRef="_5CCD8B71-2FFF-45B7-BE15-0D77A9FF5293" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="1900" y="480" width="160" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_FAFC47AF-913D-4540-9C51-751848550DCF" dmnElementRef="_994E6F0B-B59A-4D6C-B63B-4BAD47ED5176" sourceElement="_FE1D944B-DD3E-4799-B8E0-065149A37C2C" targetElement="_3595E692-8644-4539-8952-D1FFBF303E4E">
+        <di:waypoint x="1280" y="480" />
+        <di:waypoint x="1562" y="372" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_18F1EE95-4855-428B-8532-A73D7CF061B2" dmnElementRef="_DC1B2449-8DF9-440A-93F7-B99693E2787B" sourceElement="_03B6DE0B-F5B4-46E0-A1B2-F1B4E7A3DBC6" targetElement="_3595E692-8644-4539-8952-D1FFBF303E4E">
+        <di:waypoint x="2160" y="480" />
+        <di:waypoint x="1562" y="372" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_56494C27-82AE-48C6-8016-93B6490492C5" dmnElementRef="_6E792F14-236F-4144-8275-EA8DC4376354" sourceElement="_1C14012C-F843-410F-89AC-DD4DE70EA1A5" targetElement="_3595E692-8644-4539-8952-D1FFBF303E4E">
+        <di:waypoint x="1070" y="480" />
+        <di:waypoint x="1562" y="372" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_7CC38C7E-9C3D-4B31-9966-05D91903C61D" dmnElementRef="_A38ECE33-3679-48EA-A338-C96B6EEAEAA4" sourceElement="_07B8DB4F-7EDA-48E3-A428-3D3B6DDE5DC9" targetElement="_3595E692-8644-4539-8952-D1FFBF303E4E">
+        <di:waypoint x="1750" y="480" />
+        <di:waypoint x="1562" y="372" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_16EAAEAC-66EF-412E-9133-19B4738A604E" dmnElementRef="_538FFD83-1A16-4CBC-BDC0-18CA52D2DC22" sourceElement="_E4F2387E-BC43-413D-9CB1-536E30E97BE2" targetElement="_3595E692-8644-4539-8952-D1FFBF303E4E">
+        <di:waypoint x="1490" y="480" />
+        <di:waypoint x="1562" y="372" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_C576D8CC-DAA5-46FA-9245-407925504CB2" dmnElementRef="_6E9E8232-51A2-4107-9E60-EF383F827FD6" sourceElement="_5619D475-5B54-4BAD-B236-D9C19448F9DD" targetElement="_3595E692-8644-4539-8952-D1FFBF303E4E">
+        <di:waypoint x="1980" y="480" />
+        <di:waypoint x="1562" y="372" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_6E85EF33-7FDE-46E5-82F6-59A8E11E4034" dmnElementRef="_B8CD1BED-90B4-456D-8CC3-529071774849" sourceElement="_FBB95332-464C-4788-A647-8B6910164DD9" targetElement="_FE1D944B-DD3E-4799-B8E0-065149A37C2C">
+        <di:waypoint x="1280" y="660" />
+        <di:waypoint x="1280" y="560" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_F4976AB5-6F8C-4ACE-91C7-50C2221A06E1" dmnElementRef="_37C31B13-E783-4F65-82A4-8EA461E10DAC" sourceElement="_4A765661-BF04-4E82-9D51-D04E19E12C6F" targetElement="_FE1D944B-DD3E-4799-B8E0-065149A37C2C">
+        <di:waypoint x="1480" y="660" />
+        <di:waypoint x="1280" y="560" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_6991BF88-6F2F-461F-86E5-6D5C0CD2E3FF" dmnElementRef="_C5BB89BE-ED22-416E-9E73-0F17A2D7109F" sourceElement="_10F93743-456E-4B2F-A022-130079BD2289" targetElement="_1C14012C-F843-410F-89AC-DD4DE70EA1A5">
+        <di:waypoint x="1050" y="660" />
+        <di:waypoint x="1070" y="560" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_7FCC3250-B2A5-400B-888B-73FD3DE0CFBB" dmnElementRef="_D8826DBC-C55C-4AC9-8F18-16EEA7829D90" sourceElement="_B344B665-C6C1-4B9F-874D-0E6AF150BF03" targetElement="_1C14012C-F843-410F-89AC-DD4DE70EA1A5">
+        <di:waypoint x="810" y="660" />
+        <di:waypoint x="1070" y="560" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_20B2D7A9-42F4-4551-995A-AC5F7BCC89A6" dmnElementRef="_C8FC666C-3732-4DDB-99A4-5494AC30756F" sourceElement="_3595E692-8644-4539-8952-D1FFBF303E4E" targetElement="_062069F2-73CF-461F-A897-D971AC0E2F54">
+        <di:waypoint x="1562" y="292" />
+        <di:waypoint x="1562" y="192" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

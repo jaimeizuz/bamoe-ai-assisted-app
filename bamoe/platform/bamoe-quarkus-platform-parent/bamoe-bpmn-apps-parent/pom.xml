@@ -113,7 +113,9 @@
 		<profile>
 			<id>bamoe-kafka-events</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>!disable-bamoe-kafka-events</name>
+				</property>
 			</activation>
 			<dependencies>
 				<!-- BAMOE Kafka Messaging -->
@@ -137,7 +139,9 @@
 		<profile>
 			<id>bamoe-data-index</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>!disable-bamoe-data-index</name>
+				</property>
 			</activation>
 			<dependencies>
 				<!-- BAMOE Data Index -->
@@ -151,7 +155,9 @@
 		<profile>
 			<id>bamoe-jobs</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>!disable-bamoe-jobs</name>
+				</property>
 			</activation>
 			<dependencies>
 				<!-- BAMOE Async Jobs Service -->
@@ -169,7 +175,9 @@
 		<profile>
 			<id>bamoe-data-audit</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>!disable-bamoe-data-audit</name>
+				</property>
 			</activation>
 			<dependencies>
 				<!-- BAMOE Data Audit -->
@@ -187,7 +195,9 @@
 		<profile>
 			<id>bamoe-management</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>!disable-bamoe-management</name>
+				</property>
 			</activation>
 			<dependencies>
 				<!-- BAMOE Process Management endpoints -->
@@ -209,7 +219,9 @@
 		<profile>
 			<id>bamoe-security</id>
 			<activation>
-				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>!disable-bamoe-security</name>
+				</property>
 			</activation>
 			<dependencies>
 				<!-- OIDC Proxy -->

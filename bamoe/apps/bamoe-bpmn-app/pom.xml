@@ -12,4 +12,11 @@
     <version>1.0.0-SNAPSHOT</version>
     <name>bamoe-bpmn-app</name>
     <description>bamoe-bpmn-app BAMOE project</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ibm.bamoe</groupId>
+            <artifactId>bamoe-ai-agent-task-work-item-handler-quarkus</artifactId>
+        </dependency>
+    </dependencies>
 </project>
