@@ -841,7 +841,7 @@ services:
     ports:
       - 8889:8080
     environment:
-      QUARKUS_REST_CLIENT__BAMOE_LOANS__URL: http://${BPMN_APP_SERVICE_HOST}:${BPMN_APP_INTERNAL_PORT}
+      QUARKUS_REST_CLIENT__BAMOE_LOANS__URL: http://192.168.1.200:8881
     depends_on:
       bamoe-bpmn-app:
         condition: service_healthy

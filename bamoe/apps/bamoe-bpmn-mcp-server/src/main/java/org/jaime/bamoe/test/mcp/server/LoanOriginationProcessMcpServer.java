@@ -38,7 +38,7 @@ public class LoanOriginationProcessMcpServer {
         description = "Starts a Loan Origination Process")
     @RunOnVirtualThread
     //public DataContext startLoanOriginationProcess(
-    public Response startLoanOriginationProcess(
+    public String startLoanOriginationProcess(
             @ToolArg(description = "Loan duration (in months)") Integer loanDuration,
             @ToolArg(description = "Loan amount (in Euros)") Integer loanAmount,
             @ToolArg(description = "Applicant name") String applicantName,
@@ -74,6 +74,6 @@ public class LoanOriginationProcessMcpServer {
         return loanOriginationProcessRestClient.startLoanOriginationProcess(
                 new LoanRequestDataDTO(loanAmount, loanDuration, applicantMonthlyIncomes,
                     applicantMonthlyExpenses, applicantAge, applicantHasJob,
-                    applicantHasActiveDebts, applicantYearsInCurrentJob));
+                    applicantHasActiveDebts, applicantYearsInCurrentJob)).readEntity(String.class);
     }
 }
