@@ -314,10 +314,8 @@ System.out.println(&quot;===============================&quot;);</bpmn2:script>
       <bpmn2:incoming>_6D551561-C10A-4A34-9010-FDB66D83199D</bpmn2:incoming>
       <bpmn2:outgoing>_7A605C4E-A53D-4C83-9708-D7503A09FF53</bpmn2:outgoing>
       <bpmn2:ioSpecification id="_9FD5E985-586C-48C1-A294-748AB9AEFE83">
-        <bpmn2:inputSet id="_CE165332-8B22-4DC4-886A-5D5854451BC3">
-        </bpmn2:inputSet>
-        <bpmn2:outputSet id="_4A92FC07-0A0C-4C22-97A3-2FDD738814FF">
-        </bpmn2:outputSet>
+        <bpmn2:inputSet id="_CE165332-8B22-4DC4-886A-5D5854451BC3" />
+        <bpmn2:outputSet id="_4A92FC07-0A0C-4C22-97A3-2FDD738814FF" />
       </bpmn2:ioSpecification>
       <bpmn2:script>System.out.println(&quot;===============================&quot;);
 System.out.println(&quot;Loan origination AUTOMATICALLY APPROVED!!!&quot;);
@@ -413,7 +411,9 @@ kcontext.setVariable(&quot;loanProcessResult&quot;, &quot;To be reviewed&quot;);
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="_5B3D2243-7A8A-41F9-A05F-01329246F3ED" sourceRef="_DEEF427D-B7E7-49E6-B6C9-1F6D128F3754" targetRef="_C257CB79-D83D-4FBB-8263-666FF9A226E2" />
     <bpmn2:sequenceFlow id="_7D596604-3367-41D9-A13F-17674AF8F7A9" sourceRef="_8B677815-52DE-4459-AEA0-F1DA49AD547C" targetRef="_DEEF427D-B7E7-49E6-B6C9-1F6D128F3754" />
-    <bpmn2:sequenceFlow id="_3266B378-985B-4CCD-B54D-E5FEDD3F07E4" sourceRef="_C257CB79-D83D-4FBB-8263-666FF9A226E2" targetRef="_C8CDEC2F-7864-4639-A1CB-5D27BAA7EBA4" name="To be reviewed (amount &gt;= 5000)" />
+    <bpmn2:sequenceFlow id="_3266B378-985B-4CCD-B54D-E5FEDD3F07E4" sourceRef="_C257CB79-D83D-4FBB-8263-666FF9A226E2" targetRef="_C8CDEC2F-7864-4639-A1CB-5D27BAA7EBA4" name="To be reviewed (amount &gt;= 5000)">
+      <bpmn2:conditionExpression id="_B7153793-F089-436D-B399-9B93016554B8">return loanAmount &gt;= 5000;</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="_98847B26-6451-4DFB-8AFC-6DFE229D06C9" sourceRef="_C8CDEC2F-7864-4639-A1CB-5D27BAA7EBA4" targetRef="_BBE08300-7714-48B1-9BB5-91FED19901C5" />
     <bpmn2:sequenceFlow id="_7A605C4E-A53D-4C83-9708-D7503A09FF53" sourceRef="_4F83CDB8-D30D-44EF-AB3B-BD5F22D66F48" targetRef="_DC9F9E50-7373-46EE-8B87-F50C1C511ACA" />
     <bpmn2:sequenceFlow id="_3FB15B7B-C29B-49DB-ADF2-B48087C2DB16" sourceRef="_BBE08300-7714-48B1-9BB5-91FED19901C5" targetRef="_28F5E125-EB16-473D-90E8-1662B57FDD57" name="Not clear">
