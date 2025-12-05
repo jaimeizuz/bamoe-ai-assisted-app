@@ -60,6 +60,40 @@ public class LoansDecisionsMcpServer {
         return svc.evaluate(id, MapDataContext.of(inputs)).data();
     }
 
+    @Tool(
+        name = "evaluate_loan_application_approval",
+        description = "Evaluates a Loan Application and decides if it's approved or rejected")
+    @RunOnVirtualThread
+    public DataContext performLoanApplicationApproval(
+            @ToolArg(description = "Loan duration (in months)") Integer loanDuration,
+            @ToolArg(description = "Loan amount (in Euros)") Integer loanAmount,
+            @ToolArg(description = "Applicant monthly incomes (in Euros)") Integer applicantMonthlyIncomes,
+            @ToolArg(description = "Applicant monthly expenses (in Euros)") Integer applicantMonthlyExpenses,
+            @ToolArg(description = "Applicant age") Integer applicantAge,
+            @ToolArg(description = "Applicant has job") Boolean applicantHasJob,
+            @ToolArg(description = "Applicant has active debts") Boolean applicantHasActiveDebts,
+            @ToolArg(description = "Applicant years in current job") Integer applicantYearsInCurrentJob,
+            McpLog log) {
+
+        Log.infof("Performing Loan Application Approval with "
+            + "Loan duration=%s, Loan amount=%s, Applicant monthly incomes=%s, Applicant monthly expenses=%s, Applicant age=%s",
+                loanDuration, loanAmount, applicantMonthlyIncomes, applicantMonthlyExpenses, applicantAge);
+
+        var id = appRoot.get(DecisionIds.class).get("LoansApprovals", "LoanApplicationApproval");
+
+        Map<String, Object> inputs = new HashMap<String, Object>();
+        inputs.put("loanDuration", loanDuration);
+        inputs.put("loanAmount", loanAmount);
+        inputs.put("applicantMonthlyIncomes", applicantMonthlyIncomes);
+        inputs.put("applicantMonthlyExpenses", applicantMonthlyExpenses);
+        inputs.put("applicantAge", applicantAge);
+        inputs.put("applicantHasJob", applicantHasJob);
+        inputs.put("applicantHasActiveDebts", applicantHasActiveDebts);
+        inputs.put("applicantYearsInCurrentJob", applicantYearsInCurrentJob);
+            
+        return svc.evaluate(id, MapDataContext.of(inputs)).data();
+    }
+
     @Prompt(
         name = "analyze_loan_application_eligibility",
         description = "Asks the Loans Agent to analyze a Loan Application Eligibility given applicant's data") 

@@ -18,5 +18,10 @@
             <groupId>com.ibm.bamoe</groupId>
             <artifactId>bamoe-ai-agent-task-work-item-handler-quarkus</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.quarkiverse.mcp</groupId>
+            <artifactId>quarkus-mcp-server-sse</artifactId>
+        </dependency>
     </dependencies>
 </project>
