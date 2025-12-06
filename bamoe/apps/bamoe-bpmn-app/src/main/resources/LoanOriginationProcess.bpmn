@@ -188,58 +188,58 @@
     <bpmn2:task id="_C8CDEC2F-7864-4639-A1CB-5D27BAA7EBA4" drools:taskName="AI Agent Task" name="Review Loan AI Agent">
       <bpmn2:incoming>_3266B378-985B-4CCD-B54D-E5FEDD3F07E4</bpmn2:incoming>
       <bpmn2:outgoing>_98847B26-6451-4DFB-8AFC-6DFE229D06C9</bpmn2:outgoing>
-      <bpmn2:ioSpecification id="_8F1C08E0-D645-428D-89B7-ED7D5372BBBC">
-        <bpmn2:dataInput id="_7F13B598-255D-4917-815F-49607EB989DC" name="aiAgentUserPrompt" drools:dtype="String" itemSubjectRef="_loanProcessResultItem" />
-        <bpmn2:dataInput id="_81767D4F-EBC9-4C4F-A464-A0E1FF194D54" name="aiAgentInput" drools:dtype="String" itemSubjectRef="_loanProcessResultItem" />
-        <bpmn2:dataInput id="_CD542586-A75F-4AE9-8A21-A736A21DB7B6" name="aiAgentAccountId" drools:dtype="String" itemSubjectRef="_loanProcessResultItem" />
-        <bpmn2:dataInput id="_31163D2C-BC73-49DF-BC1B-DF4C22933FEC" name="aiAgentProvider" drools:dtype="String" itemSubjectRef="_loanProcessResultItem" />
-        <bpmn2:dataInput id="_F5C48BE2-E101-4BDA-B13D-A15B40F9FF49" name="aiAgentId" drools:dtype="String" itemSubjectRef="_loanProcessResultItem" />
-        <bpmn2:dataOutput name="aiAgentOutput" id="_8170F6F8-CA0E-49DC-86EA-41B722D17FCC" drools:dtype="String" itemSubjectRef="_loanProcessResultItem" />
-        <bpmn2:inputSet id="_9BCCB973-F29D-4F1C-9049-1322A059C8A8">
-          <bpmn2:dataInputRefs>_7F13B598-255D-4917-815F-49607EB989DC</bpmn2:dataInputRefs>
-          <bpmn2:dataInputRefs>_81767D4F-EBC9-4C4F-A464-A0E1FF194D54</bpmn2:dataInputRefs>
-          <bpmn2:dataInputRefs>_CD542586-A75F-4AE9-8A21-A736A21DB7B6</bpmn2:dataInputRefs>
-          <bpmn2:dataInputRefs>_31163D2C-BC73-49DF-BC1B-DF4C22933FEC</bpmn2:dataInputRefs>
-          <bpmn2:dataInputRefs>_F5C48BE2-E101-4BDA-B13D-A15B40F9FF49</bpmn2:dataInputRefs>
+      <bpmn2:ioSpecification id="_74491D0D-3C82-48D5-953A-AF48929B5A97">
+        <bpmn2:dataInput id="_CEB11BED-5F8C-420B-AE29-5E8CB5250AAE" name="aiAgentUserPrompt" drools:dtype="String" itemSubjectRef="_loanProcessResultItem" />
+        <bpmn2:dataInput id="_784E54DA-1893-4CDA-B3DA-E6015E133DFA" name="aiAgentInput" drools:dtype="String" itemSubjectRef="_loanProcessResultItem" />
+        <bpmn2:dataInput id="_2FBC5E62-E527-4BFD-BAE0-224DB9DBED68" name="aiAgentAccountId" drools:dtype="String" itemSubjectRef="_loanProcessResultItem" />
+        <bpmn2:dataInput id="_2144814A-410C-4E06-8698-08879D4A85BF" name="aiAgentProvider" drools:dtype="String" itemSubjectRef="_loanProcessResultItem" />
+        <bpmn2:dataInput id="_CA8D7358-3E4D-4160-A743-25AD0E91EA3B" name="aiAgentId" drools:dtype="String" itemSubjectRef="_loanProcessResultItem" />
+        <bpmn2:dataOutput name="aiAgentOutput" id="_8A2D576E-CAA8-49AE-9F97-BE3E7EFD9762" drools:dtype="String" itemSubjectRef="_loanProcessResultItem" />
+        <bpmn2:inputSet id="_EF0FEB62-B412-4F07-A36F-FA68BBFA60EF">
+          <bpmn2:dataInputRefs>_CEB11BED-5F8C-420B-AE29-5E8CB5250AAE</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_784E54DA-1893-4CDA-B3DA-E6015E133DFA</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_2FBC5E62-E527-4BFD-BAE0-224DB9DBED68</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_2144814A-410C-4E06-8698-08879D4A85BF</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_CA8D7358-3E4D-4160-A743-25AD0E91EA3B</bpmn2:dataInputRefs>
         </bpmn2:inputSet>
-        <bpmn2:outputSet id="_0D9186D9-2F59-41B5-8C6F-E279C9C5F19F">
-          <bpmn2:dataOutputRefs>_8170F6F8-CA0E-49DC-86EA-41B722D17FCC</bpmn2:dataOutputRefs>
+        <bpmn2:outputSet id="_7DE87889-E814-4B9F-9603-9142B9C32F60">
+          <bpmn2:dataOutputRefs>_8A2D576E-CAA8-49AE-9F97-BE3E7EFD9762</bpmn2:dataOutputRefs>
         </bpmn2:outputSet>
       </bpmn2:ioSpecification>
-      <bpmn2:dataInputAssociation id="_5D6C4237-0D49-4572-93B3-155ED0F7121C">
-        <bpmn2:targetRef>_7F13B598-255D-4917-815F-49607EB989DC</bpmn2:targetRef>
-        <bpmn2:assignment id="_9F78D7CE-567A-483A-A097-91573F19E56A">
-          <bpmn2:from id="_B0F71A58-7989-4BF8-80E7-6C344DE35FC6" xsi:type="tFormalExpression">I want to request a loan with the following data: {{loanRequestData}}</bpmn2:from>
-          <bpmn2:to id="_2A4FE73B-D045-4FBC-A84F-439F29F68C06">_7F13B598-255D-4917-815F-49607EB989DC</bpmn2:to>
+      <bpmn2:dataInputAssociation id="_556458E2-3061-4585-B7ED-5BF0A71A835B">
+        <bpmn2:targetRef>_CEB11BED-5F8C-420B-AE29-5E8CB5250AAE</bpmn2:targetRef>
+        <bpmn2:assignment id="_CD2549DC-4982-468C-8FAF-3395719A1197">
+          <bpmn2:from id="_E81C0F4F-226D-4234-9360-FB9DB3D2BAAA" xsi:type="tFormalExpression">I want to request a loan with the following data: {{aiAgentInput}}</bpmn2:from>
+          <bpmn2:to id="_C3DCAFAF-C974-44C2-BC14-9DDC13D2CFD4">_CEB11BED-5F8C-420B-AE29-5E8CB5250AAE</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
-      <bpmn2:dataInputAssociation id="_05E12D45-CBA7-449D-8DFE-5239A1E559E5">
+      <bpmn2:dataInputAssociation id="_1175351D-F5F6-4EF2-9DA2-BA49C47A67A1">
         <bpmn2:sourceRef>_3317AAD0-AF49-45B2-9E8F-949123FC1576</bpmn2:sourceRef>
-        <bpmn2:targetRef>_81767D4F-EBC9-4C4F-A464-A0E1FF194D54</bpmn2:targetRef>
+        <bpmn2:targetRef>_784E54DA-1893-4CDA-B3DA-E6015E133DFA</bpmn2:targetRef>
       </bpmn2:dataInputAssociation>
-      <bpmn2:dataInputAssociation id="_16259ECF-9E7E-499D-B4C2-3639BAB72C72">
-        <bpmn2:targetRef>_CD542586-A75F-4AE9-8A21-A736A21DB7B6</bpmn2:targetRef>
-        <bpmn2:assignment id="_2EF1835B-2B6B-40E1-8B22-9B9025E1DEB4">
-          <bpmn2:from id="_421B6AFB-A6BA-4206-963C-8464F655C3F1" xsi:type="tFormalExpression">bamoe_langflow</bpmn2:from>
-          <bpmn2:to id="_73832098-79D2-44ED-886F-91FE9B9F8F14">_CD542586-A75F-4AE9-8A21-A736A21DB7B6</bpmn2:to>
+      <bpmn2:dataInputAssociation id="_26D88A68-4CA8-46AD-8EC6-D2DAEC27F527">
+        <bpmn2:targetRef>_2FBC5E62-E527-4BFD-BAE0-224DB9DBED68</bpmn2:targetRef>
+        <bpmn2:assignment id="_4F1C0A45-8F4D-4EAB-A2D0-9457380ADE99">
+          <bpmn2:from id="_0F85CACC-2CC1-467B-B330-823590C5594F" xsi:type="tFormalExpression">bamoe_langflow</bpmn2:from>
+          <bpmn2:to id="_B22293BA-D460-476E-A5D5-087A3B53918F">_2FBC5E62-E527-4BFD-BAE0-224DB9DBED68</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
-      <bpmn2:dataInputAssociation id="_55D5B35C-5495-428F-839C-2420968CFE74">
-        <bpmn2:targetRef>_31163D2C-BC73-49DF-BC1B-DF4C22933FEC</bpmn2:targetRef>
-        <bpmn2:assignment id="_D33D59E6-86E4-40FC-BFF3-F330937DE204">
-          <bpmn2:from id="_BEE94B13-F20B-45F1-A614-CFF5FAE3EF07" xsi:type="tFormalExpression">langflow</bpmn2:from>
-          <bpmn2:to id="_ABD0B6E9-CDDA-4164-80EA-83926DCCB139">_31163D2C-BC73-49DF-BC1B-DF4C22933FEC</bpmn2:to>
+      <bpmn2:dataInputAssociation id="_751CDEE2-8D3B-4C57-AC36-8D8F9822DE2F">
+        <bpmn2:targetRef>_2144814A-410C-4E06-8698-08879D4A85BF</bpmn2:targetRef>
+        <bpmn2:assignment id="_24553535-A40B-4B00-B7C1-D8A3A2C295A4">
+          <bpmn2:from id="_FF9D5711-A3B4-40FB-B3CC-776867974A47" xsi:type="tFormalExpression">langflow</bpmn2:from>
+          <bpmn2:to id="_99F84412-2470-43BE-9A40-0BB0CE13DDA7">_2144814A-410C-4E06-8698-08879D4A85BF</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
-      <bpmn2:dataInputAssociation id="_5CD298B3-669C-46A2-8D2B-179BE1AEAD5D">
-        <bpmn2:targetRef>_F5C48BE2-E101-4BDA-B13D-A15B40F9FF49</bpmn2:targetRef>
-        <bpmn2:assignment id="_711EB0B8-D9BD-44A9-B7A8-EB99A8FA7DB5">
-          <bpmn2:from id="_88A5A3ED-0EBE-4699-9B43-A7312A37E2E7" xsi:type="tFormalExpression">2f4ec5b1-186d-425a-8fcb-769ef1d024d7</bpmn2:from>
-          <bpmn2:to id="_23175B49-23D5-4366-84E3-99F7DFD61E63">_F5C48BE2-E101-4BDA-B13D-A15B40F9FF49</bpmn2:to>
+      <bpmn2:dataInputAssociation id="_851F8CD5-0D85-48B6-B92C-641EB86D058B">
+        <bpmn2:targetRef>_CA8D7358-3E4D-4160-A743-25AD0E91EA3B</bpmn2:targetRef>
+        <bpmn2:assignment id="_17D7F483-89E0-4F14-B354-92FE202E9379">
+          <bpmn2:from id="_83264563-9624-4CF4-B6A8-EBD86AFC578F" xsi:type="tFormalExpression">2f4ec5b1-186d-425a-8fcb-769ef1d024d7</bpmn2:from>
+          <bpmn2:to id="_7B60BFEC-2FC2-48F8-AA13-0CA751C8115F">_CA8D7358-3E4D-4160-A743-25AD0E91EA3B</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
-      <bpmn2:dataOutputAssociation id="_36761D94-9330-48F7-BF30-D12BF614F409">
-        <bpmn2:sourceRef>_8170F6F8-CA0E-49DC-86EA-41B722D17FCC</bpmn2:sourceRef>
+      <bpmn2:dataOutputAssociation id="_DC313644-40AE-405C-AD09-15B975161242">
+        <bpmn2:sourceRef>_8A2D576E-CAA8-49AE-9F97-BE3E7EFD9762</bpmn2:sourceRef>
         <bpmn2:targetRef>_8DFB41C2-BA2E-4BBC-B824-54DFC76C8F0D</bpmn2:targetRef>
       </bpmn2:dataOutputAssociation>
     </bpmn2:task>
