@@ -87,10 +87,10 @@ public class LoanRequestDataDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "LoanRequestDataDTO [loanAmount=" + loanAmount + ", loanDuration=" + loanDuration
+        return "loanAmount=" + loanAmount + ", loanDuration=" + loanDuration
                 + ", applicantMonthlyIncomes=" + applicantMonthlyIncomes + ", applicantMonthlyExpenses="
                 + applicantMonthlyExpenses + ", applicantAge=" + applicantAge + ", applicantHasJob=" + applicantHasJob
                 + ", applicantHasActiveDebts=" + applicantHasActiveDebts + ", applicantYearsInCurrentJob="
-                + applicantYearsInCurrentJob + "]";
+                + applicantYearsInCurrentJob;
     }
 }
