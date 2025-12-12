@@ -5,15 +5,20 @@ server {
 
     #location /langflow {
 
-    location /n8n-app {
-
-        proxy_pass http://n8n:5678/;
-    }
-    
     location / {
 
-        proxy_pass http://n8n:5678/;
+        proxy_pass http://bamoe-bpmn-app:8881/;
     }
     
+    location /bamoe-process-management-console/ {
 
+        proxy_pass http://192.168.1.200:8280/bamoe-process-management-console/;
+        proxy_set_header Host $host;
+    }
+
+    location /images/app_logo_rgb_fullcolor_reverse.svg {
+
+        proxy_pass http://192.168.1.200:8280/images/app_logo_rgb_fullcolor_reverse.svg;
+        proxy_set_header Host $host;
+    }
 }
