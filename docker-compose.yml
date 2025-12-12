@@ -558,7 +558,7 @@ services:
     ports:
       - ${KEYCLOAK_SERVICE_PORT}:${KEYCLOAK_INTERNAL_PORT}
     depends_on:
-      postgres-supporting-services:
+      postgres-server:
         condition: service_healthy
     volumes:
       - ./keycloak:/opt/keycloak/data/import:z
