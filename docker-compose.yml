@@ -24,7 +24,6 @@ services:
   langfuse-worker:
     hostname: ${LANGFUSE_WORKER_SERVICE_HOST}
     image: docker.io/langfuse/langfuse-worker:${LANGFUSE_VERSION}
-    restart: always
     depends_on: &langfuse-depends-on
       postgres-ai-server:
         condition: service_healthy
@@ -87,7 +86,6 @@ services:
   langfuse-web:
     hostname: ${LANGFUSE_WEB_SERVICE_HOST}
     image: docker.io/langfuse/langfuse:${LANGFUSE_VERSION}
-    restart: always
     depends_on: *langfuse-depends-on
     ports:
       - ${LANGFUSE_WEB_SERVICE_PORT}:${LANGFUSE_WEB_INTERNAL_PORT}
@@ -106,7 +104,6 @@ services:
       LANGFUSE_INIT_USER_PASSWORD: ${LANGFUSE_INIT_USER_PASSWORD:-}
   clickhouse:
     image: docker.io/clickhouse/clickhouse-server
-    restart: always
     user: "101:101"
     environment:
       CLICKHOUSE_DB: default
@@ -126,7 +123,6 @@ services:
       start_period: 1s
   minio:
     image: cgr.dev/chainguard/minio:${MINIO_VERSION}
-    restart: always
     entrypoint: sh
     # create the 'langfuse' bucket before starting the service
     command: -c 'mkdir -p /data/langfuse && minio server --address ":9000" --console-address ":9001" /data'
@@ -147,7 +143,6 @@ services:
   redis:
     hostname: ${REDIS_HOST}
     image: docker.io/redis:${REDIS_VERSION}
-    restart: always
     # CHANGEME: row below to secure redis password
     command: >
       --requirepass ${REDIS_AUTH}
