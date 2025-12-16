@@ -264,6 +264,8 @@ services:
   docling-serve:
     hostname: ${DOCLING_SERVE_HOST}
     image: quay.io/docling-project/${DOCLING_SERVE_IMAGE}:${DOCLING_SERVE_VERSION}
+    profiles:
+      - docling
     deploy:
       resources:
         limits:
