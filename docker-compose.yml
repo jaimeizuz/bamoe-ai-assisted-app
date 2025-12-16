@@ -24,6 +24,8 @@ services:
   langfuse-worker:
     hostname: ${LANGFUSE_WORKER_SERVICE_HOST}
     image: docker.io/langfuse/langfuse-worker:${LANGFUSE_VERSION}
+    profiles:
+      - core
     depends_on: &langfuse-depends-on
       postgres-ai-server:
         condition: service_healthy
@@ -86,6 +88,8 @@ services:
   langfuse-web:
     hostname: ${LANGFUSE_WEB_SERVICE_HOST}
     image: docker.io/langfuse/langfuse:${LANGFUSE_VERSION}
+    profiles:
+      - core
     depends_on: *langfuse-depends-on
     ports:
       - ${LANGFUSE_WEB_SERVICE_PORT}:${LANGFUSE_WEB_INTERNAL_PORT}
@@ -104,6 +108,8 @@ services:
       LANGFUSE_INIT_USER_PASSWORD: ${LANGFUSE_INIT_USER_PASSWORD:-}
   clickhouse:
     image: docker.io/clickhouse/clickhouse-server
+    profiles:
+      - core
     user: "101:101"
     environment:
       CLICKHOUSE_DB: default
@@ -123,6 +129,8 @@ services:
       start_period: 1s
   minio:
     image: cgr.dev/chainguard/minio:${MINIO_VERSION}
+    profiles:
+      - core
     entrypoint: sh
     # create the 'langfuse' bucket before starting the service
     command: -c 'mkdir -p /data/langfuse && minio server --address ":9000" --console-address ":9001" /data'
@@ -143,6 +151,8 @@ services:
   redis:
     hostname: ${REDIS_HOST}
     image: docker.io/redis:${REDIS_VERSION}
+    profiles:
+      - core
     # CHANGEME: row below to secure redis password
     command: >
       --requirepass ${REDIS_AUTH}
@@ -158,6 +168,8 @@ services:
   redis-insight:
     hostname: ${REDIS_INSIGHT_SERVICE_HOST}
     image: redis/redisinsight:${REDIS_INSIGHT_VERSION}
+    profiles:
+      - core
     ports:
       - ${REDIS_INSIGHT_SERVICE_PORT}:${REDIS_INSIGHT_INTERNAL_PORT}
     volumes:
@@ -209,6 +221,8 @@ services:
     hostname: ${LANGFLOW_SERVICE_HOST}
     #image: langflowai/langflow:${LANGFLOW_VERSION}
     image: langflowai/langflow-nightly:${LANGFLOW_NIGHTLY_VERSION}
+    profiles:
+      - core
     #user: root
     deploy:
       resources:
@@ -354,6 +368,8 @@ services:
   mcp-context-forge:
     hostname: ${MCP_CONTEXT_FORGE_SERVICE_HOST}
     image: ghcr.io/ibm/mcp-context-forge:${MCP_CONTEXT_FORGE_VERSION}
+    profiles:
+      - core
     deploy:
       resources:
         limits:
@@ -397,6 +413,8 @@ services:
     hostname: ${MCP_SERVER_SERVICE_HOST}
     image: quay.io/bamoe/mcp-server:${BAMOE_VERSION}
     #image: quay.io/bamoe/mcp-server:9.3.0-ibm-0007
+    profiles:
+      - core
     deploy:
       resources:
         limits:
@@ -434,6 +452,8 @@ services:
   bamoe-management-console:
     hostname: ${BAMOE_MANAGEMENT_CONSOLE_SERVICE_HOST}
     image: quay.io/bamoe/management-console:${BAMOE_VERSION}
+    profiles:
+      - core
     deploy:
       resources:
         limits:
@@ -454,6 +474,8 @@ services:
   postgres-server:
     hostname: ${POSTGRESQL_SERVICE_HOST}
     image: 'postgres:${POSTGRESQL_VERSION}'
+    profiles:
+      - core
     deploy:
       resources:
         limits:
@@ -486,6 +508,8 @@ services:
       POSTGRES_PASSWORD: postgres
   postgres-ai-server:
     hostname: ${POSTGRESQL_AI_SERVICE_HOST}
+    profiles:
+      - core
     build:
       context: pgvector
       dockerfile: Dockerfile
@@ -522,6 +546,8 @@ services:
   pgadmin:
     image: dpage/pgadmin4:${PGADMIN_VERSION}
     hostname: ${PGADMIN_SERVICE_HOST}
+    profiles:
+      - core
     deploy:
       resources:
         limits:
@@ -549,6 +575,8 @@ services:
   keycloak:
     hostname: ${KEYCLOAK_SERVICE_HOST}
     image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
+    profiles:
+      - core
     deploy:
       resources:
         limits:
@@ -556,8 +584,6 @@ services:
           memory: ${KEYCLOAK_MEM}
         reservations:
           memory: ${KEYCLOAK_MEM}
-    profiles:
-      - keycloak
     ports:
       - ${KEYCLOAK_SERVICE_PORT}:${KEYCLOAK_INTERNAL_PORT}
     depends_on:
@@ -591,6 +617,8 @@ services:
   redpanda:
     hostname: ${REDPANDA_SERVICE_HOST}
     image: redpandadata/redpanda:${REDPANDA_VERSION}
+    profiles:
+      - core
     deploy:
       resources:
         limits:
@@ -640,6 +668,8 @@ services:
   redpanda-console:
     hostname: ${REDPANDA_CONSOLE_SERVICE_HOST}
     image: redpandadata/console:${REDPANDA_CONSOLE_VERSION}
+    profiles:
+      - core
     deploy:
       resources:
         limits:
@@ -647,9 +677,6 @@ services:
           memory: ${REDPANDA_CONSOLE_MEM}
         reservations:
           memory: ${REDPANDA_CONSOLE_MEM}   
-    profiles:
-      - full
-      - messaging-redpanda
     # mount the local directory that contains your license key to the container.
     # give Redpanda Console read access to the license.
     volumes:
@@ -704,6 +731,8 @@ services:
   bamoe-bpmn-app:
     hostname: ${BPMN_APP_SERVICE_HOST}
     image: ${BPMN_APP_DOCKER_IMAGE_REGISTRY}/${BPMN_APP_DOCKER_IMAGE_GROUP}/bamoe-bpmn-app:${BPMN_APP_VERSION}
+    profiles:
+      - core
     deploy:
       resources:
         limits:
@@ -841,6 +870,8 @@ services:
   bamoe-bpmn-mcp-server:
     hostname: bamoe-bpmn-mcp-server
     image: jizuzquiza/bamoe-bpmn-mcp-server:1.0.0-SNAPSHOT
+    profiles:
+      - core
     ports:
       - 8889:8080
     environment:
@@ -851,6 +882,8 @@ services:
   bamoe-dmn-app:
     hostname: ${DMN_APP_SERVICE_HOST}
     image: ${DMN_APP_DOCKER_IMAGE_REGISTRY}/${DMN_APP_DOCKER_IMAGE_GROUP}/bamoe-dmn-app:${DMN_APP_VERSION}
+    profiles:
+      - core
     deploy:
       resources:
         limits:
