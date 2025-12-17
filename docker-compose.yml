@@ -282,10 +282,63 @@ services:
           memory: ${DOCLING_SERVE_MEM}
         reservations:
           memory: ${DOCLING_SERVE_MEM}
+          devices:
+            - driver: nvidia
+              count: ${DOCLING_SERVE_GPUS} # alternatively, use `count: all` for all GPUs
+              capabilities: [gpu]
     ports:
       - ${DOCLING_SERVE_SERVICE_PORT}:${DOCLING_SERVE_INTERNAL_PORT}
     environment:
       DOCLING_SERVE_ENABLE_UI: 1
+      DOCLING_DEVICE: "cuda:0"
+      DOCLING_NUM_THREADS: "12"
+      DOCLING_SERVE_LAYOUT_BATCH_SIZE: "160"
+      DOCLING_SERVE_TABLE_BATCH_SIZE:  "10"
+      DOCLING_SERVE_OCR_BATCH_SIZE:    "20"
+      DOCLING_PERF_PAGE_BATCH_SIZE:    "20"
+      DOCLING_SERVE_OPTIONS_CACHE_SIZE: "1"
+      DOCLING_SERVE_ENG_KIND: "local"
+      DOCLING_SERVE_ENG_LOC_NUM_WORKERS: "1"
+      DOCLING_SERVE_ENG_LOC_SHARE_MODELS: "true"
+      DOCLING_SERVE_MAX_DOCUMENT_TIMEOUT: "604800"
+      #DOCLING_SERVE_LOAD_MODELS_AT_BOOT: "true"
+      ORT_DISABLE_AZURE: "1"
+      RAPIDOCR_ORT_PROVIDERS: "CUDAExecutionProvider,TensorrtExecutionProvider,CPUExecutionProvider"
+  comfyui:
+    build:
+      dockerfile: ./comfyui/Dockerfile
+    hostname: ${COMFYUI_SERVICE_HOST}
+    image: comfyui:${COMFYUI_VERSION}
+    profiles:
+      - comfyui
+    deploy:
+      resources:
+        limits:
+          cpus: ${COMFYUI_CPUS}
+          memory: ${COMFYUI_MEM}
+        reservations:
+          memory: ${COMFYUI_MEM}
+          devices:
+            - driver: nvidia
+              count: ${COMFYUI_GPUS}
+              capabilities: [gpu]
+    ports:
+      - ${COMFYUI_SERVICE_PORT}:${COMFYUI_INTERNAL_PORT}
+    volumes:
+      # persist your models, output, and settings:
+      - ./comfyui/comfyui-volume/models:/app/ComfyUI/models
+      # persist your output images:
+      - ./comfyui/comfyui-volume/output:/app/ComfyUI/output
+      # persist all your settings & extra nodes:
+      - ./comfyui/comfyui-volume/settings:/app/ComfyUI/user/default:rw
+      # persist just your saved flows (overrides the workflows/ in default):
+      - ./comfyui/comfyui-volume/flows:/app/ComfyUI/user/default/workflows:rw
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - LISTEN=${COMFYUI_LISTEN_ADDRESS}
+    stdin_open: true
+    tty: true
   anythingllm:
     hostname: ${ANYTHINGLLM_SERVICE_HOST}
     image: mintplexlabs/anythingllm:${ANYTHINGLLM_VERSION}
@@ -357,14 +410,15 @@ services:
     environment:
       OLLAMA_HOST: ${OLLAMA_INTERNAL_HOST}:${OLLAMA_INTERNAL_PORT}
       OLLAMA_ORIGINS: '*'
-      OLLAMA_DEBUG: 2
+      OLLAMA_DEBUG: 1
     entrypoint: ["/bin/bash", "-c", "\
       ollama serve & \
       sleep 5 && \
       ollama pull ibm/granite4:micro-h && ollama pull qwen3:4b \
       && ollama pull deepseek-r1:14b && ollama pull qwen3:14b \
-      && ollama pull gpt-oss:20b && ollama pull granite-embedding:30m && ollama pull ibm/granite4:small-h-q4_0 && \
-      wait"]
+      && ollama pull gpt-oss:20b && ollama pull granite-embedding:30m && ollama pull ibm/granite4:small-h-q4_0 \
+      && ollama pull llava:13b && ollama pull llama3.2-vision:11b \
+      && wait"]
   mcp-context-forge:
     hostname: ${MCP_CONTEXT_FORGE_SERVICE_HOST}
     image: ghcr.io/ibm/mcp-context-forge:${MCP_CONTEXT_FORGE_VERSION}
