@@ -419,6 +419,32 @@ services:
       && ollama pull gpt-oss:20b && ollama pull granite-embedding:30m && ollama pull ibm/granite4:small-h-q4_0 \
       && ollama pull llava:13b && ollama pull llama3.2-vision:11b \
       && wait"]
+  vllm:
+    hostname: ${VLLM_SERVICE_HOST}
+    image: vllm/vllm-openai:${VLLM_VERSION}
+    profiles:
+      - vllm
+    deploy:
+      resources:
+        reservations:
+          memory: ${VLLM_MEM}
+          devices:
+            - driver: nvidia
+              count: ${VLLM_GPUS} # alternatively, use `count: all` for all GPUs
+              capabilities: [gpu]
+        limits:
+          cpus: ${VLLM_CPUS}
+          memory: ${VLLM_MEM}
+    ports:
+      - ${VLLM_SERVICE_PORT}:${VLLM_INTERNAL_PORT}
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    environment:
+      HUGGING_FACE_HUB_TOKEN: ${VLLM_HUGGING_FACE_HUB_TOKEN}
+      VLLM_HOST_IP: ${VLLM_INTERNAL_HOST}
+    command: >
+      --model ${VLLM_MODEL} --max_model_len=${VLLM_MAX_MODEL_LENGHT} --host 0.0.0.0 --cpu-offload-gb=${VLLM_CPU_OFFLOAD_GB} --gpu_memory_utilization=${VLLM_GPU_MEMORY_UTILIZATION}
+      --max-num-seqs 2
   mcp-context-forge:
     hostname: ${MCP_CONTEXT_FORGE_SERVICE_HOST}
     image: ghcr.io/ibm/mcp-context-forge:${MCP_CONTEXT_FORGE_VERSION}
