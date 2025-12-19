@@ -415,7 +415,7 @@ services:
       ollama serve & \
       sleep 5 && \
       ollama pull ibm/granite4:micro-h && ollama pull qwen3:4b \
-      && ollama pull deepseek-r1:14b && ollama pull qwen3:14b \
+      && ollama pull qwen3:14b && ollama pull ibm/granite4:tiny-h-f16 && ollama pull ibm/granite4:tiny-h-Q8_0 \
       && ollama pull gpt-oss:20b && ollama pull granite-embedding:30m && ollama pull ibm/granite4:small-h-q4_0 \
       && ollama pull llava:13b && ollama pull llama3.2-vision:11b \
       && wait"]
