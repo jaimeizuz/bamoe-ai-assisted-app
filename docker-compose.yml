@@ -421,8 +421,8 @@ services:
       ollama pull ibm/granite4:micro-h && ollama pull qwen3:4b \
       && ollama pull ibm/granite4:tiny-h-f16 && ollama pull ibm/granite4:tiny-h-Q8_0 \
       && ollama pull qwen3:14b && ollama pull gpt-oss:20b && ollama pull ibm/granite4:small-h-q4_0 \
-      && ollama pull granite-embedding:30m && ollama pull granite-embedding:278m \
-      && ollama pull llava:13b && ollama pull llama3.2-vision:11b \
+      && ollama pull ibm/granite-embedding:278m&& ollama pull ibm/granite-docling:258m \
+      && ollama pull llava:13b && ollama pull hf.co/leafspark/Llama-3.2-11B-Vision-Instruct-GGUF:Q8_0 \
       && wait"]
   vllm:
     hostname: ${VLLM_SERVICE_HOST}
