@@ -420,7 +420,8 @@ services:
       sleep 5 && \
       ollama pull ibm/granite4:micro-h && ollama pull qwen3:4b \
       && ollama pull ibm/granite4:tiny-h-f16 && ollama pull ibm/granite4:tiny-h-Q8_0 \
-      && ollama pull qwen3:14b && ollama pull gpt-oss:20b && ollama pull ibm/granite4:small-h-q4_0 \
+      && ollama pull qwen3:14b && ollama pull gpt-oss:20b && ollama pull hf.co/ibm-granite/granite-4.0-h-small-GGUF:Q4_K_M && ollama pull hf.co/ibm-granite/granite-4.0-h-small-GGUF:Q6_K \
+      && ollama pull hf.co/lmstudio-community/DeepSeek-Coder-V2-Lite-Instruct-GGUF:Q6_K && ollama pull hf.co/second-state/StarCoder2-15B-GGUF:Q6_K \
       && ollama pull ibm/granite-embedding:278m&& ollama pull ibm/granite-docling:258m \
       && ollama pull llava:13b && ollama pull llama3.2-vision:11b \
       && wait"]
@@ -450,6 +451,36 @@ services:
     command: >
       --model ${VLLM_MODEL} --max_model_len=${VLLM_MAX_MODEL_LENGHT} --host 0.0.0.0 --cpu-offload-gb=${VLLM_CPU_OFFLOAD_GB} --gpu_memory_utilization=${VLLM_GPU_MEMORY_UTILIZATION}
       --max-num-seqs 2
+  open-webui:
+    hostname: ${OPEN_WEBUI_SERVICE_HOST}
+    image: ghcr.io/open-webui/open-webui:${OPEN_WEBUI_VERSION}
+    profiles:
+      - ollama
+      - vllm
+    deploy:
+      resources:
+        limits:
+          cpus: ${OPEN_WEBUI_CPUS}
+          memory: ${OPEN_WEBUI_MEM}
+        reservations:
+          memory: ${OPEN_WEBUI_MEM}
+    volumes:
+      - open-webui:/app/backend/data
+    ports:
+      - ${OPEN_WEBUI_SERVICE_PORT}:${OPEN_WEBUI_INTERNAL_PORT}
+    environment:
+      OLLAMA_BASE_URL: http://ollama:11430
+      WEBUI_SECRET_KEY:
+      ENABLE_LOGIN_FORM: true 
+      ENABLE_SIGNUP: true
+      VECTOR_DB: pgvector
+      PGVECTOR_DB_URL: postgresql://openwebui-user:openwebui-pass@${POSTGRESQL_AI_SERVICE_HOST}:${POSTGRESQL_AI_INTERNAL_PORT}/openwebui
+      DATABASE_URL: postgresql://openwebui-user:openwebui-pass@${POSTGRESQL_AI_SERVICE_HOST}:${POSTGRESQL_AI_INTERNAL_PORT}/openwebui
+    depends_on:
+      postgres-ai-server:
+        condition: service_healthy
+      ollama:
+        condition: service_started
   mcp-context-forge:
     hostname: ${MCP_CONTEXT_FORGE_SERVICE_HOST}
     image: ghcr.io/ibm/mcp-context-forge:${MCP_CONTEXT_FORGE_VERSION}
@@ -595,6 +626,7 @@ services:
     hostname: ${POSTGRESQL_AI_SERVICE_HOST}
     profiles:
       - core
+      - ollama 
     build:
       context: pgvector
       dockerfile: Dockerfile
@@ -633,6 +665,7 @@ services:
     hostname: ${PGADMIN_SERVICE_HOST}
     profiles:
       - core
+      - ollama
     deploy:
       resources:
         limits:
@@ -997,3 +1030,4 @@ volumes:
     langfuse_clickhouse_data: {}
     langfuse_clickhouse_logs: {}
     langfuse_minio_data: {}
+    open-webui: {}
