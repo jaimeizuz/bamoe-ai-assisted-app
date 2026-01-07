@@ -2,5 +2,6 @@ postgres-server:5432:kogito:kogito-user:kogito-pass
 postgres-server:5432:postgres:postgres:postgres
 postgres-ai-server:5432:postgres:postgres:postgres
 postgres-ai-server:5432:langflow:postgres:postgres
+postgres-ai-server:5432:openwebui:postgres:postgres
 postgres-ai-server:5432:langfuse:postgres:postgres
 postgres-ai-server:5432:mcpgw:postgres:postgres
