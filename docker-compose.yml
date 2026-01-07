@@ -219,8 +219,8 @@ services:
       - n8n-data:/home/node/.n8n
   langflow:
     hostname: ${LANGFLOW_SERVICE_HOST}
-    #image: langflowai/langflow:${LANGFLOW_VERSION}
-    image: langflowai/langflow-nightly:${LANGFLOW_NIGHTLY_VERSION}
+    image: langflowai/langflow:${LANGFLOW_VERSION}
+    #image: langflowai/langflow-nightly:${LANGFLOW_NIGHTLY_VERSION}
     profiles:
       - core
     #user: root
