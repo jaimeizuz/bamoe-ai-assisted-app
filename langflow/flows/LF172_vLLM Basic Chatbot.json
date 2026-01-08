@@ -1,0 +1,18 @@
+{
+  "data": {
+    "edges": [],
+    "nodes": [],
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "zoom": 1
+    }
+  },
+  "description": "vLLM Basic Chatbot",
+  "endpoint_name": null,
+  "id": "b7982c77-13c3-4656-a99e-e82e3cc8170a",
+  "is_component": false,
+  "last_tested_version": "1.7.2",
+  "name": "vLLM Basic Chatbot",
+  "tags": []
+}
