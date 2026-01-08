@@ -172,7 +172,7 @@
             "frozen": false,
             "icon": "MessagesSquare",
             "legacy": false,
-            "lf_version": "1.7.0.dev51",
+            "lf_version": "1.7.2",
             "metadata": {
               "code_hash": "7a26c54d89ed",
               "dependencies": {
@@ -433,8 +433,8 @@
           "width": 192
         },
         "position": {
-          "x": 175,
-          "y": 178
+          "x": 185.18754688672163,
+          "y": 73.2138034508627
         },
         "selected": false,
         "type": "genericNode"
@@ -459,9 +459,9 @@
             ],
             "frozen": false,
             "icon": "Ollama",
-            "last_updated": "2025-12-16T16:41:29.531Z",
+            "last_updated": "2026-01-08T15:22:56.916Z",
             "legacy": false,
-            "lf_version": "1.7.0.dev51",
+            "lf_version": "1.7.2",
             "metadata": {
               "code_hash": "ea2827c2a89f",
               "dependencies": {
@@ -516,7 +516,7 @@
                 "value": "21da97ec-80a2-44d2-a969-2ec0549b965c"
               },
               "_frontend_node_folder_id": {
-                "value": "21a1d279-aa43-4864-ae43-e47662f5177a"
+                "value": "c8f53217-0419-43de-9e8b-5f6e64db258a"
               },
               "_type": "Component",
               "base_url": {
@@ -574,6 +574,7 @@
                 "info": "",
                 "name": "model_name",
                 "options": [
+                  "granite-embedding:278m",
                   "granite-embedding:30m"
                 ],
                 "options_metadata": [],
@@ -589,7 +590,7 @@
                 "trace_as_metadata": true,
                 "track_in_telemetry": true,
                 "type": "str",
-                "value": "granite-embedding:30m"
+                "value": "granite-embedding:278m"
               }
             },
             "tool_mode": false
@@ -637,7 +638,7 @@
             "frozen": false,
             "icon": "cpu",
             "legacy": false,
-            "lf_version": "1.7.0.dev51",
+            "lf_version": "1.7.2",
             "metadata": {
               "code_hash": "50117607bf5e",
               "dependencies": {
@@ -726,7 +727,7 @@
                 "trace_as_metadata": true,
                 "track_in_telemetry": false,
                 "type": "str",
-                "value": "movimientos"
+                "value": "movimientos_bancarios"
               },
               "embedding": {
                 "_input_type": "HandleInput",
@@ -900,7 +901,7 @@
             "frozen": false,
             "icon": "braces",
             "legacy": false,
-            "lf_version": "1.7.0.dev51",
+            "lf_version": "1.7.2",
             "metadata": {
               "code_hash": "3cda25c3f7b5",
               "dependencies": {
@@ -1122,8 +1123,9 @@
             ],
             "frozen": false,
             "icon": "Ollama",
-            "last_updated": "2026-01-08T15:12:01.300Z",
+            "last_updated": "2026-01-08T15:40:55.964Z",
             "legacy": false,
+            "lf_version": "1.7.2",
             "metadata": {
               "code_hash": "12e5c1954fe1",
               "dependencies": {
@@ -1539,14 +1541,14 @@
                 "load_from_db": false,
                 "name": "model_name",
                 "options": [
-                  "hf.co/ibm-granite/granite-4.0-h-small-GGUF:Q6_K",
-                  "gpt-oss:20b",
                   "hf.co/ibm-granite/granite-4.0-h-small-GGUF:Q4_K_M",
+                  "hf.co/ibm-granite/granite-4.0-h-small-GGUF:Q6_K",
                   "qwen3:14b",
+                  "gpt-oss:20b",
                   "ibm/granite4:tiny-h-Q8_0",
                   "ibm/granite4:tiny-h-f16",
-                  "qwen3:4b",
                   "ibm/granite4:micro-h",
+                  "qwen3:4b",
                   "ibm/granite4:small-h-q4_0",
                   "ibm/granite4:small-h-q6_K"
                 ],
@@ -1563,11 +1565,11 @@
                 "trace_as_metadata": true,
                 "track_in_telemetry": true,
                 "type": "str",
-                "value": "ibm/granite4:tiny-h-f16"
+                "value": "gpt-oss:20b"
               },
               "num_ctx": {
                 "_input_type": "IntInput",
-                "advanced": true,
+                "advanced": false,
                 "display_name": "Context Window Size",
                 "dynamic": false,
                 "info": "Size of the context window for generating tokens. (Default: 2048)",
@@ -1583,7 +1585,7 @@
                 "trace_as_metadata": true,
                 "track_in_telemetry": true,
                 "type": "int",
-                "value": ""
+                "value": 32000
               },
               "num_gpu": {
                 "_input_type": "IntInput",
@@ -1692,7 +1694,7 @@
               },
               "stream": {
                 "_input_type": "BoolInput",
-                "advanced": true,
+                "advanced": false,
                 "display_name": "Stream",
                 "dynamic": false,
                 "info": "Stream the response from the model. Streaming works only in Chat.",
@@ -1708,7 +1710,7 @@
                 "trace_as_metadata": true,
                 "track_in_telemetry": true,
                 "type": "bool",
-                "value": false
+                "value": true
               },
               "system": {
                 "_input_type": "MessageTextInput",
@@ -1954,7 +1956,7 @@
         "dragging": false,
         "id": "OllamaModel-0OpWI",
         "measured": {
-          "height": 534,
+          "height": 658,
           "width": 320
         },
         "position": {
@@ -1991,7 +1993,7 @@
             "frozen": false,
             "icon": "MessagesSquare",
             "legacy": false,
-            "lf_version": "1.7.0.dev51",
+            "lf_version": "1.7.2",
             "metadata": {
               "code_hash": "8c87e536cca4",
               "dependencies": {
@@ -2249,22 +2251,23 @@
           "showNode": false,
           "type": "ChatOutput"
         },
+        "dragging": false,
         "id": "ChatOutput-CEDvc",
         "measured": {
           "height": 48,
           "width": 192
         },
         "position": {
-          "x": 1923,
-          "y": 233.75
+          "x": 1790.5618904726182,
+          "y": 179.9015378844711
         },
         "selected": false,
         "type": "genericNode"
       }
     ],
     "viewport": {
-      "x": -53.2448453608248,
-      "y": 202.50393041237115,
+      "x": -47.24484536082491,
+      "y": 169.503930412371,
       "zoom": 0.6871134020618557
     }
   },

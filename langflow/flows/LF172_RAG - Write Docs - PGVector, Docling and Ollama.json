@@ -150,7 +150,7 @@
             "frozen": false,
             "icon": "Docling",
             "legacy": false,
-            "lf_version": "1.7.0.dev51",
+            "lf_version": "1.7.2",
             "metadata": {
               "code_hash": "26eeb513dded",
               "dependencies": {
@@ -442,7 +442,9 @@
                   "bz2",
                   "gz"
                 ],
-                "file_path": [],
+                "file_path": [
+                  "5c1e16a7-b5ac-4a9a-8a07-daba2274e524/uni_casersalud_202601.pdf"
+                ],
                 "info": "Supported file extensions: adoc, asciidoc, asc, bmp, csv, dotx, dotm, docm, docx, htm, html, jpeg, json, md, pdf, png, potx, ppsx, pptm, potm, ppsm, pptx, tiff, txt, xls, xlsx, xhtml, xml, webp; optionally bundled in file extensions: zip, tar, tgz, bz2, gz",
                 "list": true,
                 "list_add_label": "Add More",
@@ -509,14 +511,14 @@
         "dragging": false,
         "id": "DoclingRemote-FoUCS",
         "measured": {
-          "height": 392,
+          "height": 396,
           "width": 320
         },
         "position": {
-          "x": 98.94033627042847,
-          "y": 62.74817963842837
+          "x": 55.36273800619648,
+          "y": 28.975540983648564
         },
-        "selected": false,
+        "selected": true,
         "type": "genericNode"
       },
       {
@@ -545,7 +547,7 @@
             "frozen": false,
             "icon": "Docling",
             "legacy": false,
-            "lf_version": "1.7.0.dev51",
+            "lf_version": "1.7.2",
             "metadata": {
               "code_hash": "d84ce7ffc6cb",
               "dependencies": {
@@ -811,9 +813,9 @@
             ],
             "frozen": false,
             "icon": "Ollama",
-            "last_updated": "2025-12-16T16:15:54.781Z",
+            "last_updated": "2026-01-08T15:24:28.409Z",
             "legacy": false,
-            "lf_version": "1.7.0.dev51",
+            "lf_version": "1.7.2",
             "metadata": {
               "code_hash": "ea2827c2a89f",
               "dependencies": {
@@ -868,7 +870,7 @@
                 "value": "4db77a54-5e70-421b-bc9e-ea089ee23f23"
               },
               "_frontend_node_folder_id": {
-                "value": "21a1d279-aa43-4864-ae43-e47662f5177a"
+                "value": "c8f53217-0419-43de-9e8b-5f6e64db258a"
               },
               "_type": "Component",
               "base_url": {
@@ -926,6 +928,7 @@
                 "info": "",
                 "name": "model_name",
                 "options": [
+                  "granite-embedding:278m",
                   "granite-embedding:30m"
                 ],
                 "options_metadata": [],
@@ -941,7 +944,7 @@
                 "trace_as_metadata": true,
                 "track_in_telemetry": true,
                 "type": "str",
-                "value": "granite-embedding:30m"
+                "value": "granite-embedding:278m"
               }
             },
             "tool_mode": false
@@ -956,8 +959,8 @@
           "width": 320
         },
         "position": {
-          "x": 368.8057339683179,
-          "y": 526.0561431218485
+          "x": 455.9609304967819,
+          "y": 524.9667031652427
         },
         "selected": false,
         "type": "genericNode"
@@ -989,7 +992,7 @@
             "frozen": false,
             "icon": "cpu",
             "legacy": false,
-            "lf_version": "1.7.0.dev51",
+            "lf_version": "1.7.2",
             "metadata": {
               "code_hash": "50117607bf5e",
               "dependencies": {
@@ -1078,7 +1081,7 @@
                 "trace_as_metadata": true,
                 "track_in_telemetry": false,
                 "type": "str",
-                "value": "movimientos"
+                "value": "movimientos_bancarios"
               },
               "embedding": {
                 "_input_type": "HandleInput",
@@ -1256,7 +1259,7 @@
             "frozen": false,
             "icon": "MessagesSquare",
             "legacy": false,
-            "lf_version": "1.7.0.dev51",
+            "lf_version": "1.7.2",
             "metadata": {
               "code_hash": "8c87e536cca4",
               "dependencies": {
