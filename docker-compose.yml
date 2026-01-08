@@ -451,6 +451,31 @@ services:
     command: >
       --model ${VLLM_MODEL} --max_model_len=${VLLM_MAX_MODEL_LENGHT} --host 0.0.0.0 --cpu-offload-gb=${VLLM_CPU_OFFLOAD_GB} --gpu_memory_utilization=${VLLM_GPU_MEMORY_UTILIZATION}
       --max-num-seqs 2
+  unsloth:
+    hostname: ${UNSLOTH_SERVICE_HOST}
+    image: unsloth/unsloth:${UNSLOTH_VERSION}
+    profiles:
+      - unsloth
+    deploy:
+      resources:
+        limits:
+          cpus: ${UNSLOTH_CPUS}
+          memory: ${UNSLOTH_MEM}
+        reservations:
+          memory: ${UNSLOTH_MEM}
+          devices:
+            - driver: nvidia
+              count: ${UNSLOTH_GPUS} # alternatively, use `count: all` for all GPUs
+              capabilities: [gpu]
+    volumes:
+      - ./unsloth/workspace/work:/workspace/work:Z
+      - ./unsloth/workspace/notebooks:/workspace/notebooks:Z
+    ports:
+      - ${UNSLOTH_SERVICE_PORT}:${UNSLOTH_INTERNAL_PORT}
+      - ${UNSLOTH_SSH_SERVICE_PORT}:${UNSLOTH_SSH_INTERNAL_PORT}
+    environment:
+      JUPYTER_PASSWORD: "Password@1!"
+      USER_PASSWORD: "Password@1!"
   open-webui:
     hostname: ${OPEN_WEBUI_SERVICE_HOST}
     image: ghcr.io/open-webui/open-webui:${OPEN_WEBUI_VERSION}
