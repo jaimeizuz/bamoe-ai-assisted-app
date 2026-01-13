@@ -427,7 +427,7 @@ services:
       && ollama pull qwen3:14b-q4_K_M && ollama pull qwen3:14b-q8_0 && ollama pull gpt-oss:20b && ollama pull deepseek-r1:14b-qwen-distill-q4_K_M && ollama pull deepseek-r1:14b-qwen-distill-q8_0 \
       && ollama pull ibm/granite4:small-h-q4_K_M && ollama pull ibm/granite4:small-h-q6_K \
       && ollama pull deepseek-coder-v2:16b-lite-instruct-q5_K_M && ollama pull starcoder2:15b-instruct-v0.1-q6_K \
-      && ollama pull ibm/granite-embedding:278m && ollama pull ibm/granite-docling:258m \
+      && ollama pull ibm/granite-embedding:278m && ollama pull granite-embedding:278m && ollama pull ibm/granite-docling:258m \
       && wait"]
   vllm:
     hostname: ${VLLM_SERVICE_HOST}
