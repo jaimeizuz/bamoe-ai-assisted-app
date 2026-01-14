@@ -291,17 +291,21 @@ services:
     environment:
       DOCLING_SERVE_ENABLE_UI: 1
       DOCLING_DEVICE: "cuda:0"
-      DOCLING_NUM_THREADS: "12"
-      DOCLING_SERVE_LAYOUT_BATCH_SIZE: "160"
-      DOCLING_SERVE_TABLE_BATCH_SIZE:  "10"
-      DOCLING_SERVE_OCR_BATCH_SIZE:    "20"
-      DOCLING_PERF_PAGE_BATCH_SIZE:    "20"
-      DOCLING_SERVE_OPTIONS_CACHE_SIZE: "1"
-      DOCLING_SERVE_ENG_KIND: "local"
-      DOCLING_SERVE_ENG_LOC_NUM_WORKERS: "1"
-      DOCLING_SERVE_ENG_LOC_SHARE_MODELS: "true"
-      DOCLING_SERVE_MAX_DOCUMENT_TIMEOUT: "604800"
-      #DOCLING_SERVE_LOAD_MODELS_AT_BOOT: "true"
+      DOCLING_NUM_THREADS: ${DOCLING_NUM_THREADS}
+      DOCLING_SERVE_LAYOUT_BATCH_SIZE: ${DOCLING_SERVE_LAYOUT_BATCH_SIZE}
+      DOCLING_SERVE_TABLE_BATCH_SIZE: ${DOCLING_SERVE_TABLE_BATCH_SIZE}
+      DOCLING_SERVE_OCR_BATCH_SIZE: ${DOCLING_SERVE_OCR_BATCH_SIZE}
+      DOCLING_PERF_PAGE_BATCH_SIZE: ${DOCLING_PERF_PAGE_BATCH_SIZE}
+      DOCLING_SERVE_OPTIONS_CACHE_SIZE: ${DOCLING_SERVE_OPTIONS_CACHE_SIZE}
+      DOCLING_SERVE_ENG_KIND: ${DOCLING_SERVE_ENG_KIND}
+      DOCLING_SERVE_ENG_LOC_NUM_WORKERS: ${DOCLING_SERVE_ENG_LOC_NUM_WORKERS}
+      DOCLING_SERVE_ENG_LOC_SHARE_MODELS: ${DOCLING_SERVE_ENG_LOC_SHARE_MODELS}
+      DOCLING_SERVE_MAX_DOCUMENT_TIMEOUT: ${DOCLING_SERVE_MAX_DOCUMENT_TIMEOUT}
+      DOCLING_SERVE_ENG_RQ_REDIS_URL: ${DOCLING_SERVE_ENG_RQ_REDIS_URL}
+      #DOCLING_SERVE_ENG_RQ_RESULTS_PREFIX: ${DOCLING_SERVE_ENG_RQ_RESULTS_PREFIX}
+      #DOCLING_SERVE_ENG_RQ_SUB_CHANNEL: ${DOCLING_SERVE_ENG_RQ_SUB_CHANNEL}
+      DOCLING_SERVE_LOAD_MODELS_AT_BOOT: ${DOCLING_SERVE_LOAD_MODELS_AT_BOOT}
+      GRADIO_MCP_SERVER: ${DOCLING_SERVE_GRADIO_MCP_SERVER}
       ORT_DISABLE_AZURE: "1"
       RAPIDOCR_ORT_PROVIDERS: "CUDAExecutionProvider,TensorrtExecutionProvider,CPUExecutionProvider"
   comfyui:
@@ -426,8 +430,10 @@ services:
       && ollama pull ibm/granite4:tiny-h-f16 && ollama pull qwen3:8b-q8_0 && ollama pull llama3.1:8b-instruct-q8_0 \
       && ollama pull qwen3:14b-q4_K_M && ollama pull qwen3:14b-q8_0 && ollama pull gpt-oss:20b && ollama pull deepseek-r1:14b-qwen-distill-q4_K_M && ollama pull deepseek-r1:14b-qwen-distill-q8_0 \
       && ollama pull ibm/granite4:small-h-q4_K_M && ollama pull ibm/granite4:small-h-q6_K \
-      && ollama pull deepseek-coder-v2:16b-lite-instruct-q5_K_M && ollama pull starcoder2:15b-instruct-v0.1-q6_K \
+      && ollama pull deepseek-coder-v2:16b-lite-instruct-q4_0 && ollama pull deepseek-coder-v2:16b-lite-instruct-q4_K_M && ollama pull deepseek-coder-v2:16b-lite-instruct-q5_K_M \
+      && ollama pull starcoder2:15b-instruct-v0.1-q6_K && ollama pull codegemma:7b-instruct-v1.1-q8_0 \
       && ollama pull ibm/granite-embedding:278m && ollama pull granite-embedding:278m && ollama pull ibm/granite-docling:258m \
+      && ollama pull embeddinggemma:300m && ollama pull qwen3-embedding:4b-fp16 && ollama pull qwen3-embedding:8b-fp16 && ollama pull snowflake-arctic-embed2:568m && ollama pull nomic-embed-text-v2-moe:latest \
       && wait"]
   vllm:
     hostname: ${VLLM_SERVICE_HOST}
