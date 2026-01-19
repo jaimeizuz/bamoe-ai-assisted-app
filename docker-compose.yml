@@ -26,6 +26,7 @@ services:
     image: docker.io/langfuse/langfuse-worker:${LANGFUSE_VERSION}
     profiles:
       - core
+    restart: always
     depends_on: &langfuse-depends-on
       postgres-ai-server:
         condition: service_healthy
@@ -90,6 +91,7 @@ services:
     image: docker.io/langfuse/langfuse:${LANGFUSE_VERSION}
     profiles:
       - core
+    restart: always
     depends_on: *langfuse-depends-on
     ports:
       - ${LANGFUSE_WEB_SERVICE_PORT}:${LANGFUSE_WEB_INTERNAL_PORT}
@@ -110,6 +112,7 @@ services:
     image: docker.io/clickhouse/clickhouse-server
     profiles:
       - core
+    restart: always
     user: "101:101"
     environment:
       CLICKHOUSE_DB: default
@@ -131,6 +134,7 @@ services:
     image: cgr.dev/chainguard/minio:${MINIO_VERSION}
     profiles:
       - core
+    restart: always
     entrypoint: sh
     # create the 'langfuse' bucket before starting the service
     command: -c 'mkdir -p /data/langfuse && minio server --address ":9000" --console-address ":9001" /data'
@@ -153,6 +157,7 @@ services:
     image: docker.io/redis:${REDIS_VERSION}
     profiles:
       - core
+    restart: always
     # CHANGEME: row below to secure redis password
     command: >
       --requirepass ${REDIS_AUTH}
@@ -170,6 +175,7 @@ services:
     image: redis/redisinsight:${REDIS_INSIGHT_VERSION}
     profiles:
       - core
+    restart: always
     ports:
       - ${REDIS_INSIGHT_SERVICE_PORT}:${REDIS_INSIGHT_INTERNAL_PORT}
     volumes:
@@ -223,6 +229,7 @@ services:
     #image: langflowai/langflow-nightly:${LANGFLOW_NIGHTLY_VERSION}
     profiles:
       - core
+    restart: always
     #user: root
     deploy:
       resources:
@@ -275,6 +282,7 @@ services:
     image: quay.io/docling-project/${DOCLING_SERVE_IMAGE}:${DOCLING_SERVE_VERSION}
     profiles:
       - docling
+    restart: always
     deploy:
       resources:
         limits:
@@ -396,6 +404,7 @@ services:
     image: ollama/ollama:${OLLAMA_VERSION}
     profiles:
       - ollama
+    restart: always
     deploy:
       resources:
         reservations:
@@ -494,6 +503,7 @@ services:
     profiles:
       - ollama
       - vllm
+    restart: always
     deploy:
       resources:
         limits:
@@ -523,6 +533,7 @@ services:
     image: ghcr.io/ibm/mcp-context-forge:${MCP_CONTEXT_FORGE_VERSION}
     profiles:
       - core
+    restart: always
     deploy:
       resources:
         limits:
@@ -568,6 +579,7 @@ services:
     #image: quay.io/bamoe/mcp-server:9.3.0-ibm-0007
     profiles:
       - core
+    restart: always
     deploy:
       resources:
         limits:
@@ -607,6 +619,7 @@ services:
     image: quay.io/bamoe/management-console:${BAMOE_VERSION}
     profiles:
       - core
+    restart: always
     deploy:
       resources:
         limits:
@@ -629,6 +642,7 @@ services:
     image: 'postgres:${POSTGRESQL_VERSION}'
     profiles:
       - core
+    restart: always
     deploy:
       resources:
         limits:
@@ -663,10 +677,11 @@ services:
     hostname: ${POSTGRESQL_AI_SERVICE_HOST}
     profiles:
       - core
-      - ollama 
+      - ollama
     build:
       context: pgvector
       dockerfile: Dockerfile
+    restart: always
     deploy:
       resources:
         limits:
@@ -703,6 +718,7 @@ services:
     profiles:
       - core
       - ollama
+    restart: always
     deploy:
       resources:
         limits:
@@ -732,6 +748,7 @@ services:
     image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
     profiles:
       - core
+    restart: always
     deploy:
       resources:
         limits:
@@ -774,6 +791,7 @@ services:
     image: redpandadata/redpanda:${REDPANDA_VERSION}
     profiles:
       - core
+    restart: always
     deploy:
       resources:
         limits:
@@ -825,6 +843,7 @@ services:
     image: redpandadata/console:${REDPANDA_CONSOLE_VERSION}
     profiles:
       - core
+    restart: always
     deploy:
       resources:
         limits:
@@ -888,6 +907,7 @@ services:
     image: ${BPMN_APP_DOCKER_IMAGE_REGISTRY}/${BPMN_APP_DOCKER_IMAGE_GROUP}/bamoe-bpmn-app:${BPMN_APP_VERSION}
     profiles:
       - core
+    restart: always
     deploy:
       resources:
         limits:
@@ -1027,6 +1047,7 @@ services:
     image: jizuzquiza/bamoe-bpmn-mcp-server:1.0.0-SNAPSHOT
     profiles:
       - core
+    restart: always
     ports:
       - 8889:8080
     environment:
@@ -1039,6 +1060,7 @@ services:
     image: ${DMN_APP_DOCKER_IMAGE_REGISTRY}/${DMN_APP_DOCKER_IMAGE_GROUP}/bamoe-dmn-app:${DMN_APP_VERSION}
     profiles:
       - core
+    restart: always
     deploy:
       resources:
         limits:
