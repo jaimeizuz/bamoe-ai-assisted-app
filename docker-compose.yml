@@ -300,6 +300,7 @@ services:
       DOCLING_SERVE_ENABLE_UI: 1
       DOCLING_DEVICE: "cuda:0"
       DOCLING_NUM_THREADS: ${DOCLING_NUM_THREADS}
+      DOCLING_SERVE_ARTIFACTS_PATH: ""
       DOCLING_SERVE_LAYOUT_BATCH_SIZE: ${DOCLING_SERVE_LAYOUT_BATCH_SIZE}
       DOCLING_SERVE_TABLE_BATCH_SIZE: ${DOCLING_SERVE_TABLE_BATCH_SIZE}
       DOCLING_SERVE_OCR_BATCH_SIZE: ${DOCLING_SERVE_OCR_BATCH_SIZE}
@@ -382,13 +383,25 @@ services:
           memory: ${LOCALAI_MEM}
         reservations:
           memory: ${LOCALAI_MEM}
+          devices:
+            - driver: nvidia
+              count: ${LOCALAI_GPUS} # alternatively, use `count: all` for all GPUs
+              capabilities: [gpu]
     ports:
       - ${LOCALAI_SERVICE_PORT}:${LOCALAI_INTERNAL_PORT}
     volumes:
       - ./localai/models:/models:Z
+      - ./localai/backends:/backends:Z
     environment:
-      LOCALAI_EXTERNAL_BACKENDS: "llama-cpp"
-      PRELOAD_MODELS: '[{"url": "","name": "gpt4all-j"}]'
+      LOCALAI_EXTERNAL_BACKENDS: ${LOCALAI_EXTERNAL_BACKENDS}
+      LOCALAI_MAX_ACTIVE_BACKENDS: ${LOCALAI_MAX_ACTIVE_BACKENDS}
+      MAX_ACTIVE_BACKENDS: ${LOCALAI_MAX_ACTIVE_BACKENDS}
+      LOCALAI_WATCHDOG_IDLE: ${LOCALAI_WATCHDOG_IDLE}
+      LOCALAI_WATCHDOG_IDLE_TIMEOUT: ${LOCALAI_WATCHDOG_IDLE_TIMEOUT}
+      LOCALAI_WATCHDOG_BUSY: ${LOCALAI_WATCHDOG_BUSY}
+      LOCALAI_WATCHDOG_BUSY_TIMEOUT: ${LOCALAI_WATCHDOG_BUSY_TIMEOUT}
+      DEBUG: ${LOCALAI_DEBUG}
+      MODELS: ${LOCALAI_MODELS}
       #MODELS: "huggingface://ibm-granite/granite-4.0-h-micro"
       #MODELS: "https://huggingface.co/ibm-granite/granite-4.0-h-micro"
       #MODELS: "qwen3-4b,llama-3.2-3b-instruct:q8_0,ibm-granite_granite-4.0-h-tiny,ibm-granite_granite-4.0-h-micro"
@@ -428,6 +441,7 @@ services:
       OLLAMA_MAX_LOADED_MODELS: ${OLLAMA_MAX_LOADED_MODELS}
       OLLAMA_FLASH_ATTENTION: ${OLLAMA_FLASH_ATTENTION}
       OLLAMA_KV_CACHE_TYPE: ${OLLAMA_KV_CACHE_TYPE}
+      OLLAMA_CONTEXT_LENGTH: ${OLLAMA_CONTEXT_LENGTH}
     ## Other Models
     # && ollama pull hf.co/lmstudio-community/DeepSeek-Coder-V2-Lite-Instruct-GGUF:Q6_K && ollama pull hf.co/second-state/StarCoder2-15B-GGUF:Q6_K \
     # && ollama pull hf.co/ibm-granite/granite-4.0-h-small-GGUF:Q4_K_M &&  ollama pull hf.co/ibm-granite/granite-4.0-h-small-GGUF:Q6_K \
@@ -435,16 +449,17 @@ services:
     entrypoint: ["/bin/bash", "-c", "\
       ollama serve & \
       sleep 5 \
-      && ollama pull ibm/granite4:tiny-h-f16 && ollama pull ibm/granite4:small-h-q4_K_M && ollama pull ibm/granite4:small-h-q6_K \
+      && ollama pull ibm/granite4:tiny-h-q8_0 && ollama pull ibm/granite4:tiny-h-f16 && ollama pull ibm/granite4:small-h-q4_K_M && ollama pull ibm/granite4:small-h-q6_K \
       && ollama pull qwen3:4b-instruct-2507-fp16 && ollama pull qwen3:8b-q8_0 && ollama pull qwen3:14b-q4_K_M && ollama pull qwen3:14b-q8_0 \
       && ollama pull llama3.1:8b-instruct-q8_0 \
-      && ollama pull gpt-oss:20b \
+      && ollama pull gpt-oss:20b && ollama pull gpt-oss-safeguard:20b \
       && ollama pull deepseek-r1:8b-llama-distill-q8_0 && ollama pull deepseek-r1:8b-0528-qwen3-q8_0 \
       && ollama pull deepseek-r1:14b-qwen-distill-q4_K_M && ollama pull deepseek-r1:14b-qwen-distill-q8_0 \
       && ollama pull gemma3:12b-it-q4_K_M \
-      && ollama pull deepseek-coder-v2:16b-lite-instruct-q4_0 && ollama pull deepseek-coder-v2:16b-lite-instruct-q4_K_M && ollama pull deepseek-coder-v2:16b-lite-instruct-q5_K_M \
+      && ollama pull deepseek-coder-v2:16b-lite-instruct-q4_K_M && ollama pull deepseek-coder-v2:16b-lite-instruct-q5_K_M \
       && ollama pull starcoder2:15b-instruct-v0.1-q6_K && ollama pull codegemma:7b-instruct-v1.1-q8_0 \
       && ollama pull ibm/granite-embedding:278m && ollama pull granite-embedding:278m && ollama pull ibm/granite-docling:258m && ollama pull embeddinggemma:300m && ollama pull qwen3-embedding:4b-fp16 && ollama pull qwen3-embedding:8b-fp16 && ollama pull snowflake-arctic-embed2:568m && ollama pull nomic-embed-text-v2-moe:latest  \
+      && ollama pull glm-ocr:bf16 && ollama pull deepseek-ocr:3b-bf16 \
       && ollama pull x/z-image-turbo:fp8 \
       && wait"]
   vllm:
