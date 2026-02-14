@@ -452,6 +452,7 @@ services:
       && ollama pull ibm/granite4:tiny-h-q8_0 && ollama pull ibm/granite4:tiny-h-f16 && ollama pull ibm/granite4:small-h-q4_K_M && ollama pull ibm/granite4:small-h-q6_K \
       && ollama pull qwen3:4b-instruct-2507-fp16 && ollama pull qwen3:8b-q8_0 && ollama pull qwen3:14b-q4_K_M && ollama pull qwen3:14b-q8_0 \
       && ollama pull llama3.1:8b-instruct-q8_0 \
+      && ollama pull ministral-3:8b-instruct-2512-q8_0 && ollama pull ministral-3:14b-instruct-2512-q8_0 \
       && ollama pull gpt-oss:20b && ollama pull gpt-oss-safeguard:20b \
       && ollama pull deepseek-r1:8b-llama-distill-q8_0 && ollama pull deepseek-r1:8b-0528-qwen3-q8_0 \
       && ollama pull deepseek-r1:14b-qwen-distill-q4_K_M && ollama pull deepseek-r1:14b-qwen-distill-q8_0 \
