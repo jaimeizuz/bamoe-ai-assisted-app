@@ -109,7 +109,7 @@ services:
       LANGFUSE_INIT_USER_NAME: ${LANGFUSE_INIT_USER_NAME:-}
       LANGFUSE_INIT_USER_PASSWORD: ${LANGFUSE_INIT_USER_PASSWORD:-}
   clickhouse:
-    image: docker.io/clickhouse/clickhouse-server
+    image: docker.io/clickhouse/clickhouse-server:${CLICKHOUSE_VERSION}
     profiles:
       - core
     restart: always
