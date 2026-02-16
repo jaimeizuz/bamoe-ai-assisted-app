@@ -457,8 +457,9 @@ services:
       && ollama pull deepseek-r1:8b-llama-distill-q8_0 && ollama pull deepseek-r1:8b-0528-qwen3-q8_0 \
       && ollama pull deepseek-r1:14b-qwen-distill-q4_K_M && ollama pull deepseek-r1:14b-qwen-distill-q8_0 \
       && ollama pull gemma3:12b-it-q4_K_M \
-      && ollama pull deepseek-coder-v2:16b-lite-instruct-q4_K_M && ollama pull deepseek-coder-v2:16b-lite-instruct-q5_K_M \
+      && ollama pull deepseek-coder-v2:16b-lite-instruct-q4_K_M && ollama pull deepseek-coder-v2:16b-lite-instruct-q5_K_M && ollama pull deepseek-coder-v2:16b-lite-instruct-q8_0 \
       && ollama pull starcoder2:15b-instruct-v0.1-q6_K && ollama pull codegemma:7b-instruct-v1.1-q8_0 \
+      && ollama pull devstral:24b-small-2505-q4_K_M && ollama pull devstral:24b-small-2505-q8_0 \
       && ollama pull ibm/granite-embedding:278m && ollama pull granite-embedding:278m && ollama pull ibm/granite-docling:258m && ollama pull embeddinggemma:300m && ollama pull qwen3-embedding:4b-fp16 && ollama pull qwen3-embedding:8b-fp16 && ollama pull snowflake-arctic-embed2:568m && ollama pull nomic-embed-text-v2-moe:latest  \
       && ollama pull glm-ocr:bf16 && ollama pull deepseek-ocr:3b-bf16 \
       && ollama pull x/z-image-turbo:fp8 \
@@ -488,7 +489,47 @@ services:
       VLLM_HOST_IP: ${VLLM_INTERNAL_HOST}
     command: >
       --model ${VLLM_MODEL} --max_model_len=${VLLM_MAX_MODEL_LENGHT} --host 0.0.0.0 --cpu-offload-gb=${VLLM_CPU_OFFLOAD_GB} --gpu_memory_utilization=${VLLM_GPU_MEMORY_UTILIZATION}
-      --max-num-seqs 2
+      --max-num-seqs ${VLLM_MAX_NUM_SEQS}
+  llama:
+    hostname: ${LLAMA_SERVICE_HOST}
+    image: ghcr.io/ggml-org/llama.cpp:${LLAMA_VERSION}
+    profiles:
+      - llama
+    deploy:
+      resources:
+        reservations:
+          memory: ${LLAMA_MEM}
+          devices:
+            - driver: nvidia
+              count: ${LLAMA_GPUS} # alternatively, use `count: all` for all GPUs
+              capabilities: [gpu]
+        limits:
+          cpus: ${LLAMA_CPUS}
+          memory: ${LLAMA_MEM}
+    ports:
+      - ${LLAMA_SERVICE_PORT}:${LLAMA_INTERNAL_PORT}
+    volumes:
+      - ./llm/gguf/models:/models:Z
+    command: >
+      --port ${LLAMA_INTERNAL_PORT} --host 0.0.0.0
+      --model /models/${LLAMA_MODEL}
+      --n-gpu-layers ${LLAMA_N_GPU_LAYERS}
+      --temp ${LLAMA_TEMPERATURE}
+      --top-k ${LLAMA_TOP_K}
+      --top-p ${LLAMA_TOP_P}
+      --repeat-penalty ${LLAMA_REPEAT_PENALTY}
+      --frequency-penalty ${LLAMA_FREQUENCY_PENALTY}
+      --presence-penalty ${LLAMA_PRESENCE_PENALTY}
+      --ctx-size ${LLAMA_CONTEXT_SIZE}
+      --n_predict ${LLAMA_OUTPUT_TOKENS}
+      --reasoning-budget ${LLAMA_REASONING_BUDGET}
+      --flash-attn ${LLAMA_FLASH_ATTN}
+      ${LLAMA_KV_OFFLOAD}
+      --cache-type-k ${LLAMA_CACHE_TYPE_K}
+      --cache-type-v ${LLAMA_CACHE_TYPE_K}
+      --batch-size ${LLAMA_BATCH_SIZE}
+      --ubatch-size ${LLAMA_UBATCH_SIZE}
+      ${LLAMA_CHAT_TEMPLATE}
   unsloth:
     hostname: ${UNSLOTH_SERVICE_HOST}
     image: unsloth/unsloth:${UNSLOTH_VERSION}
