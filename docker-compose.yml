@@ -449,19 +449,38 @@ services:
     entrypoint: ["/bin/bash", "-c", "\
       ollama serve & \
       sleep 5 \
-      && ollama pull ibm/granite4:tiny-h-q8_0 && ollama pull ibm/granite4:tiny-h-f16 && ollama pull ibm/granite4:small-h-q4_K_M && ollama pull ibm/granite4:small-h-q6_K \
-      && ollama pull qwen3:4b-instruct-2507-fp16 && ollama pull qwen3:8b-q8_0 && ollama pull qwen3:14b-q4_K_M && ollama pull qwen3:14b-q8_0 \
-      && ollama pull llama3.1:8b-instruct-q8_0 \
-      && ollama pull ministral-3:8b-instruct-2512-q8_0 && ollama pull ministral-3:14b-instruct-2512-q8_0 \
+      && echo 'DOWNLOADING MODELS: STEP 1' \
+      && ollama pull ibm/granite4:tiny-h-q6_K && ollama pull ibm/granite4:small-h-q4_K_M && ollama pull ibm/granite4:small-h-q5_K_M \
+      && echo 'DOWNLOADING MODELS: STEP ' \
+      && ollama pull hf.co/Qwen/Qwen3-4B-GGUF:Q6_K && ollama pull hf.co/Qwen/Qwen3-8B-GGUF:Q6_K && ollama pull hf.co/Qwen/Qwen3-14B-GGUF:Q6_K \
+      && echo 'DOWNLOADING MODELS: STEP 3' \
+      && ollama pull hf.co/unsloth/Llama-3.1-8B-Instruct-GGUF:Q6_K \
+      && echo 'DOWNLOADING MODELS: STEP 4' \
+      && ollama pull hf.co/unsloth/Ministral-3-8B-Instruct-2512-GGUF:Q6_K && ollama pull hf.co/unsloth/Ministral-3-8B-Reasoning-2512-GGUF:Q6_K 
+      && echo 'DOWNLOADING MODELS: STEP 5' \
+      && ollama pull hf.co/unsloth/Ministral-3-14B-Instruct-2512-GGUF:Q6_K && ollama pull hf.co/unsloth/Ministral-3-14B-Reasoning-2512-GGUF:Q6_K \
+      && echo 'DOWNLOADING MODELS: STEP 6' \
       && ollama pull gpt-oss:20b && ollama pull gpt-oss-safeguard:20b \
-      && ollama pull deepseek-r1:8b-llama-distill-q8_0 && ollama pull deepseek-r1:8b-0528-qwen3-q8_0 \
-      && ollama pull deepseek-r1:14b-qwen-distill-q4_K_M && ollama pull deepseek-r1:14b-qwen-distill-q8_0 \
-      && ollama pull gemma3:12b-it-q4_K_M \
-      && ollama pull deepseek-coder-v2:16b-lite-instruct-q4_K_M && ollama pull deepseek-coder-v2:16b-lite-instruct-q5_K_M && ollama pull deepseek-coder-v2:16b-lite-instruct-q8_0 \
-      && ollama pull starcoder2:15b-instruct-v0.1-q6_K && ollama pull codegemma:7b-instruct-v1.1-q8_0 \
-      && ollama pull devstral:24b-small-2505-q4_K_M && ollama pull devstral:24b-small-2505-q8_0 \
-      && ollama pull ibm/granite-embedding:278m && ollama pull granite-embedding:278m && ollama pull ibm/granite-docling:258m && ollama pull embeddinggemma:300m && ollama pull qwen3-embedding:4b-fp16 && ollama pull qwen3-embedding:8b-fp16 && ollama pull snowflake-arctic-embed2:568m && ollama pull nomic-embed-text-v2-moe:latest  \
+      && ollama pull hf.co/unsloth/GLM-4.7-Flash-REAP-23B-A3B-GGUF:Q4_K_M \
+      && echo 'DOWNLOADING MODELS: STEP 7' \
+      && ollama pull hf.co/unsloth/DeepSeek-R1-Distill-Llama-8B-GGUF:Q6_K && ollama pull deepseek-r1:8b-0528-qwen3-q8_0 \
+      && echo 'DOWNLOADING MODELS: STEP 8' \
+      && ollama pull hf.co/unsloth/DeepSeek-R1-Distill-Qwen-14B-GGUF:Q6_K \
+      && echo 'DOWNLOADING MODELS: STEP 9' \
+      && ollama pull hf.co/unsloth/gemma-3-12b-it-GGUF:Q6_K \
+      && echo 'DOWNLOADING MODELS: STEP 10' \
+      && ollama pull hf.co/unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Q4_K_M && ollama pull hf.co/unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Q6_K \
+      && echo 'DOWNLOADING MODELS: STEP 11' \
+      && ollama pull hf.co/unsloth/Devstral-Small-2-24B-Instruct-2512-GGUF:Q5_K_M && ollama pull hf.co/unsloth/Devstral-Small-2-24B-Instruct-2512-GGUF:Q6_K \
+      && echo 'DOWNLOADING MODELS: STEP 12' \
+      && ollama pull ibm/granite-embedding:278m && ollama pull granite-embedding:278m && ollama pull ibm/granite-docling:258m \
+      && echo 'DOWNLOADING MODELS: STEP 13' \
+      && ollama pull hf.co/Qwen/Qwen3-Embedding-4B-GGUF:Q8_0 && ollama pull hf.co/Qwen/Qwen3-Embedding-8B-GGUF:Q8_0 \
+      && echo 'DOWNLOADING MODELS: STEP 14' \
+      && ollama pull snowflake-arctic-embed2:568m && ollama pull hf.co/nomic-ai/nomic-embed-text-v2-moe-GGUF:Q8_0  \
+      && echo 'DOWNLOADING MODELS: STEP 15' \
       && ollama pull glm-ocr:bf16 && ollama pull deepseek-ocr:3b-bf16 \
+      && echo 'DOWNLOADING MODELS: STEP 16' \
       && ollama pull x/z-image-turbo:fp8 \
       && wait"]
   vllm:
@@ -614,7 +633,7 @@ services:
       PLATFORM_ADMIN_EMAIL: admin@example.com
       PLATFORM_ADMIN_PASSWORD: changeme
       PLATFORM_ADMIN_FULL_NAME: "Platform Administrator"
-      DATABASE_URL: postgresql://mcpgw-user:mcpgw-pass@${POSTGRESQL_AI_SERVICE_HOST}:${POSTGRESQL_AI_INTERNAL_PORT}/mcpgw
+      DATABASE_URL: postgresql+psycopg://mcpgw-user:mcpgw-pass@${POSTGRESQL_AI_SERVICE_HOST}:${POSTGRESQL_AI_INTERNAL_PORT}/mcpgw
       SECURE_COOKIES: false
       PLUGINS_ENABLED: true
       # Enable internal observability
