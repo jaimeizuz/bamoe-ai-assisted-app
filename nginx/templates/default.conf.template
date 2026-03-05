@@ -9,6 +9,10 @@ server {
 
         proxy_pass http://bamoe-bpmn-app:8881/;
     }
+
+    location /mcp-gateway {
+        proxy_pass http://mcp-context-forge:4444/mcp-gateway;
+    }
     
     location /bamoe-process-management-console/ {
 

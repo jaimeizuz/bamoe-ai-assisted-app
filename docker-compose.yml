@@ -315,6 +315,8 @@ services:
       #DOCLING_SERVE_ENG_RQ_SUB_CHANNEL: ${DOCLING_SERVE_ENG_RQ_SUB_CHANNEL}
       DOCLING_SERVE_LOAD_MODELS_AT_BOOT: ${DOCLING_SERVE_LOAD_MODELS_AT_BOOT}
       GRADIO_MCP_SERVER: ${DOCLING_SERVE_GRADIO_MCP_SERVER}
+      DOCLING_SERVE_ENABLE_REMOTE_SERVICES: ${DOCLING_SERVE_ENABLE_REMOTE_SERVICES}
+      DOCLING_SERVE_ALLOW_CUSTOM_VLM_CONFIG: ${DOCLING_SERVE_ALLOW_CUSTOM_VLM_CONFIG}
       ORT_DISABLE_AZURE: "1"
       RAPIDOCR_ORT_PROVIDERS: "CUDAExecutionProvider,TensorrtExecutionProvider,CPUExecutionProvider"
   comfyui:
@@ -454,7 +456,7 @@ services:
       && echo 'DOWNLOADING MODELS: STEP ' \
       && ollama pull hf.co/Qwen/Qwen3-4B-GGUF:Q6_K && ollama pull hf.co/Qwen/Qwen3-8B-GGUF:Q6_K && ollama pull hf.co/Qwen/Qwen3-14B-GGUF:Q6_K \
       && echo 'DOWNLOADING MODELS: STEP 3' \
-      && ollama pull hf.co/unsloth/Llama-3.1-8B-Instruct-GGUF:Q6_K \
+      && ollama pull hf.co/unsloth/Llama-3.1-8B-Instruct-GGUF:Q6_K && ollama pull hf.co/unsloth/Qwen3.5-9B-GGUF:Q6_K \
       && echo 'DOWNLOADING MODELS: STEP 4' \
       && ollama pull hf.co/unsloth/Ministral-3-8B-Instruct-2512-GGUF:Q6_K && ollama pull hf.co/unsloth/Ministral-3-8B-Reasoning-2512-GGUF:Q6_K 
       && echo 'DOWNLOADING MODELS: STEP 5' \
@@ -473,13 +475,13 @@ services:
       && echo 'DOWNLOADING MODELS: STEP 11' \
       && ollama pull hf.co/unsloth/Devstral-Small-2-24B-Instruct-2512-GGUF:Q5_K_M && ollama pull hf.co/unsloth/Devstral-Small-2-24B-Instruct-2512-GGUF:Q6_K \
       && echo 'DOWNLOADING MODELS: STEP 12' \
-      && ollama pull ibm/granite-embedding:278m && ollama pull granite-embedding:278m && ollama pull ibm/granite-docling:258m \
+      && ollama pull ibm/granite-embedding:278m && ollama pull granite-embedding:278m \
       && echo 'DOWNLOADING MODELS: STEP 13' \
       && ollama pull hf.co/Qwen/Qwen3-Embedding-4B-GGUF:Q8_0 && ollama pull hf.co/Qwen/Qwen3-Embedding-8B-GGUF:Q8_0 \
       && echo 'DOWNLOADING MODELS: STEP 14' \
       && ollama pull snowflake-arctic-embed2:568m && ollama pull hf.co/nomic-ai/nomic-embed-text-v2-moe-GGUF:Q8_0  \
       && echo 'DOWNLOADING MODELS: STEP 15' \
-      && ollama pull glm-ocr:bf16 && ollama pull deepseek-ocr:3b-bf16 \
+      && ollama pull glm-ocr:bf16 && ollama pull deepseek-ocr:3b-bf16 && ollama pull ibm/granite-docling:258m && ollama pull granite3.2-vision:2b-q8_0 \
       && echo 'DOWNLOADING MODELS: STEP 16' \
       && ollama pull x/z-image-turbo:fp8 \
       && wait"]
@@ -625,7 +627,7 @@ services:
       MCPGATEWAY_ADMIN_API_ENABLED: true
       HOST: ${MCP_CONTEXT_FORGE_INTERNAL_HOST}
       PORT: ${MCP_CONTEXT_FORGE_INTERNAL_PORT}
-      #APP_ROOT_PATH: ${MCP_CONTEXT_FORGE_ROOT_PATH}
+      APP_ROOT_PATH: ${MCP_CONTEXT_FORGE_ROOT_PATH}
       JWT_SECRET_KEY: my-test-key
       BASIC_AUTH_USER: admin
       BASIC_AUTH_PASSWORD: changeme
