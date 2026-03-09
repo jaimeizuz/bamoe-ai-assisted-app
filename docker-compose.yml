@@ -508,6 +508,8 @@ services:
     environment:
       HUGGING_FACE_HUB_TOKEN: ${VLLM_HUGGING_FACE_HUB_TOKEN}
       VLLM_HOST_IP: ${VLLM_INTERNAL_HOST}
+      PYTORCH_ALLOC_CONF: "expandable_segments:True"
+      VLLM_ALLOW_LONG_MAX_MODEL_LEN: 1
     command: >
       --model ${VLLM_MODEL} --max_model_len=${VLLM_MAX_MODEL_LENGHT} --host 0.0.0.0 --cpu-offload-gb=${VLLM_CPU_OFFLOAD_GB} --gpu_memory_utilization=${VLLM_GPU_MEMORY_UTILIZATION}
       --max-num-seqs ${VLLM_MAX_NUM_SEQS}
