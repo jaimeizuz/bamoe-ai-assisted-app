@@ -318,7 +318,7 @@ services:
       DOCLING_SERVE_ENABLE_REMOTE_SERVICES: ${DOCLING_SERVE_ENABLE_REMOTE_SERVICES}
       DOCLING_SERVE_ALLOW_CUSTOM_VLM_CONFIG: ${DOCLING_SERVE_ALLOW_CUSTOM_VLM_CONFIG}
       ORT_DISABLE_AZURE: "1"
-      RAPIDOCR_ORT_PROVIDERS: "CUDAExecutionProvider,TensorrtExecutionProvider,CPUExecutionProvider"
+      RAPIDOCR_ORT_PROVIDERS: ${DOCLING_SERVE_RAPIDOCR_ORT_PROVIDERS}
   comfyui:
     build:
       dockerfile: ./comfyui/Dockerfile
@@ -472,6 +472,7 @@ services:
       && ollama pull hf.co/unsloth/gemma-3-12b-it-GGUF:Q6_K \
       && echo 'DOWNLOADING MODELS: STEP 10' \
       && ollama pull hf.co/unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Q4_K_M && ollama pull hf.co/unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Q6_K \
+      && ollama pull hf.co/unsloth/Qwen3.5-27B-GGUF:Q6_K && ollama pull qwen3.5:27b-q4_K_M \
       && echo 'DOWNLOADING MODELS: STEP 11' \
       && ollama pull hf.co/unsloth/Devstral-Small-2-24B-Instruct-2512-GGUF:Q5_K_M && ollama pull hf.co/unsloth/Devstral-Small-2-24B-Instruct-2512-GGUF:Q6_K \
       && echo 'DOWNLOADING MODELS: STEP 12' \
@@ -481,7 +482,7 @@ services:
       && echo 'DOWNLOADING MODELS: STEP 14' \
       && ollama pull snowflake-arctic-embed2:568m && ollama pull hf.co/nomic-ai/nomic-embed-text-v2-moe-GGUF:Q8_0  \
       && echo 'DOWNLOADING MODELS: STEP 15' \
-      && ollama pull glm-ocr:bf16 && ollama pull deepseek-ocr:3b-bf16 && ollama pull ibm/granite-docling:258m && ollama pull granite3.2-vision:2b-q8_0 \
+      && ollama pull glm-ocr:bf16 && ollama pull deepseek-ocr:3b-bf16 && ollama pull ibm/granite-docling:258m && ollama pull granite3.2-vision:2b-q8_0 && ollama pull qwen3-vl:8b-thinking-q8_0 && ollama pull qwen3-vl:8b-instruct-q8_0 \
       && echo 'DOWNLOADING MODELS: STEP 16' \
       && ollama pull x/z-image-turbo:fp8 \
       && wait"]
@@ -510,9 +511,11 @@ services:
       VLLM_HOST_IP: ${VLLM_INTERNAL_HOST}
       PYTORCH_ALLOC_CONF: "expandable_segments:True"
       VLLM_ALLOW_LONG_MAX_MODEL_LEN: 1
+      VLLM_LOGGING_LEVEL: ${VLLM_LOGGING_LEVEL}
+      VLLM_DEBUG_LOG_API_SERVER_RESPONSE: ${VLLM_DEBUG_LOG_API_SERVER_RESPONSE}
     command: >
       --model ${VLLM_MODEL} --max_model_len=${VLLM_MAX_MODEL_LENGHT} --host 0.0.0.0 --cpu-offload-gb=${VLLM_CPU_OFFLOAD_GB} --gpu_memory_utilization=${VLLM_GPU_MEMORY_UTILIZATION}
-      --max-num-seqs ${VLLM_MAX_NUM_SEQS}
+      --max-num-seqs ${VLLM_MAX_NUM_SEQS} --enable-log-outputs  --enable-log-requests
   llama:
     hostname: ${LLAMA_SERVICE_HOST}
     image: ghcr.io/ggml-org/llama.cpp:${LLAMA_VERSION}
