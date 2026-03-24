@@ -1,3 +1,5 @@
+include:
+  - observability\docker-compose-observability.yaml
 services:
   nginx:
     hostname: ${NGINX_SERVICE_HOST}

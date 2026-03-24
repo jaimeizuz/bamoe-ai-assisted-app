@@ -1,0 +1,51 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+  # Data sources: metrics
+  prometheus/n8n:
+    config:
+      scrape_configs:
+        - job_name: n8n
+          metrics_path: '/metrics'
+          scrape_interval: 5s
+          static_configs:
+            - targets: [n8n:5678]
+
+exporters:
+  otlp/tempo:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+  otlphttp/lokilogs:
+    endpoint: http://loki:3100/otlp
+    tls:
+      insecure: true
+  prometheus:
+    endpoint: 0.0.0.0:8889
+  prometheusremotewrite:
+    endpoint: http://localhost:9090/api/v1/write
+    tls:
+      insecure: true
+  debug:
+    verbosity: detailed
+
+processors:
+  batch:
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp/tempo]
+    metrics:
+      receivers: [otlp,prometheus/n8n]
+    #  processors: [batch]
+      exporters: [prometheus]
+    logs:
+      receivers: [otlp]
+      exporters: [debug,otlphttp/lokilogs]
