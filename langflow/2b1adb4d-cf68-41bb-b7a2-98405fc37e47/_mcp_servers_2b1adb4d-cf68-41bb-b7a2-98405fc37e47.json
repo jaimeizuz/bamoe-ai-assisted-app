@@ -1,0 +1,1 @@
+{"mcpServers": {"lf-starter_project": {"command": "uvx", "args": ["mcp-proxy", "http://localhost:7860/api/v1/mcp/project/17a5d68b-e1ed-4473-8bbb-4a836babc6b1/sse"]}, "lf-loans": {"command": "uvx", "args": ["mcp-proxy", "http://192.168.1.200:7860/api/v1/mcp/project/827c75d8-a775-420e-a262-0b46bbc52b78/sse"]}, "bamoe_loans_mcp": {"url": "http://192.168.1.200:8888/mcp"}}}
