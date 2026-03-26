@@ -1,4 +1,12 @@
 receivers:
+  filelog:
+    include:
+      - /home/node/.n8n/n8nEventLog.log
+      - /home/node/.n8n/logs/n8n.log
+    start_at: beginning
+    operators:
+      - type: json_parser
+        if: 'body matches "^\\{"'
   otlp:
     protocols:
       grpc:
@@ -16,11 +24,11 @@ receivers:
             - targets: [n8n:5678]
 
 exporters:
-  otlp/tempo:
+  otlp_grpc/tempo:
     endpoint: tempo:4317
     tls:
       insecure: true
-  otlphttp/lokilogs:
+  otlp_http/lokilogs:
     endpoint: http://loki:3100/otlp
     tls:
       insecure: true
@@ -41,11 +49,12 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlp/tempo]
+      exporters: [otlp_grpc/tempo]
     metrics:
       receivers: [otlp,prometheus/n8n]
-    #  processors: [batch]
+      processors: [batch]
       exporters: [prometheus]
     logs:
-      receivers: [otlp]
-      exporters: [debug,otlphttp/lokilogs]
+      receivers: [otlp,filelog]
+      processors: [batch]
+      exporters: [debug,otlp_http/lokilogs]

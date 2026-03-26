@@ -8,4 +8,4 @@ scrape_configs:
     metrics_path: /metrics
     scrape_interval: 5s
     static_configs:
-    - targets: ['opentelemetry-collector:8889']
+    - targets: ['otel_collector:8889']

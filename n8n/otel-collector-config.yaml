@@ -1,0 +1,25 @@
+receivers:
+  filelog:
+    include:
+      - n8nEventLog.log   # ajusta la ruta
+    start_at: beginning
+    operators:
+      - type: json_parser
+        if: 'body matches "^\\{"'
+
+processors:
+  batch:
+    timeout: 5s
+
+exporters:
+  otlp:
+    endpoint: "${env:OTEL_COLLECTOR_ENDPOINT}"  # e.g. otel-collector:4317
+    tls:
+      insecure: false
+
+service:
+  pipelines:
+    logs:
+      receivers: [filelog]
+      processors: [batch]
+      exporters: [otlp]

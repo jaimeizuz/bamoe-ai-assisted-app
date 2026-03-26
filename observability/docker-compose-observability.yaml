@@ -1,11 +1,15 @@
 services:
   otel_collector:
     image: otel/opentelemetry-collector-contrib:${OTEL_COLLECTOR_VERSION}
+    user: "1000:1000"
     profiles:
       - observability
     volumes:
       - >-
         ./opentelemetry/otel-collector-config.yaml:/etc/otelcol/otel-collector-config.yaml:Z
+      #- ../n8n/data/n8nEventLog.log:/var/log/n8nEventLog.log:ro
+      #- n8n_logs:/var/log/n8n:ro
+      - n8n_logs:/home/node/.n8n:ro
     command: '--config=/etc/otelcol/otel-collector-config.yaml'
     ports:
       - '8889:8889'
@@ -13,6 +17,9 @@ services:
       - '4317:4317'
       - '4318:4318'
       - '15680:55680'
+    #depends_on:
+    #  n8n:
+    #    condition: service_started
   prometheus:
     image: prom/prometheus:${PROMETHEUS_VERSION}
     profiles:
@@ -102,3 +109,6 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+
+volumes:
+  n8n_logs:
