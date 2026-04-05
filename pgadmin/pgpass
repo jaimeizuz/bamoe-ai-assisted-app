@@ -6,3 +6,4 @@ postgres-ai-server:5432:openwebui:postgres:postgres
 postgres-ai-server:5432:langfuse:postgres:postgres
 postgres-ai-server:5432:mcpgw:postgres:postgres
 postgres-ai-server:5432:embeddings:postgres:postgres
+postgres-ai-server:5432:langflow2:postgres:postgres

@@ -240,8 +240,9 @@ services:
       - n8n_logs:/home/node/.n8n
   langflow:
     hostname: ${LANGFLOW_SERVICE_HOST}
-    image: langflowai/langflow:${LANGFLOW_VERSION}
+    #image: langflowai/langflow:${LANGFLOW_VERSION}
     #image: langflowai/langflow-nightly:${LANGFLOW_NIGHTLY_VERSION}
+    image: docker.io/jizuzquiza/langflow:1.9.0-rc1
     profiles:
       - core
     restart: always
@@ -845,6 +846,30 @@ services:
       PGADMIN_CONFIG_SERVER_MODE: "False"
       PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
       GUNICORN_ACCESS_LOGFILE: "/dev/null"
+  neo4j-database:
+    hostname: neo4j-database
+    image: docker.io/neo4j:5.26.24-community-ubi9
+    profiles:
+      - core
+    restart: always
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-gportfolio123}
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_dbms_memory_heap_initial__size: 512m
+      NEO4J_dbms_memory_heap_max__size: 2G
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:7474 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
   keycloak:
     hostname: ${KEYCLOAK_SERVICE_HOST}
     image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
@@ -1192,3 +1217,5 @@ volumes:
     langfuse_clickhouse_logs: {}
     langfuse_minio_data: {}
     open-webui: {}
+    neo4j_data: {}
+    neo4j_logs: {}
