@@ -486,7 +486,7 @@ services:
       && echo 'DOWNLOADING MODELS: STEP 8' \
       && ollama pull hf.co/unsloth/DeepSeek-R1-Distill-Qwen-14B-GGUF:Q6_K \
       && echo 'DOWNLOADING MODELS: STEP 9' \
-      && ollama pull hf.co/unsloth/gemma-3-12b-it-GGUF:Q6_K \
+      && ollama pull gemma4:e4b-it-q8_0 && ollama pull gemma4:26b-a4b-it-q4_K_M && ollama pull gemma4:31b-it-q4_K_M \
       && echo 'DOWNLOADING MODELS: STEP 10' \
       && ollama pull hf.co/unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Q4_K_M && ollama pull hf.co/unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Q6_K \
       && ollama pull hf.co/unsloth/Qwen3.5-27B-GGUF:Q6_K && ollama pull qwen3.5:27b-q4_K_M \
